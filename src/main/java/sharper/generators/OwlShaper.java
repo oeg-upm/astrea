@@ -6,10 +6,16 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+
 import shaper.model.ShaperModel;
 
 public class OwlShaper implements ShaperModel{
-	
+	private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
 	// 0. Query to create initial NodeShapes
 	private final String QUERY_FETCH_CLASSES = "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 											  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
@@ -105,9 +111,10 @@ public class OwlShaper implements ShaperModel{
 		Model ontology = ModelFactory.createDefaultModel();
 		ontology.read(owlUrl);
 		Model shapes = ModelFactory.createDefaultModel();
-//		Query queryClasses = QueryFactory.create(QUERY_FETCH_CLASSES);
-//		QueryExecution qeClasses = QueryExecutionFactory.create(queryClasses, ontology);
-//		Model shapes = qeClasses.execConstruct();
+
+		Query queryClasses = QueryFactory.create(QUERY_FETCH_CLASSES);
+		QueryExecution qeClasses = QueryExecutionFactory.create(queryClasses, ontology);
+		shapes = qeClasses.execConstruct();
 		
 	
 		Query queryDataProperties = QueryFactory.create(QUERY_FETCH_DATA_PROPERTIES);
@@ -120,8 +127,26 @@ public class OwlShaper implements ShaperModel{
 		Model shapesObjectProperties = qeObjectProperties.execConstruct();
 		shapes.add(shapesObjectProperties);
 		
-		shapes.write(System.out, "TURTLE");
+		cleanEmptyProperties(shapes);
+		
+		//shapes.write(System.out, "TURTLE");
 		return shapes;
+		
+	}
+
+
+	private void cleanEmptyProperties(Model shapes) {
+		StmtIterator iterator = shapes.listStatements(null, ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
+		while(iterator.hasNext()) {
+			Statement rootStatement = iterator.next();
+			RDFNode blankNode = rootStatement.getObject();
+			System.out.println(">"+rootStatement+" : ");
+			if(blankNode.getModel().isEmpty()) {
+				System.out.println("\t>true");
+			}
+			//blankNode.getModel().write(System.out);
+			
+		}
 		
 	}
 
