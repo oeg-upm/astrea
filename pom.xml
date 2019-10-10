@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>oeg.validation</groupId>
   <artifactId>astrea</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <name>Shaper</name>
   <description>Shaper assists in the generation of data Shapes</description>
   

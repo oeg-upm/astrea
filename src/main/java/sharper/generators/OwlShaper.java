@@ -1,5 +1,8 @@
 package sharper.generators;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -129,24 +132,26 @@ public class OwlShaper implements ShaperModel{
 		
 		cleanEmptyProperties(shapes);
 		
-		//shapes.write(System.out, "TURTLE");
+		shapes.write(System.out, "TURTLE");
 		return shapes;
 		
 	}
 
-
+	/**
+	 * This method cleans from the shape the triplets encoding empty lists of properties, i.e., 'URI sh:property []'.
+	 * @param shapes a {@link Model} that contains the RDF of the shape
+	 */
 	private void cleanEmptyProperties(Model shapes) {
+		List<Statement> statementsToRemove = new ArrayList<>();
 		StmtIterator iterator = shapes.listStatements(null, ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
 		while(iterator.hasNext()) {
 			Statement rootStatement = iterator.next();
-			RDFNode blankNode = rootStatement.getObject();
-			System.out.println(">"+rootStatement+" : ");
-			if(blankNode.getModel().isEmpty()) {
-				System.out.println("\t>true");
+			StmtIterator iteratorOfProperties = shapes.listStatements(rootStatement.getObject().asResource(), null, (RDFNode) null);
+			if(!iteratorOfProperties.hasNext()) {
+				statementsToRemove.add(rootStatement);
 			}
-			//blankNode.getModel().write(System.out);
-			
 		}
+		shapes.remove(statementsToRemove);
 		
 	}
 
