@@ -11,6 +11,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
@@ -19,6 +20,9 @@ import shaper.model.ShaperModel;
 
 public class OwlShaper implements ShaperModel{
 	private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
+	private static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
+	private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
+
 	// 0. Query to create initial NodeShapes
 	private final String QUERY_FETCH_CLASSES = "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 											  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
@@ -26,12 +30,19 @@ public class OwlShaper implements ShaperModel{
 													 "CONSTRUCT {  ?shapeUrl a sh:NodeShape ;  \n"
 													 + "			   		sh:targetClass ?type ;\n"
 													 + "			   		sh:deactivated \"false\";\n"
+													 + "			   		sh:closed \"true\";\n"
+													 + "			   		sh:name  ?shapeNodeName; \n"
+													 + "			   		rdfs:label  ?shapeNodeName; \n"
+													 + "			   		rdfs:label  ?shapeNodeComment; \n"
+													 + "			   		rdfs:seeAlso ?shapeNodeSeeAlso; \n"
+													 + "			   		rdfs:isDefinedBy ?shapeNodeDefinedBy; \n"
 													 // Including data properties
 													 + "					sh:property [ \n"
 													 + "						sh:path ?dataProperty ;\n"
 													 + "						sh:datatype ?datatype ;\n"
 													 + "			   	 		sh:name ?dataPropertyName ;\n"
 													 + "			   			sh:description ?dataPropertyComment ;\n"
+													 +"						sh:datatype2 ?propertyDatatype ;"	
 													// + "			   			sh:message \"Error with property\""
 													 + "]; "
 													 // Including object properties
@@ -45,6 +56,10 @@ public class OwlShaper implements ShaperModel{
 													 + " }"
 													 + "WHERE { "
 													 + "?type a owl:Class . \n"
+													 + "OPTIONAL { ?type rdfs:label ?shapeNodeName . } \n"
+													 + "OPTIONAL { ?type rdfs:comment ?shapeNodeComment .} \n"
+													 + "OPTIONAL { ?type rdfs:seeAlso ?shapeNodeSeeAlso .} \n"
+													 + "OPTIONAL { ?type rdfs:isDefinedBy ?shapeNodeDefinedBy .} \n"
 													 // Data types extractor
 													 + "OPTIONAL { ?dataProperty a owl:DatatypeProperty ;\n"
 													 + "		 rdfs:domain ?type ;\n"
@@ -73,13 +88,13 @@ public class OwlShaper implements ShaperModel{
 													 + "			   ?shapeUrl sh:name ?propertyName .\n"
 													 + "			   ?shapeUrl sh:description ?propertyComment .\n"
 													 + "			   ?shapeUrl sh:node ?shapeNodeUrl . \n" // triplet to reference NodeShape (domain) of this property
-													 + "			   ?shapeUrl sh:path ?propertyDatatype ."
-													 + "			   ?shapeUrl sh:datatype ?propertyDatatype ."
+													 + "			   ?shapeUrl sh:path ?dataProperty ."
+													 + "			   ?shapeUrl sh:datatype ?datatype ."
 													 + " }\n"
 													 + "WHERE { \n"
 													 + "?dataProperty a owl:DatatypeProperty .\n"
 													 + "?dataProperty rdfs:domain ?type .\n"
-													// + "?dataProperty rdfs:domain ?type ."
+													 + "	OPTIONAL {?dataProperty rdfs:range ?datatype . }"
 													 + "OPTIONAL { ?dataProperty rdfs:label ?propertyName . }\n"
 													 + "OPTIONAL { ?dataProperty rdfs:comment ?propertyComment . }\n"
 													 + "FILTER (!isBlank(?type) && !isBlank(?dataProperty)) .\n"
@@ -94,18 +109,18 @@ public class OwlShaper implements ShaperModel{
 															 + "			   ?shapeUrl sh:name ?propertyName .\n"
 															 + "			   ?shapeUrl sh:description ?propertyComment .\n"
 															 + "			   ?shapeUrl sh:node ?shapeNodeUrl . \n" // triplet to reference NodeShape (domain) of this property
-															 + "			   ?shapeUrl sh:path ?propertyDatatype .\n"
+															 + "			   ?shapeUrl sh:path ?dataProperty .\n"
 															 + "			   ?shapeUrl sh:class ?typeInRange .\n"
 															 + " }\n"
 															 + "WHERE { \n"
 															 + "?dataProperty a owl:ObjectProperty .\n"
 															 + "?dataProperty rdfs:domain ?type .\n"
 															 + "?dataProperty rdfs:range ?typeInRange.\n"
-															// + "?dataProperty rdfs:domain ?type ."
+															
 															 + "OPTIONAL { ?dataProperty rdfs:label ?propertyName . }\n"
 															 + "OPTIONAL { ?dataProperty rdfs:comment ?propertyComment . }\n"
 															 + "FILTER (!isBlank(?type) && !isBlank(?dataProperty)) .\n"
-															 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeNodeUrl) .\n"
+															 + "BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
 															 + "BIND ( URI(CONCAT(STR(?dataProperty),\"-Shape\")) AS ?shapeUrl) .\n"
 															 + "}";
 
@@ -125,12 +140,16 @@ public class OwlShaper implements ShaperModel{
 		Model shapesDataProperties = qeDataProperties.execConstruct();
 		shapes.add(shapesDataProperties);
 		
-		Query queryObjectProperties = QueryFactory.create(QUERY_FETCH_DATA_PROPERTIES);
+		Query queryObjectProperties = QueryFactory.create(QUERY_FETCH_OBJECT_PROPERTIES);
 		QueryExecution qeObjectProperties = QueryExecutionFactory.create(queryObjectProperties, ontology);
 		Model shapesObjectProperties = qeObjectProperties.execConstruct();
 		shapes.add(shapesObjectProperties);
 		
+		// Post processing:
+		// 0. Clean empty URL sh:property [] patterns
 		cleanEmptyProperties(shapes);
+		// 1. Add xsd:string to any property that has no data type
+		addXsdStringDatatype(shapes);
 		
 		shapes.write(System.out, "TURTLE");
 		return shapes;
@@ -152,7 +171,24 @@ public class OwlShaper implements ShaperModel{
 			}
 		}
 		shapes.remove(statementsToRemove);
-		
+	}
+	
+	private void addXsdStringDatatype(Model shapes) {
+		// TODO: consider there to include this in the NodeShape and the PropertyShape as well
+		// 0. For the NodeShape:
+		List<Statement> statementsToAdd = new ArrayList<>();
+		StmtIterator iterator = shapes.listStatements(null, ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
+		while(iterator.hasNext()) {
+			Statement rootStatement = iterator.next();
+			Resource propertyURI = rootStatement.getObject().asResource();
+			// If property does not have xsd datatype nor is a property for an object property
+			Boolean conditionDatatypes = shapes.contains(propertyURI, ResourceFactory.createProperty(SH_DATATYPE), (RDFNode) null);
+			Boolean conditionIsObjectProperty = shapes.contains(propertyURI, ResourceFactory.createProperty(SH_CLASS), (RDFNode) null);
+			if(!conditionDatatypes && !conditionIsObjectProperty) {
+				System.out.println();
+			}
+			
+		}
 	}
 
 }
