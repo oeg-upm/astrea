@@ -1,0 +1,12 @@
+CardinalityTest -> // TODO: May we find another way to describe cardinality rather than this, or the onProperty maybe?
+
+Package: tests.ontologies.time
+TestClass -> [owl property] = [shacl properties generated]; level can be either NodeShape, EmbeddedProperty, ProeprtyShape
+CardinalityTest -> owl:cardinality = sh:minCount & sh:maxCount; EmbeddedProperty
+CardinalityTest -> owl:minCardinality = sh:minCount; EmbeddedProperty
+CardinalityTest -> owl:maxCardinality = sh:maxCount; EmbeddedProperty
+FilledInformationTest -> owl:hasValue = sh:hasValue; EmbeddedProperty
+AnnotationPropertiesTest -> rdfs:label = sh:name & rdfs:label; NodeShape
+AnnotationPropertiesTest -> rdfs:comment = rdfs:label; NodeShape
+AnnotationPropertiesTest -> rdfs:seeAlso = rdfs:seeAlso; NodeShape
+AnnotationPropertiesTest -> rdfs:isDefinedBy = rdfs:isDefinedBy; NodeShape

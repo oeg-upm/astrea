@@ -1,0 +1,76 @@
+package tests.ontologies.time;
+
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.vocabulary.RDFS;
+import org.junit.Assert;
+import org.junit.Test;
+
+import astrea.model.ShaclFromOwl;
+import sharper.generators.OwlShaper;
+
+public class AnnotationPropertiesTest {
+
+	
+	public static final String ANNOTATION_PROPERTIES_OWL_FRAGMENT ="@prefix : <http://www.w3.org/2006/time#> .\n" + 
+			"@prefix dct: <http://purl.org/dc/terms/> .\n" + 
+			"@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" + 
+			"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" + 
+			"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" + 
+			"@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" + 
+			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+			"@prefix : <https://w3id.org/def/openadr#> ." +
+			":VEN rdf:type owl:Class ;\n" + 
+			"     rdfs:subClassOf [ rdf:type owl:Restriction ;\n" + 
+			"                       owl:onProperty :manages ;\n" + 
+			"                       owl:someValuesFrom :Resource\n" + 
+			"                     ] ;\n" + 
+			"     rdfs:comment \"This is the OpenADR Virtual End Node that is used to interact with the VTN\" ;\n" + 
+			"     rdfs:isDefinedBy \"OpenADR 2.0 Demand Response Program Implementation Guide\" ;\n" + 
+			"     rdfs:seeAlso \"See also the online Demand Response Program Implementation Guide (OpenADR 2.0)\" ;\n" + 
+			"     rdfs:label \"Virtual End Node (VEN)\" .";
+	
+	public static final String SH_NAME = "http://www.w3.org/ns/shacl#name";
+	public static final Property RDFS_LABEL = RDFS.label;
+	public static final Property RDFS_SEE_ALSO = RDFS.seeAlso;
+	public static final Property RDFS_DEFINED_BY = RDFS.isDefinedBy;
+
+	
+	@Test
+	public void compliantWithShName() {
+		ShaclFromOwl sharper = new OwlShaper();
+		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT, "TURTLE");
+		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NAME), ResourceFactory.createTypedLiteral("Virtual End Node (VEN)"));
+		Assert.assertTrue(condition);
+	}
+	
+	@Test
+	public void compliantWithRfsLabelAndRdfsComment() {
+		ShaclFromOwl sharper = new OwlShaper();
+		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT, "TURTLE");
+		Boolean condition = shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("Virtual End Node (VEN)"));
+		condition &= shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("This is the OpenADR Virtual End Node that is used to interact with the VTN"));
+		Assert.assertTrue(condition);
+	}
+	
+	@Test
+	public void compliantWithRfsIsDefinedBy() {
+		ShaclFromOwl sharper = new OwlShaper();
+		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT, "TURTLE");
+		shapes.write(System.out, "TURTLE");
+		Boolean condition = shapes.contains(null, RDFS_DEFINED_BY, ResourceFactory.createTypedLiteral("OpenADR 2.0 Demand Response Program Implementation Guide"));
+		Assert.assertTrue(condition);
+	}
+	
+	@Test
+	public void compliantWithRfsSeeAlso() {
+		ShaclFromOwl sharper = new OwlShaper();
+		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT, "TURTLE");
+		Boolean condition = shapes.contains(null, RDFS_SEE_ALSO, ResourceFactory.createTypedLiteral("See also the online Demand Response Program Implementation Guide (OpenADR 2.0)"));
+		Assert.assertTrue(condition);
+	}
+	
+	
+	
+}

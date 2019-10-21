@@ -30,59 +30,78 @@ public class OwlShaper implements ShaclFromOwl{
 											  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 													 "PREFIX sh: <http://www.w3.org/ns/shacl#>" + 
 													 "CONSTRUCT {  ?shapeUrl a sh:NodeShape ;  \n"
-													 + "			   		sh:targetClass ?type ;\n"
 													 + "			   		sh:deactivated \"false\";\n"
 													 + "			   		sh:closed \"true\";\n"
+													 // Including target owl:Class
+ 													 + "			   		sh:targetClass ?type ;\n"
+													 // Including meta-data
 													 + "			   		sh:name  ?shapeNodeName; \n"
 													 + "			   		rdfs:label  ?shapeNodeName; \n"
 													 + "			   		rdfs:label  ?shapeNodeComment; \n"
 													 + "			   		rdfs:seeAlso ?shapeNodeSeeAlso; \n"
 													 + "			   		rdfs:isDefinedBy ?shapeNodeDefinedBy; \n"
-													 // Including data properties
-													 + "					sh:property [ \n"
-													 + "						sh:path ?dataProperty ;\n"
-													 + "						sh:datatype ?datatype ;\n"
-													 + "			   	 		sh:name ?dataPropertyName ;\n"
-													 + "			   			sh:description ?dataPropertyComment ;\n"
-													 +"						sh:datatype2 ?propertyDatatype ;"	
-													// + "			   			sh:message \"Error with property\""
-													 + "]; "
-													 // Including object properties
-													 + "				sh:property [ \n"
-													 + "						sh:path ?objectProperty ;\n"
-													 + "						sh:class ?typeInRange ;"
-													 + "			   	 		sh:name ?objectPropertyName ;\n"
-													 + "			   			sh:description ?objectPropertyComment ;\n"
-													 + "];"
-													 
+													 // Including data & object properties
+													 + "					sh:property ?shapeUrlDataProperty ;"
+													 + "					sh:property ?shapeUrlObjectProperty."
 													 + " }"
 													 + "WHERE { "
 													 + "?type a owl:Class . \n"
+													 // Meta-data extractor
 													 + "OPTIONAL { ?type rdfs:label ?shapeNodeName . } \n"
 													 + "OPTIONAL { ?type rdfs:comment ?shapeNodeComment .} \n"
 													 + "OPTIONAL { ?type rdfs:seeAlso ?shapeNodeSeeAlso .} \n"
 													 + "OPTIONAL { ?type rdfs:isDefinedBy ?shapeNodeDefinedBy .} \n"
+													 
 													 // Data types extractor
 													 + "OPTIONAL { ?dataProperty a owl:DatatypeProperty ;\n"
-													 + "		 rdfs:domain ?type ;\n"
-													 + "		 rdfs:range ?datatype ."
-													 + "		 OPTIONAL {?dataProperty rdfs:label ?dataPropertyName } .\n"
-													 + "		 OPTIONAL {?dataProperty rdfs:comment ?dataPropertyComment }.\n"
-													 + "}"
+													 + "		 			rdfs:domain ?type ; }\n"
+													 // TODO: consider that we may have owl:unionOf, or any other, as range of the rdfs:domain
+												
 													// Object properties extractor
-													 + "OPTIONAL { ?objectProperty a owl:ObjectProperty ;\n"
-													 + "		 rdfs:domain ?type ;\n"
-													 + "		 rdfs:range ?typeInRange .\n"
-													 + "		 OPTIONAL {?objectProperty rdfs:label ?objectPropertyName } .\n"
-													 + "		 OPTIONAL {?objectProperty rdfs:comment ?objectPropertyComment }.\n"
+													 + " OPTIONAL{ ?objectProperty a owl:ObjectProperty .\n"
+													 + "		 ?objectProperty rdfs:domain ?type .\n"
 													 + "		 FILTER (!isBlank(?objectProperty)) ."
 													 + "}"
-													 
+													
+													  
 													 + "FILTER (!isBlank(?type)) .\n"
 													 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeUrl) .\n"
+													 + "BIND ( URI(CONCAT(STR(?dataProperty),\"-Shape\")) AS ?shapeUrlDataProperty) .\n"
+													 + "BIND ( URI(CONCAT(STR(?objectProperty),\"-Shape\")) AS ?shapeUrlObjectProperty) .\n"
 													 + "}";
 	
-	// 0. Query to create initial NodeShapes
+	private final String QUERY_RESTRICTIONS_FROM_CLASSES = "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
+			  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+					 "PREFIX sh: <http://www.w3.org/ns/shacl#>" + 
+					 "CONSTRUCT {  ?shapeUrl a sh:NodeShape ;  \n"
+					 + "					sh:property [ \n"
+					 + "					 	a sh:PropertyShape;\n"
+					 + "					 	sh:path ?property;\n"
+					 + "			    			sh:maxCount ?maxCardinality ;\n" // maxCardinality
+					 + "			   			sh:minCount ?minCardinality ;\n" // minCardinality
+					 + "			   			sh:maxCount ?cardinality ;\n" // cardinality
+					 + "			   			sh:minCount ?cardinality ;\n" // cardinality
+					 + "			   			sh:hasValue ?hasValue ;\n" // cardinality
+					 + "				]\n"
+					 + " }"
+					 + "WHERE { "
+					 + "?type a owl:Class . \n"
+					
+					+ " ?type rdfs:subClassOf ?owlPropertyRestriction .\n"
+					+ " ?owlPropertyRestriction owl:onProperty ?property .\n"
+					+ " 	OPTIONAL { ?owlPropertyRestriction owl:maxCardinality ?maxCardinality . }\n" 	// owl:maxCardinality
+					+ " OPTIONAL { ?owlPropertyRestriction owl:minCardinality ?minCardinality .}\n"  	// owl:minCardinality
+					+ " 	OPTIONAL	 {  ?owlPropertyRestriction owl:cardinality ?cardinality .}\n"		// owl:cardinality
+					+ " 	OPTIONAL	 {  ?owlPropertyRestriction owl:hasValue ?hasValue .}\n"				// owl:hasValue
+				
+					
+					// -- [Cardinality extractor]
+					 + "FILTER (!isBlank(?type)) .\n"
+					 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeUrl) .\n"
+					 + "BIND ( URI(CONCAT(CONCAT(STR(?dataProperty),\"-Shape\"),str(?type))) AS ?shapePropertyUrl) .\n"
+					 + "}";
+	
+	// 0. Query to create initial PropertyShapes
 	private final String QUERY_FETCH_DATA_PROPERTIES = "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 												 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 												 "PREFIX sh: <http://www.w3.org/ns/shacl#> \n" + 
@@ -90,8 +109,8 @@ public class OwlShaper implements ShaclFromOwl{
 													 + "			   ?shapeUrl sh:name ?propertyName .\n"
 													 + "			   ?shapeUrl sh:description ?propertyComment .\n"
 													 + "			   ?shapeUrl sh:node ?shapeNodeUrl . \n" // triplet to reference NodeShape (domain) of this property
-													 + "			   ?shapeUrl sh:path ?dataProperty ."
-													 + "			   ?shapeUrl sh:datatype ?datatype ."
+													 + "			   ?shapeUrl sh:path ?dataProperty .\n"
+													 + "			   ?shapeUrl sh:datatype ?datatype .\n"
 													 + " }\n"
 													 + "WHERE { \n"
 													 + "?dataProperty a owl:DatatypeProperty .\n"
@@ -99,6 +118,7 @@ public class OwlShaper implements ShaclFromOwl{
 													 + "	OPTIONAL {?dataProperty rdfs:range ?datatype . }"
 													 + "OPTIONAL { ?dataProperty rdfs:label ?propertyName . }\n"
 													 + "OPTIONAL { ?dataProperty rdfs:comment ?propertyComment . }\n"
+													 
 													 + "FILTER (!isBlank(?type) && !isBlank(?dataProperty)) .\n"
 													 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeNodeUrl) .\n"
 													 + "BIND ( URI(CONCAT(STR(?dataProperty),\"-Shape\")) AS ?shapeUrl) .\n"
@@ -113,18 +133,24 @@ public class OwlShaper implements ShaclFromOwl{
 															 + "			   ?shapeUrl sh:node ?shapeNodeUrl . \n" // triplet to reference NodeShape (domain) of this property
 															 + "			   ?shapeUrl sh:path ?dataProperty .\n"
 															 + "			   ?shapeUrl sh:class ?typeInRange .\n"
+															// Cardinalities
+															 + "			   ?shapeUrl sh:maxCount ?maxCardinality .\n" // maxCardinality
+															 + "			   ?shapeUrl sh:minCount ?minCardinality .\n" // minCardinality
+															 + "			   ?shapeUrl sh:maxCount ?cardinality .\n" // cardinality
+															 + "			   ?shapeUrl sh:minCount ?cardinality .\n" // cardinality
 															 + " }\n"
 															 + "WHERE { \n"
 															 + "?dataProperty a owl:ObjectProperty .\n"
 															 + "?dataProperty rdfs:domain ?type .\n"
 															 + "?dataProperty rdfs:range ?typeInRange.\n"
-															
 															 + "OPTIONAL { ?dataProperty rdfs:label ?propertyName . }\n"
 															 + "OPTIONAL { ?dataProperty rdfs:comment ?propertyComment . }\n"
 															 + "FILTER (!isBlank(?type) && !isBlank(?dataProperty)) .\n"
 															 + "BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
 															 + "BIND ( URI(CONCAT(STR(?dataProperty),\"-Shape\")) AS ?shapeUrl) .\n"
 															 + "}";
+
+	
 
 	
 	public Model fromURL(String owlUrl) {
@@ -144,12 +170,11 @@ public class OwlShaper implements ShaclFromOwl{
 	
 	private Model createShapeFromOntology(Model ontology) {
 		Model shapes = ModelFactory.createDefaultModel();
-
 		Query queryClasses = QueryFactory.create(QUERY_FETCH_CLASSES);
 		QueryExecution qeClasses = QueryExecutionFactory.create(queryClasses, ontology);
 		shapes = qeClasses.execConstruct();
 		
-	
+
 		Query queryDataProperties = QueryFactory.create(QUERY_FETCH_DATA_PROPERTIES);
 		QueryExecution qeDataProperties = QueryExecutionFactory.create(queryDataProperties, ontology);
 		Model shapesDataProperties = qeDataProperties.execConstruct();
@@ -159,12 +184,20 @@ public class OwlShaper implements ShaclFromOwl{
 		QueryExecution qeObjectProperties = QueryExecutionFactory.create(queryObjectProperties, ontology);
 		Model shapesObjectProperties = qeObjectProperties.execConstruct();
 		shapes.add(shapesObjectProperties);
+	
+		
+		Query queryPropertiesFurtherRestrictions = QueryFactory.create(QUERY_RESTRICTIONS_FROM_CLASSES);
+		QueryExecution qeFurtherRestrictions = QueryExecutionFactory.create(queryPropertiesFurtherRestrictions, ontology);
+		Model shapesFurtherRestrictions = qeFurtherRestrictions.execConstruct();
+		shapes.add(shapesFurtherRestrictions);
 		
 		// Post processing:
 		// 0. Clean empty URL sh:property [] patterns
 		cleanEmptyProperties(shapes);
 		// 1. Add xsd:string to any property that has no data type
 		addXsdStringDatatype(shapes);
+		// 2. Include bespoke restriction specified in the classes
+		
 		
 		//shapes.write(System.out, "TURTLE");
 		return shapes;
