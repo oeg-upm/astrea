@@ -15,14 +15,14 @@ import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.utils.JsonUtils;
 
-import shaper.model.ShaperModel;
+import astrea.model.ShaclFromOwl;
 
-public class OwlSharperMain {
+public class AstreaMain {
 
 	public static void main(String[] args) throws IOException {
-		ShaperModel sharper = new OwlShaper();
-		Model shapes =  sharper.fromModelToShapes("https://albaizq.github.io/OpenADRontology/OnToology/ontology/openADRontology.owl/documentation/ontology.ttl");
-		
+		ShaclFromOwl sharper = new OwlShaper();
+		Model shapes =  sharper.fromURL("https://albaizq.github.io/OpenADRontology/OnToology/ontology/openADRontology.owl/documentation/ontology.ttl");
+		shapes.write(System.out, "TURTLE");
 	}
 
 	

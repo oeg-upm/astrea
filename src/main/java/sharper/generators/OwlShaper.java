@@ -1,5 +1,7 @@
 package sharper.generators;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +18,9 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import shaper.model.ShaperModel;
+import astrea.model.ShaclFromOwl;
 
-public class OwlShaper implements ShaperModel{
+public class OwlShaper implements ShaclFromOwl{
 	private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
 	private static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
 	private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
@@ -125,9 +127,22 @@ public class OwlShaper implements ShaperModel{
 															 + "}";
 
 	
-	public Model fromModelToShapes(String owlUrl) {
+	public Model fromURL(String owlUrl) {
 		Model ontology = ModelFactory.createDefaultModel();
 		ontology.read(owlUrl);
+		return createShapeFromOntology(ontology);
+	}
+	
+	
+	public Model fromOwl(String owlContent, String format) {
+		Model ontology = ModelFactory.createDefaultModel();
+		InputStream is = new ByteArrayInputStream(owlContent.getBytes() );
+		ontology.read(is, null, format); 
+		return createShapeFromOntology(ontology);
+	}
+	
+	
+	private Model createShapeFromOntology(Model ontology) {
 		Model shapes = ModelFactory.createDefaultModel();
 
 		Query queryClasses = QueryFactory.create(QUERY_FETCH_CLASSES);
@@ -151,9 +166,8 @@ public class OwlShaper implements ShaperModel{
 		// 1. Add xsd:string to any property that has no data type
 		addXsdStringDatatype(shapes);
 		
-		shapes.write(System.out, "TURTLE");
+		//shapes.write(System.out, "TURTLE");
 		return shapes;
-		
 	}
 
 	/**
@@ -190,5 +204,7 @@ public class OwlShaper implements ShaperModel{
 			
 		}
 	}
+
+
 
 }
