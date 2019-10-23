@@ -135,9 +135,7 @@ public class OwlShaper implements ShaclFromOwl{
 															 + "			   ?shapeUrl sh:class ?typeInRange .\n"
 															// Cardinalities
 															 + "			   ?shapeUrl sh:maxCount ?maxCardinality .\n" // maxCardinality
-															 + "			   ?shapeUrl sh:minCount ?minCardinality .\n" // minCardinality
-															 + "			   ?shapeUrl sh:maxCount ?cardinality .\n" // cardinality
-															 + "			   ?shapeUrl sh:minCount ?cardinality .\n" // cardinality
+															 
 															 + " }\n"
 															 + "WHERE { \n"
 															 + "?dataProperty a owl:ObjectProperty .\n"
@@ -151,6 +149,16 @@ public class OwlShaper implements ShaclFromOwl{
 															 + "}";
 
 	
+	private final String QUERY_FETCH_PROPERTIES_UNIQUE = "PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
+			 "PREFIX sh: <http://www.w3.org/ns/shacl#> \n" + 
+				 "CONSTRUCT { \n"
+				 + "			   ?shapeUrl sh:maxCount 1 .\n"
+				 + " }\n"
+				 + "WHERE { \n"
+				// + "?dataProperty a owl:ObjectProperty .\n"
+				 + "?dataProperty a owl:FunctionalProperty .\n"
+				 + "BIND ( URI(CONCAT(STR(?dataProperty),\"-Shape\")) AS ?shapeUrl) .\n"
+				 + "}";
 
 	
 	public Model fromURL(String owlUrl) {
@@ -185,11 +193,16 @@ public class OwlShaper implements ShaclFromOwl{
 		Model shapesObjectProperties = qeObjectProperties.execConstruct();
 		shapes.add(shapesObjectProperties);
 	
+		Query queryPropertiesUnique = QueryFactory.create(QUERY_FETCH_PROPERTIES_UNIQUE);
+		QueryExecution qePropertiesUnique = QueryExecutionFactory.create(queryPropertiesUnique, ontology);
+		Model shapesPropertiesUnique = qePropertiesUnique.execConstruct();
+		shapes.add(shapesPropertiesUnique);
 		
 		Query queryPropertiesFurtherRestrictions = QueryFactory.create(QUERY_RESTRICTIONS_FROM_CLASSES);
 		QueryExecution qeFurtherRestrictions = QueryExecutionFactory.create(queryPropertiesFurtherRestrictions, ontology);
 		Model shapesFurtherRestrictions = qeFurtherRestrictions.execConstruct();
 		shapes.add(shapesFurtherRestrictions);
+
 		
 		// Post processing:
 		// 0. Clean empty URL sh:property [] patterns
