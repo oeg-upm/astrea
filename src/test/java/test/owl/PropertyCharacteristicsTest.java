@@ -1,4 +1,4 @@
-package tests.ontologies.time;
+package test.owl;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;

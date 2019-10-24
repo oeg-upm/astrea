@@ -1,6 +1,4 @@
-package tests.ontologies.time;
-
-import java.util.logging.Logger;
+package test.owl;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -17,9 +15,6 @@ import sharper.generators.OwlShaper;
  *
  */
 public class CardinalityTest {
-
-	
-	public static Logger log = Logger.getLogger(CardinalityTest.class.getName());
 
 	// Extracted from: https://www.w3.org/2006/time#s
 	public static final String CARDINALITY_OWL_FRAGMENT_WITH_OWL_CARDINALITY = "@prefix : <http://www.w3.org/2006/time#> .\n" + 
@@ -62,7 +57,6 @@ public class CardinalityTest {
 	public void compliantWithOwlCardinality() {
 		ShaclFromOwl sharper = new OwlShaper();
 		Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_WITH_OWL_CARDINALITY, "TURTLE");
-		shapes.write(System.out, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		condition &= shapes.contains(null, ResourceFactory.createProperty(SH_MIN_COUNT), ResourceFactory.createTypedLiteral(1));
 		Assert.assertTrue(condition);
