@@ -16,6 +16,10 @@ RDFSchemaFeaturesTest -> a rdfs:Class = a sh:NodeShape; NodeShape
 RDFSchemaFeaturesTest -> a owl:DatatypeProperty = a sh:PropertyShape; PropertyShape
 RDFSchemaFeaturesTest -> a owl:ObjectProperty = a sh:PropertyShape; PropertyShape
 RDFSchemaFeaturesTest -> a rdf:Property = a sh:PropertyShape; PropertyShape (tested for both data properties and object properties)
-
-
+RDFSchemaFeaturesTest -> rdfs:range = sh:class; PropertyShape (coming from owl:ObjectProperties)
+RDFSchemaFeaturesTest -> rdfs:range = sh:datatype; PropertyShape (coming from owl:DatatypedProperties)
+TODO: RDFSchemaFeaturesTest -> rdfs:range = sh:node; PropertyShape ( coming from rdf:Property) -> aqui el problema es distinguir cuando un rdf:Property va a ser un DP o un OP)
+PropertyRestrictionsTest -> owl:onProperty = sh:path; EmbeddedProperty
+PropertyRestrictionsTest -> owl:allValuesFrom = sh:class & sh:datatype; EmbeddedProperty
+EquialityTest -> owl:equivalentProperty = sh:equivalent; PropertyShape (no generamos esto para EmbeddedProperties, no se si tendriamos)
 

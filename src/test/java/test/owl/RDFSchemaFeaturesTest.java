@@ -143,6 +143,9 @@ public class RDFSchemaFeaturesTest {
 		private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
 		private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
 		private static final String SH_NODE = "http://www.w3.org/ns/shacl#node";
+		private static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
+		private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
+		
 	// Testing creation of sh:NodeShape from owl:Class
 	
 	@Test
@@ -201,25 +204,25 @@ public class RDFSchemaFeaturesTest {
 	
 	
 	
-	// Testing that rdfs:range generates sh:node in case of an ObjectProperty (owl:ObjectProperty and rdf:Property)
+	// Testing that rdfs:range generates class in case of an ObjectProperty (owl:ObjectProperty and owl:DatatypedProperty)
 
 	
 	@Test
 	public void createShNodeFromObjectProperty() {
 		ShaclFromOwl sharper = new OwlShaper();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_OBJECT_PROPERTY, "TURTLE");
-		shapes.write(System.out,"TURTLE");
-		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NODE), ResourceFactory.createResource("http://www.w3.org/2006/time#:MonthOfYear"));
+		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://www.w3.org/2006/time#MonthOfYear"));
 		Assert.assertTrue(condition);
 	}
 	
+
+
 	@Test
-	public void createShNodeFromRDFObjectProperty() {
+	public void createShDatatypeFromDataProperty() {
 		ShaclFromOwl sharper = new OwlShaper();
-		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_RDF_OBJECT_PROPERTY, "TURTLE");
-		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NODE), ResourceFactory.createResource("http://www.w3.org/2006/time#:MonthOfYear"));
+		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_DATA_PROPERTY, "TURTLE");
+		
+		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DATATYPE), ResourceFactory.createResource("http://www.w3.org/2001/XMLSchema#nonNegativeInteger"));
 		Assert.assertTrue(condition);
 	}
-	
-	
 }
