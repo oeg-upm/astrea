@@ -22,4 +22,4 @@ TODO: RDFSchemaFeaturesTest -> rdfs:range = sh:node; PropertyShape ( coming from
 PropertyRestrictionsTest -> owl:onProperty = sh:path; EmbeddedProperty
 PropertyRestrictionsTest -> owl:allValuesFrom = sh:class & sh:datatype; EmbeddedProperty
 EquialityTest -> owl:equivalentProperty = sh:equivalent; PropertyShape (no generamos esto para EmbeddedProperties, no se si tendriamos)
-
+PropertyCharacteristicsTest -> a owl:InverseFunctionalProperty= sh:maxCount 1 & sh:inversePath; PropertyShape, Embedded?

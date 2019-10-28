@@ -17,6 +17,9 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.update.UpdateAction;
+import org.apache.jena.update.UpdateFactory;
+import org.apache.jena.update.UpdateRequest;
 
 import astrea.model.ShaclFromOwl;
 
@@ -106,31 +109,42 @@ public class OwlShaper implements ShaclFromOwl{
 	
 	private final String QUERY_CREATE_PROPERTYSHAPES = PREFIXES +
 															 "CONSTRUCT {  ?shapeUrl a sh:PropertyShape .\n"
-															 + "			   ?shapeUrl	 sh:node ?shapeNodeUrl .\n" // triplet to reference NodeShape (domain) of this property
+															 
 															 + "			   ?shapeUrl sh:path ?property .\n"
-															 // Including equivalences 
+															 // B. Including equivalences 
 															 + "			   ?shapeUrl sh:equivalent ?equivalentProperty .\n"
-															 // Including meta-data
+															 // C. Including meta-data
 															 + "			   ?shapeUrl sh:name  ?propertyName .\n"
 															 + "			   ?shapeUrl rdfs:label  ?propertyName .\n"
 															 + "			   ?shapeUrl sh:description  ?propertyComment .\n"
 															 + "			   ?shapeUrl rdfs:label  ?propertyComment .\n"
 															 + "			   ?shapeUrl rdfs:seeAlso ?shapePropertySeeAlso .\n"
 															 + "			   ?shapeUrl rdfs:isDefinedBy ?shapePropertyDefinedBy .\n"
-															 
+															 // A. Including NodeShapes related to this PropertyShape
+															 + "			   ?shapeUrl	 sh:node ?shapeNodeUrl .\n" // triplet to reference NodeShape (domain) of this property, extracrted form domain
+															 + "			   ?shapeUrl	 sh:node ?typesUnited .\n" // triplet to reference NodeShape (domain) of this property, extracted from unionOf
+
 															 + " }\n"
 															 + "WHERE { \n"
 															 + "		?property a ?propertyType .\n"
-															 + "		VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdf:Property}"
-															 + "		?property rdfs:domain ?type .\n"
-															 // Equivalences extractor
+															 + "		VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdf:Property} .\n"
+															 + "		 MINUS { ?propertyType a owl:InverseFunctionalProperty } .\n"
+															 + "		 MINUS { ?propertyType a owl:FunctionalProperty } .\n"
+															 // A. Extracting the domain to reference the NodeShape related to this PropertyShape
+															 + "		OPTIONAL { ?property rdfs:domain ?typeInRange . "
+															 + "					FILTER(!isBlank(?typeInRange))"
+															 + "    }\n"
+															 + "		OPTIONAL { ?property rdfs:domain ?blankType .\n"
+															 + "				  ?blankType owl:unionOf ?typesUnited ."
+															 + "				  ?typesUnited rdf:rest*/rdf:first ?typeInRange . }\n"
+															 // B. Equivalences extractor
 															 + "		OPTIONAL { ?property owl:equivalentProperty ?equivalentProperty . }\n"
-															 // Meta-data extractor
+															 // C. Meta-data extractor
 															 + "		OPTIONAL { ?property rdfs:label ?propertyName . }\n"
 															 + "		OPTIONAL { ?property rdfs:comment ?propertyComment . }\n"
 															 + "		OPTIONAL { ?property rdfs:seeAlso ?shapePropertySeeAlso .} \n"
 															 + "		OPTIONAL { ?property rdfs:isDefinedBy ?shapePropertyDefinedBy .} \n"
-															 + "		FILTER (!isBlank(?type) && !isBlank(?property)) .\n"
+															 + "		FILTER (!isBlank(?property)) .\n"
 															 + "		BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
 															 + "		BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n"
 															 + "}";
@@ -139,13 +153,22 @@ public class OwlShaper implements ShaclFromOwl{
 	private static final String QUERY_INCLUDE_UNIQUE_RESTRICTION_TO_PROPERTYSHAPE = PREFIXES +
 				 "CONSTRUCT { \n"
 				 + "			   ?shapeUrl sh:maxCount 1 .\n"
+				 + "			   ?shapeUrl sh:path ?property .\n"
 				 + " }\n"
 				 + "WHERE { \n"
 				 + "?property a owl:FunctionalProperty .\n"
 				 + "BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n"
 				 + "}";
 
-	
+	private static final String QUERY_INCLUDE_UNIQUE_RESTRICTION_TO_PROPERTYSHAPE_2 = PREFIXES 
+			+ "CONSTRUCT { \n"
+			 + "			   ?shapeUrl sh:maxCount 1 .\n"
+			 + "			   ?shapeUrl sh:inversePath ?property .\n"
+			 + " }\n"
+			 + "WHERE { \n"
+			 + "?property a owl:InverseFunctionalProperty .\n"
+			 + "BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n"
+			 + "}";
 
 	private final String QUERY_FETCH_DATA_PROPERTIES = PREFIXES 
 														 + "CONSTRUCT {  "
@@ -169,12 +192,25 @@ public class OwlShaper implements ShaclFromOwl{
 											 + "		?property a ?propertyType .\n"
 											 + "		VALUES ?propertyType {owl:ObjectProperty rdf:Property}"
 											 + "		OPTIONAL { ?property rdfs:range ?typeInRange. }\n"
+											 + "		OPTIONAL { ?property rdfs:range ?typeInRangeBlank . "
+											 + "					?typeInRangeBlank owl:unionOf ?typeInRange ."
+											 + "}\n"
 											 + "		FILTER (!isBlank(?property)) .\n"
 											// + "BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
+											 + "		FILTER (!isBlank(?typeInRange)) .\n"
 											 + "		BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n"
 											 + "}";
 			
-			
+	// Post processing queries
+	private static final String QUERY_REMOVE_PATH_PROPERTY_INCONSISTENCIES = PREFIXES 
+			 + "DELETE { \n"
+			 + "			   ?shapeUrl sh:path ?property .\n"
+			 + " }\n"
+			 + "WHERE { \n"
+			 + "			   ?shapeUrl sh:maxCount 1 .\n"
+			 + "			   ?shapeUrl sh:inversePath ?property .\n"
+			 + "			   ?shapeUrl sh:path ?property .\n"
+			 + "}";
 			
 			
 			
@@ -211,6 +247,12 @@ public class OwlShaper implements ShaclFromOwl{
 		Query queryPropertiesShapesUnique = QueryFactory.create(QUERY_INCLUDE_UNIQUE_RESTRICTION_TO_PROPERTYSHAPE);
 		Model shapesPropertiesShapesUnique = QueryExecutionFactory.create(queryPropertiesShapesUnique, ontology).execConstruct();
 		shapes.add(shapesPropertiesShapesUnique);
+		// 3.1
+		Query queryPropertiesShapesUnique2 = QueryFactory.create(QUERY_INCLUDE_UNIQUE_RESTRICTION_TO_PROPERTYSHAPE_2);
+		Model shapesPropertiesShapesUnique2 = QueryExecutionFactory.create(queryPropertiesShapesUnique2, ontology).execConstruct();
+		shapes.add(shapesPropertiesShapesUnique2);
+		
+		
 		
 		Query queryPropertyShapesOPEnhancement = QueryFactory.create(QUERY_FETCH_OBJECT_PROPERTIES);
 		Model shapesPropertyShapesEnhancedWithOP = QueryExecutionFactory.create(queryPropertyShapesOPEnhancement, ontology).execConstruct();
@@ -228,12 +270,24 @@ public class OwlShaper implements ShaclFromOwl{
 		cleanEmptyProperties(shapes);
 		// 1. Add xsd:string to any property that has no data type
 		addXsdStringDatatype(shapes); // TODO
-		// 2. Include bespoke restriction specified in the classes
-		
+		// 2. Remove inconsistencies, if a subject has a sh:path and sh:inversePah, remove the former
+		removePathInconsistencies(shapes);
 		
 		//shapes.write(System.out, "TURTLE");
 		return shapes;
 	}
+
+	
+
+
+	
+	private void removePathInconsistencies(Model shapes) {
+		UpdateRequest request = UpdateFactory.create() ;
+		request.add(QUERY_REMOVE_PATH_PROPERTY_INCONSISTENCIES);
+		UpdateAction.execute(request, shapes) ;
+		
+	}
+
 
 	/**
 	 * This method cleans from the shape the triplets encoding empty lists of properties, i.e., 'URI sh:property []'.
