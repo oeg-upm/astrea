@@ -58,6 +58,8 @@ public class PropertyPairConstraintTest {
     public void compliantWithShEqualsShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_EQUIVANCE, "TURTLE");
+        System.out.println(OWL_FRAGMENT_EQUIVANCE);
+        shapes.write(System.out,"TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"),
                 ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Agent"));
         condition &= shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"),

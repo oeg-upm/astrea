@@ -1,7 +1,14 @@
 package test.shapes;
 
 import astrea.model.ShaclFromOwl;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.RDFList;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
@@ -26,9 +33,8 @@ public class LogicalConstraintsTest {
     public void compliantWithShEqualsShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_AND, "TURTLE");
-        Boolean condition = shapes.contains(null,
-                ResourceFactory.createProperty(SH_AND), (RDFNode) null); /*TODO completar*/
-
+        Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#BurgundyShape"));
+        condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape")); 
         Assert.assertTrue(condition);
     }
 

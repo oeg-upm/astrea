@@ -31,42 +31,71 @@ public class OwlShaper implements ShaclFromOwl{
 	private static final String PREFIXES = 	"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 									  		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 											"PREFIX sh: <http://www.w3.org/ns/shacl#>\n" + 
-											"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n";
+											"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+											+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>\n";
 	
 	// 0. Query to create initial NodeShapes
 	private static final String QUERY_CREATE_NODESHAPE = PREFIXES +
-													 "CONSTRUCT {  ?shapeUrl a sh:NodeShape ;  \n"
+													 "CONSTRUCT {  ?shapeUrl a sh:NodeShape ; \n"
 													 + "			   		sh:deactivated \"false\";\n"
 													 + "			   		sh:closed \"true\";\n"
-													 // Including target owl:Class
+													 + "			   		sh:nodeKind sh:IRI;\n"
+													 // 1. Including target owl:Class
  													 + "			   		sh:targetClass ?type ;\n"
-													 // Including meta-data
+													 // 2. Including meta-data
 													 + "			   		sh:name  ?shapeNodeName; \n"
 													 + "			   		rdfs:label  ?shapeNodeName; \n"
 													 + "			   		rdfs:label  ?shapeNodeComment; \n"
 													 + "			   		rdfs:seeAlso ?shapeNodeSeeAlso; \n"
 													 + "			   		rdfs:isDefinedBy ?shapeNodeDefinedBy; \n"
-													 // Including data & object properties
-													 + "					sh:property ?shapeUrlPropertyShape ;"
-													 + "					sh:property ?shapeUrlObjectProperty."
-													 + " }"
-													 + "WHERE { "
+													 // 3. Including data & object properties
+													 + "					sh:property ?shapeUrlPropertyShape;\n"
+													 + "					sh:property ?shapeUrlObjectProperty;\n"
+													 // 4. Including intersected types
+													 + "					sh:and ?intersectedTypesList . "
+													 + "				?intersectedTypesListRest rdf:first ?intersectedTypesListHeadShape ; "
+													 + "					rdf:rest ?intersectedTypesListTailShape . "
+													// 5. Injecting inclusion types
+													 + "				?shapeUrl sh:in ?inclusionTypesList . "
+													 + "				?inclusionTypesListRest rdf:first ?inclusionTypesListHeadShape ; "
+													 + "					rdf:rest ?inclusionTypesListTailShape . "
+													// 6. Including equivalent classes
+													 + "				?shapeUrl sh:equals ?sameAsType . "
+													 + " \n} WHERE { "
+													 // 1. Extracting the name of the owl:Class
 													 + "?type a  ?typeClassUrl . \n"
 													 + "VALUES ?typeClassUrl {owl:Class rdfs:Class} .\n"
-													 // Meta-data extractor
+													 // 2. Meta-data extractor
 													 + "OPTIONAL { ?type rdfs:label ?shapeNodeName . } \n"
 													 + "OPTIONAL { ?type rdfs:comment ?shapeNodeComment .} \n"
 													 + "OPTIONAL { ?type rdfs:seeAlso ?shapeNodeSeeAlso .} \n"
 													 + "OPTIONAL { ?type rdfs:isDefinedBy ?shapeNodeDefinedBy .} \n"
-													 
-													 // Data & Object properties types extractor
+													 // 3. Data & Object properties types extractor
 														// TODO: consider that we may have owl:unionOf, or any other, as range of the rdfs:domain
 													 + "OPTIONAL { ?property a  ?propertyType;\n"
 													 + "		 			rdfs:domain ?type ; \n"
 													 + " 	 VALUES ?propertyType { owl:ObjectProperty owl:DatatypeProperty rdf:Property} .\n"
 													 + "		 FILTER (!isBlank(?property)) ."
 													 + "}"
-													  
+													 // 4. Extracting intersecting types
+													 + "OPTIONAL { ?type owl:intersectionOf ?intersectedTypesList .\n"
+													 + "		 		?intersectedTypesList rdf:rest* ?intersectedTypesListRest .\n" 
+													 + "      		?intersectedTypesListRest rdf:first ?intersectedTypesListHead .\n" 
+													 + "       		?intersectedTypesListRest  rdf:rest ?intersectedTypesListTail .\n"
+													 + "  			BIND ( IF ( ?intersectedTypesListHead != rdf:nil && !isBlank(?intersectedTypesListHead), URI(CONCAT(STR(?intersectedTypesListHead),\"Shape\")), ?intersectedTypesListHead ) AS ?intersectedTypesListHeadShape ) \n"
+													 + "  			BIND ( IF ( ?intersectedTypesListTail != rdf:nil && !isBlank(?intersectedTypesListTail), URI(CONCAT(STR(?intersectedTypesListTail),\"Shape\")), ?intersectedTypesListTail ) AS ?intersectedTypesListTailShape )"
+													 + "}"
+													// 5. Extracting inclusion types
+													 + "OPTIONAL { ?type owl:oneOf ?inclusionTypesList .\n"
+													 + "		 		?inclusionTypesList rdf:rest* ?inclusionTypesListRest .\n" 
+													 + "      		?inclusionTypesListRest rdf:first ?inclusionTypesListHead .\n" 
+													 + "       		?inclusionTypesListRest  rdf:rest ?inclusionTypesListTail .\n"
+													 + "  			BIND ( IF ( ?inclusionTypesListHead != rdf:nil && !isBlank(?inclusionTypesListHead), URI(CONCAT(STR(?inclusionTypesListHead),\"Shape\")), ?inclusionTypesListHead ) AS ?inclusionTypesListHeadShape ) \n"
+													 + "  			BIND ( IF ( ?inclusionTypesListTail != rdf:nil && !isBlank(?inclusionTypesListTail), URI(CONCAT(STR(?inclusionTypesListTail),\"Shape\")), ?inclusionTypesListTail ) AS ?inclusionTypesListTailShape )"
+													 + "}"
+													// 6. Extracting equivalent classes
+													 + "OPTIONAL { ?type owl:equivalentClass ?sameAsType . } \n"
+													 // 
 													 + "FILTER (!isBlank(?type)) .\n"
 													 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeUrl) .\n"
 													 + "BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrlPropertyShape) .\n"
@@ -123,11 +152,9 @@ public class OwlShaper implements ShaclFromOwl{
 															 // A. Including NodeShapes related to this PropertyShape
 															 + "			   ?shapeUrl	 sh:node ?shapeNodeUrl .\n" // triplet to reference NodeShape (domain) of this property, extracrted form domain
 															 + "			   ?shapeUrl	 sh:node ?typesUnited .\n" // triplet to reference NodeShape (domain) of this property, extracted from unionOf
-
-															 + " }\n"
-															 + "WHERE { \n"
-															 + "		?property a ?propertyType .\n"
-															 + "		VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdf:Property} .\n"
+															 + " } WHERE { \n"
+															 + "		 ?property a ?propertyType .\n"
+															 + "		 VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdf:Property} .\n"
 															 + "		 MINUS { ?propertyType a owl:InverseFunctionalProperty } .\n"
 															 + "		 MINUS { ?propertyType a owl:FunctionalProperty } .\n"
 															 // A. Extracting the domain to reference the NodeShape related to this PropertyShape
@@ -172,10 +199,10 @@ public class OwlShaper implements ShaclFromOwl{
 
 	private final String QUERY_FETCH_DATA_PROPERTIES = PREFIXES 
 														 + "CONSTRUCT {  "
-														 + "			   ?shapeUrl sh:datatype  ?typeInRange .\n" 
-														 + "			   ?shapeUrl sh:class  ?typeInRange .\n" 
-														 + " }\n"
-														 + "WHERE { \n"
+														 + "			   ?shapeUrl sh:datatype  ?typeInRange ; \n" 
+														 + "			    			 sh:class  ?typeInRange ; \n"
+														 + "						 sh:nodeKind sh:Literal. \n" 
+														 + " } WHERE { \n"
 														 + "		?property a ?propertyType .\n"
 														 + "		VALUES ?propertyType {owl:DatatypeProperty rdf:Property}"
 														 + "		OPTIONAL { ?property rdfs:range ?typeInRange. }\n"
@@ -186,15 +213,15 @@ public class OwlShaper implements ShaclFromOwl{
 
 	private final String QUERY_FETCH_OBJECT_PROPERTIES = PREFIXES 
 											 + "CONSTRUCT {  "
-											 + "			   ?shapeUrl sh:class  ?typeInRange .\n" 
-											 + " }\n"
-											 + "WHERE { \n"
+											 + "			   ?shapeUrl sh:class  ?typeInRange ; \n" 
+											 + "						 sh:nodeKind sh:BlankNodeOrIRI . \n" 
+											 + " } WHERE { \n"
 											 + "		?property a ?propertyType .\n"
 											 + "		VALUES ?propertyType {owl:ObjectProperty rdf:Property}"
 											 + "		OPTIONAL { ?property rdfs:range ?typeInRange. }\n"
 											 + "		OPTIONAL { ?property rdfs:range ?typeInRangeBlank . "
 											 + "					?typeInRangeBlank owl:unionOf ?typeInRange ."
-											 + "}\n"
+											 + "		}\n"
 											 + "		FILTER (!isBlank(?property)) .\n"
 											// + "BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
 											 + "		FILTER (!isBlank(?typeInRange)) .\n"
@@ -235,6 +262,7 @@ public class OwlShaper implements ShaclFromOwl{
 		Query queryNodeShapes = QueryFactory.create(QUERY_CREATE_NODESHAPE);
 		Model nodeShapes = QueryExecutionFactory.create(queryNodeShapes, ontology).execConstruct();
 		shapes.add(nodeShapes);
+		
 		// 1. Include property embedded restrictions into the NodeShapes
 		Query queryNodeShapesEmbeddedProperties = QueryFactory.create(QUERY_INJECT_EMBEDDED_PROPERTIES_IN_NODESHAPES);
 		Model shapesNodeShapesWithEmbeddedProperties = QueryExecutionFactory.create(queryNodeShapesEmbeddedProperties, ontology).execConstruct();

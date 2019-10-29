@@ -1,7 +1,14 @@
 package test.shapes;
 
 import astrea.model.ShaclFromOwl;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,13 +55,18 @@ public class OtherConstraints {
         Assert.assertTrue(condition);
     }
 
+    
+    // TODO: mejorar este test, hay que recorrer la lista
     @Test
     public void compliantWithShInShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_IN, "TURTLE");
-        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_IN), ResourceFactory.createResource("http://njh.me/#Dry"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_IN), ResourceFactory.createResource("http://njh.me/#OffDry"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_IN), ResourceFactory.createResource("http://njh.me/#Sweet"));
+       
+        Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#DryShape"))
+				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#OffDryShape"))
+				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#SweetShape"));
         Assert.assertTrue(condition);
     }
+    
+ 
 }

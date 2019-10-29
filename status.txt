@@ -25,10 +25,10 @@ EquialityTest -> owl:equivalentProperty = sh:equivalent; PropertyShape (no gener
 PropertyCharacteristicsTest -> a owl:InverseFunctionalProperty= sh:maxCount 1 & sh:inversePath; PropertyShape, Embedded?
 
 Package: test.owl.shapes
-CardinalityConstraintTest -> sh:min & sh:max
-LogicalConstraintsTest -> sh:and  FALLA
+CardinalityConstraintTest -> sh:minCount & sh:maxCount
+LogicalConstraintsTest -> sh:and
 OtherConstraints -> sh:hasValue
-OtherConstraints -> sh:in FALLA
+OtherConstraints -> sh:in
 PropertyPairConstraintTest -> sh:equals FALLA
 PropertyPairConstraintTest -> sh:disjoint FALLA
 StringBasedConstraintTest -> sh:pattern FALLA
@@ -37,5 +37,5 @@ StringBasedConstraintTest -> sh:minLength FALLA
 StringBasedConstraintTest -> sh:maxLength FALLA
 ValueTypeContraintTest -> sh:class
 ValueTypeContraintTest -> sh:datatype
-ValueTypeContraintTest -> sh:nodeKind FALLA
+ValueTypeContraintTest -> sh:nodeKind
 
