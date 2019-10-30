@@ -10,32 +10,32 @@ import org.junit.Test;
 import sharper.generators.OwlShaper;
 
 public class ShapeBasedConstraintsTest {
-    // Extracted from     http://xmlns.com/foaf/0.1/
-    private static final String OWL_FRAGMENT_FOR_NODE = "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n" +
+    // Extracted from     http://iot.linkeddata.es/def/core
+    private static final String OWL_FRAGMENT_FOR_NODE = "@prefix : <http://iot.linkeddata.es/def/core#> .\n" +
             "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
-            "@prefix dc11: <http://purl.org/dc/elements/1.1/> .\n" +
-            "@prefix wot: <http://xmlns.com/wot/0.1/> .\n" +
-            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-            "@prefix ns0: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .\n" +
-            "@prefix schema: <http://schema.org/> .\n" +
-            "@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .\n" +
-            "@prefix dc: <http://purl.org/dc/terms/> .\n" +
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
-            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> ."+
-            "foaf:Person\n" +
-            "  a rdfs:Class, owl:Class ;\n" +
-            "  rdfs:label \"Person\" ;\n" +
-            "  rdfs:comment \"A person.\" ;\n" +
-            "  ns0:term_status \"stable\" .\n" ;
+            "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@base <http://iot.linkeddata.es/def/core#> ." +
+            ":Actuator rdf:type owl:Class ;\n" +
+            "          rdfs:subClassOf [ rdf:type owl:Restriction ;\n" +
+            "                            owl:onProperty :actsOnFeatureProperty ;\n" +
+            "                            owl:allValuesFrom :FeatureProperty\n" +
+            "                          ] ;\n" +
+            "          rdfs:comment \"An actuator is a device that accepts digital inputs and which acts on (changes) one or more properties of a physical entity on the basis of those inputs. An actuator is a specialization of an IoT device. An actuator acts on a physical entity. (definition taken from ISO/IEC 11404:2007)\"@en ;\n" +
+            "          rdfs:label \"Actuator\"@en ;\n" +
+            "          rdfs:seeAlso \"ISO/IEC CC 30141. Information technology - Internet of Things Reference architecutre (IoT RA)\"@en .\n" +
+            "\n";
 
     // Extracted from    http://www.w3.org/2006/time#
-    private static final String OWL_FRAGMENT_FOR_PROPERTY = "@prefix : <http://www.w3.org/2006/time#> .\n" +
-            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+    private static final String OWL_FRAGMENT_FOR_PROPERTY = "@prefix : <http://iot.linkeddata.es/def/core#> .\n" +
             "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
             "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
-            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ." +
+            "@base <http://iot.linkeddata.es/def/core#> ." +
             ":DateTimeDescription\n" +
             "  rdf:type owl:Class ;\n" +
             "  rdfs:comment \"Description of date and time structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and xsd:gDay, respectively.\"@en ;\n" +
@@ -76,6 +76,7 @@ public class ShapeBasedConstraintsTest {
             "          rdfs:label \"Contract\"@en .";
 
     private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
+    private static final String SH_NODE = "http://www.w3.org/ns/shacl#node";
     private static final String SH_TARGET_CLASS = "http://www.w3.org/ns/shacl#targetClass";
     private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
     private static final String SH_PATH = "http://www.w3.org/ns/shacl#path";
@@ -88,9 +89,9 @@ public class ShapeBasedConstraintsTest {
     public void compliantWithShNodeShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_NODE, "TURTLE");
+        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
-
-        condition &= shapes.contains(null,  ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"));
+        condition &= shapes.contains(null,  ResourceFactory.createProperty(SH_NODE), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#FeaturePropertyShape"));
         Assert.assertTrue(condition);
     }
 

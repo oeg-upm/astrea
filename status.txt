@@ -35,13 +35,15 @@ OtherConstraints -> sh:in
 PropertyPairConstraintTest -> sh:equals
 PropertyPairConstraintTest -> sh:disjoint
 StringBasedConstraintTest -> sh:pattern
-StringBasedConstraintTest -> sh:languageRange
+StringBasedConstraintTest -> sh:languageIn
 StringBasedConstraintTest -> sh:minLength
 StringBasedConstraintTest -> sh:maxLength
-ValueTypeContraintTest -> sh:class
-ValueTypeContraintTest -> sh:datatype
+ValueTypeContraintTest -> sh:class --> FALLA - crea tambien sh:datatype y no deberia
+ValueTypeContraintTest -> sh:datatype --> FALLA - crea tambien sh:class y no deberia
 ValueTypeContraintTest -> sh:nodeKind
-ShapeBasedConstraintsTest -> sh:node
+ShapeBasedConstraintsTest -> sh:node --> FALLA  - no genera sh:node
 ShapeBasedConstraintsTest -> sh:property
 ShapeBasedConstraintsTest -> sh:maxQualifiedCount,  sh:minQualifiedCount, sh:qualifiedCount FALLA
 
+NonValidatingPropertyCharactersitics -> sh:name
+NonValidatingPropertyCharactersitics -> sh:description FALLA (a veces)

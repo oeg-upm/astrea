@@ -2,19 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77781fd0-45c6-459f-ac1b-c89e1e5263f0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Shaper.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Shaper.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sharper/generators/OwlShaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sharper/generators/OwlShaper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/owl/RDFSchemaFeaturesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/owl/RDFSchemaFeaturesTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/shapes/LogicalConstraintsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/shapes/LogicalConstraintsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/shapes/OtherConstraints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/shapes/OtherConstraints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/shapes/PropertyPairConstraintTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/shapes/PropertyPairConstraintTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/test/shapes/StringBasedConstraintTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/shapes/StringBasedConstraintTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/test/shapes/NonValidatingPropertyShapeCharacteristicsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/shapes/ShapeBasedConstraintsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/shapes/ShapeBasedConstraintsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/test/shapes/ValueTypeConstraintTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/test/shapes/ValueTypeConstraintTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/status.txt" beforeDir="false" afterPath="$PROJECT_DIR$/status.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sharper/generators/OwlShaper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/sharper/generators/OwlShaper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/test/owl/RDFSchemaFeaturesTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/owl/RDFSchemaFeaturesTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/OtherConstraints.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/OtherConstraints.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/PropertyPairConstraintTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/PropertyPairConstraintTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/StringBasedConstraintTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/StringBasedConstraintTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/CardinalityConstraintTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/CardinalityConstraintTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/LogicalConstraintsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/LogicalConstraintsTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/ShapeBasedConstraintsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/ShapeBasedConstraintsTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/test/shapes/ValueTypeConstraintTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/test/shapes/ValueTypeConstraintTest.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,35 +31,38 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="16" />
+          <entry key="java" value="19" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="16" />
+          <entry key="JAVA" value="19" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="963" />
+          <entry key="dummy" value="4" />
+          <entry key="java" value="1410" />
+          <entry key="txt" value="188" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="963" />
+          <entry key="JAVA" value="1410" />
+          <entry key="PLAIN_TEXT" value="192" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/status.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
+            <state relative-caret-position="379">
+              <caret line="48" column="70" selection-start-line="48" selection-start-column="70" selection-end-line="48" selection-end-column="70" />
             </state>
           </provider>
         </entry>
@@ -71,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/ShapeBasedConstraintsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-486">
-              <caret line="111" column="43" lean-forward="true" selection-start-line="111" selection-start-column="43" selection-end-line="111" selection-end-column="43" />
+            <state relative-caret-position="79">
+              <caret line="31" selection-start-line="31" selection-end-line="48" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,19 +80,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/LogicalConstraintsTest.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/test/owl/AnnotationPropertiesTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="123" column="37" lean-forward="true" selection-start-line="123" selection-start-column="37" selection-end-line="123" selection-end-column="37" />
+            <state relative-caret-position="187">
+              <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-end-line="71" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/ValueTypeConstraintTest.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/NonValidatingPropertyShapeCharacteristicsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="50" column="9" lean-forward="true" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
+            <state relative-caret-position="307">
+              <caret line="29" column="18" lean-forward="true" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -101,8 +103,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/StringBasedConstraintTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-185">
-              <caret line="106" column="32" lean-forward="true" selection-start-line="106" selection-start-column="32" selection-end-line="106" selection-end-column="32" />
+            <state relative-caret-position="288">
+              <caret line="73" column="11" lean-forward="true" selection-start-line="71" selection-start-column="12" selection-end-line="73" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -110,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/CardinalityConstraintTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            <state relative-caret-position="175">
+              <caret line="60" selection-start-line="60" selection-end-line="60" />
             </state>
           </provider>
         </entry>
@@ -119,8 +121,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/OtherConstraints.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="70" column="1" lean-forward="true" selection-start-line="70" selection-start-column="1" selection-end-line="70" selection-end-column="1" />
+            <state relative-caret-position="55">
+              <caret line="29" column="19" lean-forward="true" selection-start-line="18" selection-start-column="56" selection-end-line="29" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -128,8 +130,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/sharper/generators/OwlShaper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1231">
-              <caret line="319" selection-start-line="319" selection-end-line="319" />
+            <state relative-caret-position="128">
+              <caret line="188" column="122" selection-start-line="188" selection-start-column="107" selection-end-line="188" selection-end-column="122" />
             </state>
           </provider>
         </entry>
@@ -137,17 +139,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/PropertyPairConstraintTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-197">
+            <state relative-caret-position="-4">
               <caret line="57" column="42" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/test/owl/PropertyRestrictionsTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1054">
-              <caret line="69" column="4" selection-start-line="67" selection-start-column="8" selection-end-line="69" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -161,6 +154,12 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>description</find>
+      <find>propertyComment</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -168,9 +167,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/test/java/test/owl/BooleanCombinationsOfClassExpressions.java" />
-        <option value="$PROJECT_DIR$/src/test/java/test/shapes/ShapeBasedConstraintsTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/test/shapes/StringBasedConstraintTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/test/shapes/LogicalConstraintsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/test/shapes/ValueTypeConstraintTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/test/shapes/ShapeBasedConstraintsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/test/shapes/NonValidatingPropertyShapeCharacteristicsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/test/shapes/CardinalityConstraintTest.java" />
+        <option value="$PROJECT_DIR$/status.txt" />
       </list>
     </option>
   </component>
@@ -238,6 +241,22 @@
               <item name="Astrea" type="b2602c69:ProjectViewProjectNode" />
               <item name="Astrea" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Astrea" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Astrea" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Astrea" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Astrea" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -299,8 +318,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.LogicalConstraintsTest.compliantWithShAndShape">
-    <configuration name="LogicalConstraintsTest.compliantWithShAndShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CardinalityConstraintTest.compliantWithShMinCountShape">
+    <configuration name="CardinalityConstraintTest.compliantWithShMinCountShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Astrea" />
       <extension name="coverage">
         <pattern>
@@ -309,14 +328,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="test.shapes" />
-      <option name="MAIN_CLASS_NAME" value="test.shapes.LogicalConstraintsTest" />
-      <option name="METHOD_NAME" value="compliantWithShAndShape" />
+      <option name="MAIN_CLASS_NAME" value="test.shapes.CardinalityConstraintTest" />
+      <option name="METHOD_NAME" value="compliantWithShMinCountShape" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogicalConstraintsTest.compliantWithShNotPropertyShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Astrea" />
       <extension name="coverage">
         <pattern>
@@ -325,14 +344,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="test.shapes" />
-      <option name="MAIN_CLASS_NAME" value="test.shapes.LogicalConstraintsTest" />
-      <option name="METHOD_NAME" value="compliantWithShNotPropertyShape" />
+      <option name="MAIN_CLASS_NAME" value="test.shapes.NonValidatingPropertyShapeCharacteristicsTest" />
+      <option name="METHOD_NAME" value="compliantWithShDescriptionShape" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogicalConstraintsTest.compliantWithShNotShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShNameShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Astrea" />
       <extension name="coverage">
         <pattern>
@@ -341,30 +360,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="test.shapes" />
-      <option name="MAIN_CLASS_NAME" value="test.shapes.LogicalConstraintsTest" />
-      <option name="METHOD_NAME" value="compliantWithShNotShape" />
+      <option name="MAIN_CLASS_NAME" value="test.shapes.NonValidatingPropertyShapeCharacteristicsTest" />
+      <option name="METHOD_NAME" value="compliantWithShNameShape" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogicalConstraintsTest.compliantWithShOrShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Astrea" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.shapes.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="test.shapes" />
-      <option name="MAIN_CLASS_NAME" value="test.shapes.LogicalConstraintsTest" />
-      <option name="METHOD_NAME" value="compliantWithShOrShape" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ShapeBasedConstraintsTest.compliantWithShQualifiedCardinalityShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShapeBasedConstraintsTest.compliantWithShNodeShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Astrea" />
       <extension name="coverage">
         <pattern>
@@ -374,26 +377,42 @@
       </extension>
       <option name="PACKAGE_NAME" value="test.shapes" />
       <option name="MAIN_CLASS_NAME" value="test.shapes.ShapeBasedConstraintsTest" />
-      <option name="METHOD_NAME" value="compliantWithShQualifiedCardinalityShape" />
+      <option name="METHOD_NAME" value="compliantWithShNodeShape" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StringBasedConstraintTest.compliantWithShLangShape" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Astrea" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.shapes.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.shapes" />
+      <option name="MAIN_CLASS_NAME" value="test.shapes.StringBasedConstraintTest" />
+      <option name="METHOD_NAME" value="compliantWithShLangShape" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.ShapeBasedConstraintsTest.compliantWithShQualifiedCardinalityShape" />
-      <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShAndShape" />
-      <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShOrShape" />
-      <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShNotShape" />
-      <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShNotPropertyShape" />
+      <item itemvalue="JUnit.ShapeBasedConstraintsTest.compliantWithShNodeShape" />
+      <item itemvalue="JUnit.NonValidatingPropertyShapeCharacteristicsTest.compliantWithShNameShape" />
+      <item itemvalue="JUnit.NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" />
+      <item itemvalue="JUnit.StringBasedConstraintTest.compliantWithShLangShape" />
+      <item itemvalue="JUnit.CardinalityConstraintTest.compliantWithShMinCountShape" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShAndShape" />
-        <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShOrShape" />
-        <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShNotShape" />
-        <item itemvalue="JUnit.LogicalConstraintsTest.compliantWithShNotPropertyShape" />
-        <item itemvalue="JUnit.ShapeBasedConstraintsTest.compliantWithShQualifiedCardinalityShape" />
+        <item itemvalue="JUnit.CardinalityConstraintTest.compliantWithShMinCountShape" />
+        <item itemvalue="JUnit.NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" />
+        <item itemvalue="JUnit.StringBasedConstraintTest.compliantWithShLangShape" />
+        <item itemvalue="JUnit.NonValidatingPropertyShapeCharacteristicsTest.compliantWithShNameShape" />
+        <item itemvalue="JUnit.ShapeBasedConstraintsTest.compliantWithShNodeShape" />
       </list>
     </recent_temporary>
   </component>
@@ -408,44 +427,44 @@
       <option name="presentableId" value="Default" />
       <updated>1572428990908</updated>
       <workItem from="1572428992378" duration="3269000" />
-      <workItem from="1572436331533" duration="8534000" />
+      <workItem from="1572436331533" duration="14050000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ShapeBasedConstraintsTest_compliantWithShQualifiedCardinalityShape - 2019.10.30 at 12h 23m 10s.xml">
-      <configuration name="ShapeBasedConstraintsTest.compliantWithShQualifiedCardinalityShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShNameShape - 2019.10.30 at 17h 02m 53s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShNameShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShAndShape - 2019.10.30 at 14h 39m 50s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShAndShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShDescriptionShape - 2019.10.30 at 17h 08m 44s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShAndShape - 2019.10.30 at 14h 40m 06s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShAndShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShDescriptionShape - 2019.10.30 at 17h 09m 58s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShOrShape - 2019.10.30 at 14h 50m 56s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShOrShape" configurationId="JUnit" />
+    <history-entry file="StringBasedConstraintTest_compliantWithShLangShape - 2019.10.30 at 17h 15m 35s.xml">
+      <configuration name="StringBasedConstraintTest.compliantWithShLangShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShOrShape - 2019.10.30 at 14h 51m 19s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShOrShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShDescriptionShape - 2019.10.30 at 17h 16m 08s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShNotShape - 2019.10.30 at 14h 51m 37s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShNotShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShDescriptionShape - 2019.10.30 at 17h 17m 55s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShNotPropertyShape - 2019.10.30 at 14h 53m 45s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShNotPropertyShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShDescriptionShape - 2019.10.30 at 17h 18m 41s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShNotShape - 2019.10.30 at 14h 54m 51s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShNotShape" configurationId="JUnit" />
+    <history-entry file="NonValidatingPropertyShapeCharacteristicsTest_compliantWithShDescriptionShape - 2019.10.30 at 17h 19m 11s.xml">
+      <configuration name="NonValidatingPropertyShapeCharacteristicsTest.compliantWithShDescriptionShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShOrShape - 2019.10.30 at 15h 52m 12s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShOrShape" configurationId="JUnit" />
+    <history-entry file="CardinalityConstraintTest_compliantWithShMinCountShape - 2019.10.30 at 17h 20m 30s.xml">
+      <configuration name="CardinalityConstraintTest.compliantWithShMinCountShape" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogicalConstraintsTest_compliantWithShAndShape - 2019.10.30 at 15h 52m 24s.xml">
-      <configuration name="LogicalConstraintsTest.compliantWithShAndShape" configurationId="JUnit" />
+    <history-entry file="CardinalityConstraintTest_compliantWithShMinCountShape - 2019.10.30 at 17h 21m 43s.xml">
+      <configuration name="CardinalityConstraintTest.compliantWithShMinCountShape" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11803000" />
+    <option name="totallyTimeSpent" value="17319000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -460,14 +479,14 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21538462" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.86166006" visible="true" weight="0.18299595" />
+      <window_info id="Structure" order="1" sideWeight="0.13833992" side_tool="true" visible="true" weight="0.18299595" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.47957373" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.10124334" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -477,7 +496,7 @@
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.3285968" />
       <window_info anchor="bottom" id="Version Control" order="11" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32978722" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.3285968" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -492,6 +511,26 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/test/shapes/NonValidatingPropertyShapeCharacteristicsTest.java</url>
+          <line>42</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/test/shapes/NonValidatingPropertyShapeCharacteristicsTest.java</url>
+          <line>43</line>
+          <properties class="test.shapes.NonValidatingPropertyShapeCharacteristicsTest" method="compliantWithShDescriptionShape">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/test/owl/PropertyCharacteristicsTest.java">
@@ -522,69 +561,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sharper/generators/OwlShaper.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/PropertyPairConstraintTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1231">
-          <caret line="319" selection-start-line="319" selection-end-line="319" />
+        <state relative-caret-position="-4">
+          <caret line="57" column="42" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/CardinalityConstraintTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/LogicalConstraintsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="302">
+          <caret line="123" column="37" lean-forward="true" selection-start-line="123" selection-start-column="37" selection-end-line="123" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/ShapeBasedConstraintsTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-486">
-          <caret line="111" column="43" lean-forward="true" selection-start-line="111" selection-start-column="43" selection-end-line="111" selection-end-column="43" />
+        <state relative-caret-position="79">
+          <caret line="31" selection-start-line="31" selection-end-line="48" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/PropertyPairConstraintTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/owl/AnnotationPropertiesTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-197">
-          <caret line="57" column="42" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/OtherConstraints.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="70" column="1" lean-forward="true" selection-start-line="70" selection-start-column="1" selection-end-line="70" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/status.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/StringBasedConstraintTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-185">
-          <caret line="106" column="32" lean-forward="true" selection-start-line="106" selection-start-column="32" selection-end-line="106" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/LogicalConstraintsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="123" column="37" lean-forward="true" selection-start-line="123" selection-start-column="37" selection-end-line="123" selection-end-column="37" />
+        <state relative-caret-position="187">
+          <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-end-line="71" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/ValueTypeConstraintTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="50" column="9" lean-forward="true" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
+        <state relative-caret-position="513">
+          <caret line="56" column="37" lean-forward="true" selection-start-line="56" selection-start-column="37" selection-end-line="56" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sharper/generators/OwlShaper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="188" column="122" selection-start-line="188" selection-start-column="107" selection-end-line="188" selection-end-column="122" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/StringBasedConstraintTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="73" column="11" lean-forward="true" selection-start-line="71" selection-start-column="12" selection-end-line="73" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/OtherConstraints.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="29" column="19" lean-forward="true" selection-start-line="18" selection-start-column="56" selection-end-line="29" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/NonValidatingPropertyShapeCharacteristicsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="29" column="18" lean-forward="true" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/shapes/CardinalityConstraintTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/status.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="48" column="70" selection-start-line="48" selection-start-column="70" selection-end-line="48" selection-end-column="70" />
         </state>
       </provider>
     </entry>

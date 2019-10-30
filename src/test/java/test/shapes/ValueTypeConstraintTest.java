@@ -53,6 +53,7 @@ public class ValueTypeConstraintTest {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_SHCLASS, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://www.opengis.net/ont/geosparql#Geometry"));
+        condition &= !shapes.containsResource(ResourceFactory.createProperty(SH_DATATYPE));
         Assert.assertTrue(condition);
     }
 
@@ -61,6 +62,7 @@ public class ValueTypeConstraintTest {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_SHDATATYPE, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DATATYPE), ResourceFactory.createResource("http://www.w3.org/2001/XMLSchema#string"));
+        condition &= !shapes.containsResource(ResourceFactory.createProperty(SH_CLASS));
         Assert.assertTrue(condition);
     }
 
