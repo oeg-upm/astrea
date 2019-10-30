@@ -3,7 +3,19 @@
   <groupId>oeg.validation</groupId>
   <artifactId>astrea</artifactId>
   <version>0.0.2</version>
-  <name>Shaper</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <name>Shaper</name>
   <description>Shaper assists in the generation of data Shapes</description>
   
   

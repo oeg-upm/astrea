@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Astrea" target="1.5" />
+      <module name="Astrea" target="7" />
     </bytecodeTargetLevel>
   </component>
 </project>

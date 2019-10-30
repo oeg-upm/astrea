@@ -102,7 +102,7 @@ public class StringBasedConstraintTest {
     @Test
     public void compliantWithShLangShape() {
         ShaclFromOwl sharper = new OwlShaper();
-        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_PATTERN, "TURTLE");
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_LANG, "TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_LANG), ResourceFactory.createPlainLiteral("de-DE"));
         Assert.assertTrue(condition);
@@ -111,7 +111,7 @@ public class StringBasedConstraintTest {
     @Test
     public void compliantWithMinLengthShape() {
         ShaclFromOwl sharper = new OwlShaper();
-        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_PATTERN, "TURTLE");
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_MIN_LENGTH, "TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_MIN_LENGTH), ResourceFactory.createPlainLiteral("2"));
         Assert.assertTrue(condition);
@@ -120,7 +120,7 @@ public class StringBasedConstraintTest {
     @Test
     public void compliantWithShMaxLengthShape() {
         ShaclFromOwl sharper = new OwlShaper();
-        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_PATTERN, "TURTLE");
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_MIN_LENGTH, "TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_MAX_LENGTH), ResourceFactory.createPlainLiteral("4"));
         Assert.assertTrue(condition);

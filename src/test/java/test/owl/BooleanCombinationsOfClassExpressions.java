@@ -135,7 +135,7 @@ public class BooleanCombinationsOfClassExpressions {
 		Model fragment = ModelFactory.createDefaultModel();
 		 InputStream is = new ByteArrayInputStream( fragmentStr.getBytes() );
 		fragment.read(is, null, "TURTLE"); 
-		fragment.listStatements().toList().forEach(elem -> System.out.println(elem.asTriple().toString()));
+		//fragment.listStatements().toList().forEach(elem -> System.out.println(elem.asTriple().toString()));
 		
 		System.out.println("\n\n----------");
 		shapes.write(System.out, "TURTLE");

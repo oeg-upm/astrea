@@ -1,0 +1,34 @@
+
+{squid:S1192"fDefine a constant instead of duplicating this literal "			   ?shapeUrl sh:path ?property .\n" 4 times.(ïô¯
+hsquid:S1192"NDefine a constant instead of duplicating this literal " } WHERE { \n" 3 times.(ñ›±Íÿÿÿÿÿ
+xsquid:S1192"cDefine a constant instead of duplicating this literal "		FILTER (!isBlank(?property)) .\n" 3 times.(±¿ãâ
+|squid:S1192"bDefine a constant instead of duplicating this literal "			   ?shapeUrl sh:maxCount 1 .\n" 3 times.(ÒÅÚüûÿÿÿÿ
+squid:S1192"‚Define a constant instead of duplicating this literal "		BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n" 3 times.(øñÙıÿÿÿÿ
+esquid:S1192"KDefine a constant instead of duplicating this literal "WHERE { \n" 3 times.(Ç•»Šûÿÿÿÿ
+fsquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(¥Ğàúÿÿÿÿ
+asquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(©Ğì¿
+asquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(­Ù±»
+fsquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(ª”©İıÿÿÿÿ
+fsquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(ËÆ…£şÿÿÿÿ
+fsquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(®½çøıÿÿÿÿ
+fsquid:S2095"LUse try-with-resources or close this "QueryExecution" in a "finally" clause.(ÊÎƒéûÿÿÿÿ
+Dsquid:S5411"*Use the primitive boolean expression here.(öÌµÃÿÿÿÿÿ
+esquid:UselessImportCheck"CRemove this unused import 'org.apache.jena.rdf.model.NodeIterator'.(®Á‚ÿ
+bsquid:UselessImportCheck"ARemove this unused import 'org.apache.jena.query.QueryExecution'.(ßÆ½O
+;squid:S1170"!Make this final field static too.(™Å½ÿûÿÿÿÿ
+6squid:S1170"!Make this final field static too.(ó˜¤
+6squid:S1170"!Make this final field static too.(¨íÇÃ
+;squid:S1170"!Make this final field static too.(«ùşşÿÿÿÿ
+”squid:S00116"yRename this field "QUERY_INJECT_EMBEDDED_PROPERTIES_IN_NODESHAPES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™Å½ÿûÿÿÿÿ
+|squid:S00116"fRename this field "QUERY_CREATE_PROPERTYSHAPES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ó˜¤
+|squid:S00116"fRename this field "QUERY_FETCH_DATA_PROPERTIES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¨íÇÃ
+ƒsquid:S00116"hRename this field "QUERY_FETCH_OBJECT_PROPERTIES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(«ùşşÿÿÿÿ
+Gsquid:S1135"2Complete the task associated to this TODO comment.(‚Áù
+Lsquid:S1135"2Complete the task associated to this TODO comment.(˜òÇ‰úÿÿÿÿ
+Gsquid:S1135"2Complete the task associated to this TODO comment.(˜Ê¯Û
+Xsquid:S1854"CRemove this useless assignment to local variable "statementsToAdd".(æŸúÖ
+Lsquid:S1135"2Complete the task associated to this TODO comment.(‰ø·ñÿÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+Isquid:S1481"4Remove this unused "statementsToAdd" local variable.(æŸúÖ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÖÊä·
