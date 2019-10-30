@@ -29,12 +29,12 @@ CardinalityConstraintTest -> sh:minCount & sh:maxCount
 LogicalConstraintsTest -> sh:and
 OtherConstraints -> sh:hasValue
 OtherConstraints -> sh:in
-PropertyPairConstraintTest -> sh:equals FALLA
-PropertyPairConstraintTest -> sh:disjoint FALLA
-StringBasedConstraintTest -> sh:pattern FALLA
-StringBasedConstraintTest -> sh:languageRange FALLA
-StringBasedConstraintTest -> sh:minLength FALLA
-StringBasedConstraintTest -> sh:maxLength FALLA
+PropertyPairConstraintTest -> sh:equals
+PropertyPairConstraintTest -> sh:disjoint
+StringBasedConstraintTest -> sh:pattern
+StringBasedConstraintTest -> sh:languageRange
+StringBasedConstraintTest -> sh:minLength
+StringBasedConstraintTest -> sh:maxLength
 ValueTypeContraintTest -> sh:class
 ValueTypeContraintTest -> sh:datatype
 ValueTypeContraintTest -> sh:nodeKind

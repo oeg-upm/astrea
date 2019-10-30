@@ -58,12 +58,10 @@ public class PropertyPairConstraintTest {
     public void compliantWithShEqualsShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_EQUIVANCE, "TURTLE");
-        System.out.println(OWL_FRAGMENT_EQUIVANCE);
-        shapes.write(System.out,"TURTLE");
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"),
-                ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Agent"));
-        condition &= shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"),
-                ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"));
+        Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/PersonShape"),
+                ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://www.w3.org/2000/10/swap/pim/contact#Person"));
+        condition &= shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/PersonShape"),
+                ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://schema.org/Person"));
 
         Assert.assertTrue(condition);
     }
@@ -72,9 +70,9 @@ public class PropertyPairConstraintTest {
     public void compliantWithShDisjointShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DISJOINT, "TURTLE");
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"),
+        Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/PersonShape"),
                 ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Organization"));
-        condition &= shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"),
+        condition &= shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/PersonShape"),
                 ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Project"));
         Assert.assertTrue(condition);
     }

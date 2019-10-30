@@ -61,7 +61,6 @@ public class OtherConstraints {
     public void compliantWithShInShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_IN, "TURTLE");
-       
         Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#DryShape"))
 				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#OffDryShape"))
 				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#SweetShape"));

@@ -139,6 +139,27 @@ public class RDFSchemaFeaturesTest {
 				"  skos:editorialNote \"Feature at risk - added in 2017 revision, and not yet widely used. \"@en ;\n" + 
 				".";
 		
+		public static final String OWL_FRAGMENT_OF_A_DATATYPE_PROPERTY = "@prefix : <http://www.w3.org/2006/time#> .\n" + 
+				"@prefix dct: <http://purl.org/dc/terms/> .\n" + 
+				"@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" + 
+				"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" + 
+				"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" + 
+				"@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" + 
+				"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
+				":generalDay\n" +
+	            "  rdf:type rdfs:Datatype ;\n" +
+	            "  rdfs:comment \"\"\"Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. \n" +
+	            "Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type.\"\"\"@en ;\n" +
+	            "  rdfs:label \"Generalized day\"@en ;\n" +
+	            "  owl:onDatatype xsd:string ;\n" +
+	            "  owl:withRestrictions (\n" +
+	            "      [\n" +
+	            "        xsd:pattern \"---(0[1-9]|[1-9][0-9])(Z|(\\\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?\" ;\n" +
+	            "      ]\n" +
+	            "    ) ;\n" +
+	            "  skos:definition \"\"\"Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. \n" +
+	            "Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type.\"\"\"@en ;\n" +
+	            ".";
 		
 		private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
 		private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
@@ -165,7 +186,7 @@ public class RDFSchemaFeaturesTest {
 		Assert.assertTrue(condition);
 	}
 	
-	// Testing creation of sh:PropertyShape from owl:DatatypeProperty and rdf:Property
+	// Testing creation of sh:PropertyShape from owl:DatatypeProperty, rdf:Property and rdfs:Datatype
 	
 	@Test
 	public void createPropertyShapeFromOwlDataProperty() {
@@ -182,6 +203,15 @@ public class RDFSchemaFeaturesTest {
 			Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 			Assert.assertTrue(condition);
 		}
+		
+		@Test
+		public void createPropertyShapeFromRDFDatatypeProperty() {
+			ShaclFromOwl sharper = new OwlShaper();
+			Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_DATATYPE_PROPERTY, "TURTLE");
+			Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
+			Assert.assertTrue(condition);
+		}
+	
 	
 	
 	// Testing creation of sh:PropertyShape from owl:ObjectProperty and rdf:Property
@@ -225,4 +255,7 @@ public class RDFSchemaFeaturesTest {
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DATATYPE), ResourceFactory.createResource("http://www.w3.org/2001/XMLSchema#nonNegativeInteger"));
 		Assert.assertTrue(condition);
 	}
+	
+	
+	
 }
