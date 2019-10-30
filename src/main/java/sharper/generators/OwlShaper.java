@@ -31,8 +31,9 @@ public class OwlShaper implements ShaclFromOwl{
 	private static final String PREFIXES = 	"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 									  		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 											"PREFIX sh: <http://www.w3.org/ns/shacl#>\n" + 
-											"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-											+ "PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>\n";
+											"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
+											"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"+
+											"PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>\n";
 	
 	// 0. Query to create initial NodeShapes
 	private static final String QUERY_CREATE_NODESHAPE = PREFIXES +
@@ -52,16 +53,22 @@ public class OwlShaper implements ShaclFromOwl{
 													 + "					sh:property ?shapeUrlPropertyShape;\n"
 													 + "					sh:property ?shapeUrlObjectProperty;\n"
 													 // 4. Including intersected types
-													 + "					sh:and ?intersectedTypesList . "
-													 + "				?intersectedTypesListRest rdf:first ?intersectedTypesListHeadShape ; "
-													 + "					rdf:rest ?intersectedTypesListTailShape . "
+													 + "					sh:and ?intersectedTypesList . \n"
+													 + "				?intersectedTypesListRest rdf:first ?intersectedTypesListHeadShape ; \n"
+													 + "					rdf:rest ?intersectedTypesListTailShape . \n"
 													// 5. Injecting inclusion types
-													 + "				?shapeUrl sh:in ?inclusionTypesList . "
-													 + "				?inclusionTypesListRest rdf:first ?inclusionTypesListHeadShape ; "
-													 + "					rdf:rest ?inclusionTypesListTailShape . "
-													// 6. Including equivalent classes
-													 + "				?shapeUrl sh:equals ?sameAsType . "
-													 + " \n} WHERE { "
+													 + "				?shapeUrl sh:in ?inclusionTypesList . \n"
+													 + "				?inclusionTypesListRest rdf:first ?inclusionTypesListHeadShape ; \n"
+													 + "					rdf:rest ?inclusionTypesListTailShape . \n"
+													 // 6. Including equivalent classes
+													 + "				?shapeUrl sh:equals ?sameAsType . \n"
+													 // 7. Including disjoint classes
+													 + "				?shapeUrl sh:disjoint ?disjointType . \n"
+													 // 8. Including complemented types
+													 + "				?shapeUrl sh:not ?complementTypesList . \n"
+													 + "				?complementTypesListRest rdf:first ?complementTypesListHeadShape ; \n"
+													 + "					rdf:rest ?complementTypesListTailShape . \n"
+													 + " } WHERE { "
 													 // 1. Extracting the name of the owl:Class
 													 + "?type a  ?typeClassUrl . \n"
 													 + "VALUES ?typeClassUrl {owl:Class rdfs:Class} .\n"
@@ -85,7 +92,7 @@ public class OwlShaper implements ShaclFromOwl{
 													 + "  			BIND ( IF ( ?intersectedTypesListHead != rdf:nil && !isBlank(?intersectedTypesListHead), URI(CONCAT(STR(?intersectedTypesListHead),\"Shape\")), ?intersectedTypesListHead ) AS ?intersectedTypesListHeadShape ) \n"
 													 + "  			BIND ( IF ( ?intersectedTypesListTail != rdf:nil && !isBlank(?intersectedTypesListTail), URI(CONCAT(STR(?intersectedTypesListTail),\"Shape\")), ?intersectedTypesListTail ) AS ?intersectedTypesListTailShape )"
 													 + "}"
-													// 5. Extracting inclusion types
+													 // 5. Extracting inclusion types
 													 + "OPTIONAL { ?type owl:oneOf ?inclusionTypesList .\n"
 													 + "		 		?inclusionTypesList rdf:rest* ?inclusionTypesListRest .\n" 
 													 + "      		?inclusionTypesListRest rdf:first ?inclusionTypesListHead .\n" 
@@ -93,9 +100,18 @@ public class OwlShaper implements ShaclFromOwl{
 													 + "  			BIND ( IF ( ?inclusionTypesListHead != rdf:nil && !isBlank(?inclusionTypesListHead), URI(CONCAT(STR(?inclusionTypesListHead),\"Shape\")), ?inclusionTypesListHead ) AS ?inclusionTypesListHeadShape ) \n"
 													 + "  			BIND ( IF ( ?inclusionTypesListTail != rdf:nil && !isBlank(?inclusionTypesListTail), URI(CONCAT(STR(?inclusionTypesListTail),\"Shape\")), ?inclusionTypesListTail ) AS ?inclusionTypesListTailShape )"
 													 + "}"
-													// 6. Extracting equivalent classes
+													 // 6. Extracting equivalent classes
 													 + "OPTIONAL { ?type owl:equivalentClass ?sameAsType . } \n"
-													 // 
+													 // 7. Extracting disjoint classes
+													 + "OPTIONAL { ?type owl:disjointWith ?disjointType . } \n"
+													 // 8. Extracting complemented types
+													 + "OPTIONAL { ?type owl:complementOf ?complementTypesList .\n"
+													 + "		 		?complementTypesList rdf:rest* ?complementTypesListRest .\n" 
+													 + "      		?complementTypesListRest rdf:first ?complementTypesListHead .\n" 
+													 + "       		?complementTypesListRest  rdf:rest ?complementTypesListTail .\n"
+													 + "  			BIND ( IF ( ?complementTypesListHead != rdf:nil && !isBlank(?complementTypesListHead), URI(CONCAT(STR(?complementTypesListHead),\"Shape\")), ?complementTypesListHead ) AS ?complementTypesListHeadShape ) \n"
+													 + "  			BIND ( IF ( ?complementTypesListTail != rdf:nil && !isBlank(?complementTypesListTail), URI(CONCAT(STR(?complementTypesListTail),\"Shape\")), ?complementTypesListTail ) AS ?complementTypesListTailShape )"
+													 + "}"
 													 + "FILTER (!isBlank(?type)) .\n"
 													 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeUrl) .\n"
 													 + "BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrlPropertyShape) .\n"
@@ -152,9 +168,11 @@ public class OwlShaper implements ShaclFromOwl{
 															 // A. Including NodeShapes related to this PropertyShape
 															 + "			   ?shapeUrl	 sh:node ?shapeNodeUrl .\n" // triplet to reference NodeShape (domain) of this property, extracrted form domain
 															 + "			   ?shapeUrl	 sh:node ?typesUnited .\n" // triplet to reference NodeShape (domain) of this property, extracted from unionOf
+															 // D. Including inverse path
+															 + "			   ?shapeUrl sh:inversePath ?inversePath .\n"
 															 + " } WHERE { \n"
 															 + "		 ?property a ?propertyType .\n"
-															 + "		 VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdf:Property} .\n"
+															 + "		 VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdf:Property rdfs:Datatype } .\n"
 															 + "		 MINUS { ?propertyType a owl:InverseFunctionalProperty } .\n"
 															 + "		 MINUS { ?propertyType a owl:FunctionalProperty } .\n"
 															 // A. Extracting the domain to reference the NodeShape related to this PropertyShape
@@ -171,6 +189,9 @@ public class OwlShaper implements ShaclFromOwl{
 															 + "		OPTIONAL { ?property rdfs:comment ?propertyComment . }\n"
 															 + "		OPTIONAL { ?property rdfs:seeAlso ?shapePropertySeeAlso .} \n"
 															 + "		OPTIONAL { ?property rdfs:isDefinedBy ?shapePropertyDefinedBy .} \n"
+															 // D. Extracting inverse paths
+															 + "		OPTIONAL { ?property owl:inverseOf ?inversePath .} \n"
+															 // 
 															 + "		FILTER (!isBlank(?property)) .\n"
 															 + "		BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
 															 + "		BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n"
@@ -201,11 +222,56 @@ public class OwlShaper implements ShaclFromOwl{
 														 + "CONSTRUCT {  "
 														 + "			   ?shapeUrl sh:datatype  ?typeInRange ; \n" 
 														 + "			    			 sh:class  ?typeInRange ; \n"
-														 + "						 sh:nodeKind sh:Literal. \n" 
+														 + "						 sh:nodeKind sh:Literal ; \n" 
+														 // 1. Including restrictions
+														 // 		1.1 Including pattern
+														 + "						 sh:pattern  ?restrictionPattern  ; \n" 
+														 // 		1.2 Including lang
+														 + "						 sh:languageIn  ?restrictionLang ; \n" 
+														 // 		1.3 Including minlength
+														 + "						 sh:minLength  ?restrictionMin  ; \n" 
+														 // 		1.4 Including maxlength
+														 + "						 sh:maxLength  ?restrictionMax  ; \n" 
+														 // 		1.5 Including length
+														 + "						 sh:maxLength  ?restrictionLength  ; \n" 
+														 + "						 sh:minLength  ?restrictionLength  ; \n" 
+														 //  	1.6 Including minExclusive
+														 + "						 sh:minExclusive  ?restrictionMinExclusive  ; \n" 
+														 //  	1.7 Including maxExclusive
+														 + "						 sh:maxExclusive  ?restrictionMaxExclusive  ; \n" 
+														  //  	1.8 Including maxExclusive
+														 + "						 sh:minInclusive  ?restrictionMinInclusive  ; \n" 
+														  //  	1.9 Including maxExclusive
+														 + "						 sh:maxInclusive  ?restrictionMaxInclusive  ; \n" 
 														 + " } WHERE { \n"
 														 + "		?property a ?propertyType .\n"
-														 + "		VALUES ?propertyType {owl:DatatypeProperty rdf:Property}"
+														 + "		VALUES ?propertyType {owl:DatatypeProperty rdf:Property rdfs:Datatype}"
 														 + "		OPTIONAL { ?property rdfs:range ?typeInRange. }\n"
+														 // 1. Extracting the owl:withRestrictions
+														 + "		OPTIONAL { ?property owl:withRestrictions ?restrictionsList . \n"
+														 + "					?restrictionsList rdf:rest*/rdf:first ?restrictionElement . \n"
+														 //					1.1 Extract pattern
+														 + "					OPTIONAL { ?restrictionElement xsd:pattern ?restrictionPattern . } \n"
+														 //					1.2 Extact lang
+														 + "					OPTIONAL { ?restrictionElement rdf:langRange ?restrictionLang . } \n"
+														 //					1.3 Extact min
+														 + "					OPTIONAL { ?restrictionElement xsd:minLength ?restrictionMin . } \n"
+														 //					1.4 Extact max
+														 + "					OPTIONAL { ?restrictionElement xsd:maxLength ?restrictionMax . } \n"
+														  //					1.5 Extact length
+														 + "					OPTIONAL { ?restrictionElement xsd:length ?restrictionLength . } \n"
+														 //					1.6 Extact minExclusive
+														 + "					OPTIONAL { ?restrictionElement xsd:minExclusive ?restrictionMinExclusive . } \n"
+														 //					1.7 Extact maxExclusive
+														 + "					OPTIONAL { ?restrictionElement xsd:maxExclusive ?restrictionMaxExclusive . } \n"
+														 //					1.8 Extact maxExclusive
+														 + "					OPTIONAL { ?restrictionElement xsd:minInclusive ?restrictionMinInclusive . } \n"
+														 //					1.9 Extact maxExclusive
+														 + "					OPTIONAL { ?restrictionElement xsd:maxInclusive ?restrictionMaxInclusive . } \n"
+														 
+														 
+														 + "}\n"
+														 
 														 + "		FILTER (!isBlank(?property)) .\n"
 														// + "BIND ( URI(CONCAT(STR(?typeInRange),\"Shape\")) AS ?shapeNodeUrl) .\n"
 														 + "		BIND ( URI(CONCAT(STR(?property),\"-Shape\")) AS ?shapeUrl) .\n"
@@ -279,13 +345,13 @@ public class OwlShaper implements ShaclFromOwl{
 		Query queryPropertiesShapesUnique2 = QueryFactory.create(QUERY_INCLUDE_UNIQUE_RESTRICTION_TO_PROPERTYSHAPE_2);
 		Model shapesPropertiesShapesUnique2 = QueryExecutionFactory.create(queryPropertiesShapesUnique2, ontology).execConstruct();
 		shapes.add(shapesPropertiesShapesUnique2);
-		
-		
-		
+//		
+//		
+//		
 		Query queryPropertyShapesOPEnhancement = QueryFactory.create(QUERY_FETCH_OBJECT_PROPERTIES);
 		Model shapesPropertyShapesEnhancedWithOP = QueryExecutionFactory.create(queryPropertyShapesOPEnhancement, ontology).execConstruct();
 		shapes.add(shapesPropertyShapesEnhancedWithOP);
-		
+//		
 		Query queryPropertyShapesDPEnhancement = QueryFactory.create(QUERY_FETCH_DATA_PROPERTIES);
 		Model shapesPropertyShapesEnhancedWithDP = QueryExecutionFactory.create(queryPropertyShapesDPEnhancement, ontology).execConstruct();
 		shapes.add(shapesPropertyShapesEnhancedWithDP);

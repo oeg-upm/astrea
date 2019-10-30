@@ -27,15 +27,21 @@ PropertyCharacteristicsTest -> a owl:InverseFunctionalProperty= sh:maxCount 1 & 
 Package: test.owl.shapes
 CardinalityConstraintTest -> sh:minCount & sh:maxCount
 LogicalConstraintsTest -> sh:and
+LogicalConstraintsTest -> sh:or FALLA
+LogicalConstraintsTest -> sh:not FALLA
+LogicalConstraintsTest -> sh:xone FALTA TEST
 OtherConstraints -> sh:hasValue
 OtherConstraints -> sh:in
-PropertyPairConstraintTest -> sh:equals FALLA
-PropertyPairConstraintTest -> sh:disjoint FALLA
-StringBasedConstraintTest -> sh:pattern FALLA
-StringBasedConstraintTest -> sh:languageRange FALLA
-StringBasedConstraintTest -> sh:minLength FALLA
-StringBasedConstraintTest -> sh:maxLength FALLA
+PropertyPairConstraintTest -> sh:equals
+PropertyPairConstraintTest -> sh:disjoint
+StringBasedConstraintTest -> sh:pattern
+StringBasedConstraintTest -> sh:languageRange
+StringBasedConstraintTest -> sh:minLength
+StringBasedConstraintTest -> sh:maxLength
 ValueTypeContraintTest -> sh:class
 ValueTypeContraintTest -> sh:datatype
 ValueTypeContraintTest -> sh:nodeKind
+ShapeBasedConstraintsTest -> sh:node
+ShapeBasedConstraintsTest -> sh:property
+ShapeBasedConstraintsTest -> sh:maxQualifiedCount,  sh:minQualifiedCount, sh:qualifiedCount FALLA
 

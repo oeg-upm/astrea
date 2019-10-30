@@ -50,26 +50,50 @@ public class LogicalConstraintsTest {
             "    owl:hasValue <http://www.co-ode.org/ontologies/pizza/pizza.owl#FrenchRegion>\n" +
             "  ] .";
 
+    public static final String OWL_FRAGMENT_OR = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+            ":TemporalEntity\n" +
+            "  rdf:type owl:Class ;\n" +
+            "  rdfs:comment \"A temporal interval or instant.\"@en ;\n" +
+            "  rdfs:label \"Temporal entity\"@en ;\n" +
+            "  rdfs:subClassOf owl:Thing ;\n" +
+            "  owl:unionOf (\n" +
+            "      :Instant\n" +
+            "      :Interval\n" +
+            "    ) ;\n" +
+            "  skos:definition \"A temporal interval or instant.\"@en ;\n" +
+            ".";
+
+
     private static final String SH_AND = "http://www.w3.org/ns/shacl#and";
     private static final String SH_NOT = "http://www.w3.org/ns/shacl#not";
     private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
     private static final String SH_PATH= "http://www.w3.org/ns/shacl#path";
+    private static final String SH_OR= "http://www.w3.org/ns/shacl#or";
 
 
     @Test
-    public void compliantWithShEqualsShape() {
+    public void compliantWithShAndShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_AND, "TURTLE");
+        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#BurgundyShape"));
-        condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape")); 
+        condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape"));
+        condition &= shapes.containsResource(ResourceFactory.createResource(SH_AND));
+
         Assert.assertTrue(condition);
     }
 
-    /*TODO sh:or sh:not*/
     @Test
     public void compliantWithShNotShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT, "TURTLE");
+        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#NonConsumableThingShape"),
                 ResourceFactory.createProperty(SH_NOT), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#ConsumableThingShape"));
         condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape"));
@@ -80,10 +104,24 @@ public class LogicalConstraintsTest {
     public void compliantWithShNotPropertyShape() {
         ShaclFromOwl sharper = new OwlShaper();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT_PROP, "TURTLE");
+        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#WineShape"),
                 ResourceFactory.createProperty(SH_NOT), (RDFNode) null);
         condition &= shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#locatedIn"));
         Assert.assertTrue(condition);
     }
+
+
+    @Test
+    public void compliantWithShOrShape() {
+        ShaclFromOwl sharper = new OwlShaper();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR, "TURTLE");
+        shapes.write(System.out, "TURTLE");
+        Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://www.w3.org/2006/time#InstantShape"));
+        condition &= shapes.containsResource(ResourceFactory.createResource("http://www.w3.org/2006/time#IntervalShape"));
+        condition &= shapes.containsResource(ResourceFactory.createResource(SH_OR));
+        Assert.assertTrue(condition);
+    }
+
 }
