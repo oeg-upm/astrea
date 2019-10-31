@@ -67,6 +67,7 @@ public class AnnotationPropertiesTest {
 			"  rdfs:seeAlso \"Feature at risk - added in 2017 revision, and not yet widely used.\" ;\n" + 
 			".";
 	
+
 	
 	public static final String SH_NAME = "http://www.w3.org/ns/shacl#name";
 	public static final Property RDFS_LABEL = RDFS.label;
@@ -175,6 +176,8 @@ public class AnnotationPropertiesTest {
 		Boolean condition = shapes.contains(null, RDFS_SEE_ALSO, ResourceFactory.createTypedLiteral("Feature at risk - added in 2017 revision, and not yet widely used."));
 		Assert.assertTrue(condition);
 	}
+	
+
 	
 	
 }

@@ -21,7 +21,7 @@ public class AstreaMain {
 
 	public static void main(String[] args) throws IOException {
 		ShaclFromOwl sharper = new OwlShaper();
-		Model shapes =  sharper.fromURL("https://albaizq.github.io/OpenADRontology/OnToology/ontology/openADRontology.owl/documentation/ontology.ttl");
+		Model shapes =  sharper.fromURL("http://schema.org/version/latest/schema.nt");
 		shapes.write(System.out, "TURTLE");
 	}
 

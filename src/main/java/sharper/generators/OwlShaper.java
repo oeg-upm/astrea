@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -46,6 +44,7 @@ public class OwlShaper implements ShaclFromOwl{
 													 // 2. Including meta-data
 													 + "			   		sh:name  ?shapeNodeName; \n"
 													 + "			   		rdfs:label  ?shapeNodeName; \n"
+													 + "			   		sh:description ?shapeNodeComment; \n"
 													 + "			   		rdfs:label  ?shapeNodeComment; \n"
 													 + "			   		rdfs:seeAlso ?shapeNodeSeeAlso; \n"
 													 + "			   		rdfs:isDefinedBy ?shapeNodeDefinedBy; \n"
@@ -305,8 +304,22 @@ public class OwlShaper implements ShaclFromOwl{
 			 + "			   ?shapeUrl sh:path ?property .\n"
 			 + "}";
 			
+	
+	@Override
+	public Model fromURL(List<String> owlUrls) {
+		Model ontology = ModelFactory.createDefaultModel();
+		Model shapes = ModelFactory.createDefaultModel();
+		if(owlUrls!=null && !owlUrls.isEmpty()) {
+			for(int index=0; index < owlUrls.size(); index++) {
+				ontology.read(owlUrls.get(index));
+				shapes = createShapeFromOntology(ontology);
+			}
+		}
+		return shapes;
+	}
+
 			
-			
+	@Override
 	public Model fromURL(String owlUrl) {
 		Model ontology = ModelFactory.createDefaultModel();
 		ontology.read(owlUrl);
@@ -314,6 +327,7 @@ public class OwlShaper implements ShaclFromOwl{
 	}
 	
 	
+	@Override
 	public Model fromOwl(String owlContent, String format) {
 		Model ontology = ModelFactory.createDefaultModel();
 		InputStream is = new ByteArrayInputStream(owlContent.getBytes() );
@@ -417,6 +431,8 @@ public class OwlShaper implements ShaclFromOwl{
 			
 		}
 	}
+
+
 
 
 

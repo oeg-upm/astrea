@@ -2,7 +2,6 @@ package test.shapes;
 
 import astrea.model.ShaclFromOwl;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
