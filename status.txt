@@ -29,13 +29,13 @@ CardinalityConstraintTest -> sh:minCount & sh:maxCount
 LogicalConstraintsTest -> sh:and
 LogicalConstraintsTest -> sh:or
 LogicalConstraintsTest -> sh:not
-LogicalConstraintsTest -> sh:xone FALTA TEST
+LogicalConstraintsTest -> sh:xone [NOT SUPPORTED]
 OtherConstraints -> sh:hasValue
 OtherConstraints -> sh:in
 PropertyPairConstraintTest -> sh:equals
 PropertyPairConstraintTest -> sh:disjoint
 StringBasedConstraintTest -> sh:pattern
-StringBasedConstraintTest -> sh:languageIn FALLA
+StringBasedConstraintTest -> sh:languageIn [NOT SUPPORTED]
 StringBasedConstraintTest -> sh:minLength
 StringBasedConstraintTest -> sh:maxLength
 ValueTypeContraintTest -> sh:class
@@ -43,7 +43,7 @@ ValueTypeContraintTest -> sh:datatype --> Falta incluir mas datatypes en la quer
 ValueTypeContraintTest -> sh:nodeKind
 ShapeBasedConstraintsTest -> sh:node --> WARNING - no se genera sh:node porque se genera sh:class porque si se apunta a una clase fuera de la ono el sh:node apuntaria a un shape inexistente, y si usamos sh:class por lo menos apuntamos a una clase que existe
 ShapeBasedConstraintsTest -> sh:property
-ShapeBasedConstraintsTest -> sh:maxQualifiedCount,  sh:minQualifiedCount, sh:qualifiedCount FALLA
+ShapeBasedConstraintsTest -> sh:maxQualifiedCount,  sh:minQualifiedCount, sh:qualifiedCount
 
 NonValidatingPropertyCharactersitics -> sh:name
 NonValidatingPropertyCharactersitics -> sh:description

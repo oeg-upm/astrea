@@ -368,12 +368,13 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 						
 	
 	@Override
-	public Model fromURL(Map<String,String> owlUrls) {
+	public Model fromURLs(List<String> owlUrls) {
 		Model ontology = ModelFactory.createDefaultModel();
 		if(owlUrls!=null && !owlUrls.isEmpty()) {
-			for(Entry<String,String> entry:owlUrls.entrySet()) {
+			for(int index=0; index < owlUrls.size(); index++) {
+				String owlUrl = owlUrls.get(index);
 				Model ontologyTemporal = ModelFactory.createDefaultModel();
-				ontologyTemporal.read(entry.getKey(),entry.getValue());
+				ontologyTemporal.read(owlUrl);
 				ontology.add(ontologyTemporal);
 			}
 		}
