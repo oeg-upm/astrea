@@ -2,20 +2,13 @@ package test.shapes;
 
 import astrea.model.ShaclFromOwl;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.NodeIterator;
-import org.apache.jena.rdf.model.RDFList;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.RDFS;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class LogicalConstraintsTest {
 
@@ -79,9 +72,9 @@ public class LogicalConstraintsTest {
 
     @Test
     public void compliantWithShAndShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_AND, "TURTLE");
-        shapes.write(System.out, "TURTLE");
+        
         Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#BurgundyShape"));
         condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape"));
         condition &= shapes.containsResource(ResourceFactory.createResource(SH_AND));
@@ -91,20 +84,18 @@ public class LogicalConstraintsTest {
 
     @Test
     public void compliantWithShNotShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT, "TURTLE");
-        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#NonConsumableThingShape"),
                 ResourceFactory.createProperty(SH_NOT), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#ConsumableThingShape"));
-        condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape"));
+        
         Assert.assertTrue(condition);
     }
 
     @Test
     public void compliantWithShNotPropertyShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT_PROP, "TURTLE");
-        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#WineShape"),
                 ResourceFactory.createProperty(SH_NOT), (RDFNode) null);
         condition &= shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
@@ -115,9 +106,8 @@ public class LogicalConstraintsTest {
 
     @Test
     public void compliantWithShOrShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR, "TURTLE");
-        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://www.w3.org/2006/time#InstantShape"));
         condition &= shapes.containsResource(ResourceFactory.createResource("http://www.w3.org/2006/time#IntervalShape"));
         condition &= shapes.containsResource(ResourceFactory.createResource(SH_OR));

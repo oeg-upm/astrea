@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class FillerInformationTest {
 
@@ -64,7 +64,7 @@ public class FillerInformationTest {
 	
 	@Test
 	public void hasValueWithLiteral() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITH_HAS_VALUE, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_HAS_VALUE), ResourceFactory.createPlainLiteral("--01"));
 		Assert.assertTrue(condition);
@@ -72,7 +72,7 @@ public class FillerInformationTest {
 	
 	@Test
 	public void hasValueWithUri() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITH_HAS_VALUE, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_HAS_VALUE), ResourceFactory.createResource("http://www.w3.org/2006/time#unitMonth"));
 		Assert.assertTrue(condition);
@@ -80,7 +80,7 @@ public class FillerInformationTest {
 	
 	@Test
 	public void hasValueMissing() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITHOUT_HAS_VALUE, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_HAS_VALUE), (RDFNode) null);
 		Assert.assertFalse(condition);

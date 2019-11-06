@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class CardinalityConstraintTest {
     // Extracted from: https://www.w3.org/2006/time#s
@@ -56,7 +56,7 @@ public class CardinalityConstraintTest {
 
     @Test
     public void compliantWithShMinCountShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_MIN_COUNT, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MIN_COUNT),ResourceFactory.createTypedLiteral(1));
         Assert.assertTrue(condition);
@@ -64,7 +64,7 @@ public class CardinalityConstraintTest {
 
     @Test
     public void compliantWithShMaxCountShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_MAX_COUNT, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT),ResourceFactory.createTypedLiteral(1));
         Assert.assertTrue(condition);

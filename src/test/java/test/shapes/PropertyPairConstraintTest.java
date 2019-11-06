@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class PropertyPairConstraintTest {
 
@@ -56,7 +56,7 @@ public class PropertyPairConstraintTest {
 
     @Test
     public void compliantWithShEqualsShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_EQUIVANCE, "TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/PersonShape"),
                 ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://www.w3.org/2000/10/swap/pim/contact#Person"));
@@ -68,7 +68,7 @@ public class PropertyPairConstraintTest {
 
     @Test
     public void compliantWithShDisjointShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DISJOINT, "TURTLE");
         Boolean condition = shapes.contains(ResourceFactory.createResource("http://xmlns.com/foaf/0.1/PersonShape"),
                 ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Organization"));

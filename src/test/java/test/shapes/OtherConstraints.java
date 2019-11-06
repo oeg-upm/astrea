@@ -2,17 +2,11 @@ package test.shapes;
 
 import astrea.model.ShaclFromOwl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.NodeIterator;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class OtherConstraints {
 
@@ -49,7 +43,7 @@ public class OtherConstraints {
 
     @Test
     public void compliantWithShHasValueShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_HAS_VALUE, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_HAS_VALUE), ResourceFactory.createResource("http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"));
         Assert.assertTrue(condition);
@@ -59,7 +53,7 @@ public class OtherConstraints {
     // TODO: mejorar este test, hay que recorrer la lista
     @Test
     public void compliantWithShInShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_IN, "TURTLE");
         Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#DryShape"))
 				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#OffDryShape"))

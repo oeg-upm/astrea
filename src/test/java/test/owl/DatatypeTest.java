@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class DatatypeTest {
 
@@ -77,16 +77,15 @@ public class DatatypeTest {
 			".";
 	
 	
-	private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
 	private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
 	
 // Testing creation of sh:NodeShape from owl:Class
-//TODO
+
 @Test
 public void createNodeShapeFromOwlClass() {
-	ShaclFromOwl sharper = new OwlShaper();
+	ShaclFromOwl sharper = new OptimisedOwlGenerator();
 	Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_RDF_OBJECT_PROPERTY, "TURTLE");
-	Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+	Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 	Assert.assertTrue(condition);
 }
 

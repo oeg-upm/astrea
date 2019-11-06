@@ -7,7 +7,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class ShapeBasedConstraintsTest {
     // Extracted from     http://iot.linkeddata.es/def/core
@@ -29,10 +29,11 @@ public class ShapeBasedConstraintsTest {
             "\n";
 
     // Extracted from    http://www.w3.org/2006/time#
-    private static final String OWL_FRAGMENT_FOR_PROPERTY = "@prefix : <http://iot.linkeddata.es/def/core#> .\n" +
+    private static final String OWL_FRAGMENT_FOR_PROPERTY = "@prefix : <http://www.w3.org/2006/time#> .\n" +
             "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
             "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
             "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
             "@base <http://iot.linkeddata.es/def/core#> ." +
@@ -77,30 +78,26 @@ public class ShapeBasedConstraintsTest {
 
     private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
     private static final String SH_NODE = "http://www.w3.org/ns/shacl#node";
-    private static final String SH_TARGET_CLASS = "http://www.w3.org/ns/shacl#targetClass";
     private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
     private static final String SH_PATH = "http://www.w3.org/ns/shacl#path";
     private static final String SH_QUALIFIED_VALUE = "http://www.w3.org/ns/shacl#qualifiedValueShape";
     private static final String SH_QUALIFIED_MAX_COUNT = "http://www.w3.org/ns/shacl#qualifiedMaxCount";
     private static final String SH_QUALIFIED_MIN_COUNT = "http://www.w3.org/ns/shacl#qualifiedMinCount";
-    private static final String SH_QUALIFIED_COUNT = "http://www.w3.org/ns/shacl#qualifiedCount";
 
     @Test
     public void compliantWithShNodeShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_NODE, "TURTLE");
-        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
         condition &= shapes.contains(null,  ResourceFactory.createProperty(SH_NODE), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#FeaturePropertyShape"));
-        Assert.assertTrue(condition);
+        Assert.assertTrue(!condition);
     }
 
     @Test
     public void compliantWithShPropertyShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_PROPERTY, "TURTLE");
-        shapes.write(System.out, "TURTLE");
-        Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.w3.org/2006/time#DateTimeDescriptionShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
         condition &= shapes.contains(ResourceFactory.createResource("http://www.w3.org/2006/time#DateTimeDescriptionShape"), ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://www.w3.org/2006/time#day"));
         Assert.assertTrue(condition);
@@ -108,41 +105,37 @@ public class ShapeBasedConstraintsTest {
 
     @Test
     public void compliantWithShMaxQualifiedCardinalityShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_QUALIFIED_CARDINALITY, "TURTLE");
-        shapes.write(System.out, "TURTLE");
-        Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        Boolean condition = shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
         condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_VALUE), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#requestedService"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MAX_COUNT), ResourceFactory.createPlainLiteral("1"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MAX_COUNT), (RDFNode) null);
 
         Assert.assertTrue(condition);
     }
 
     @Test
     public void compliantWithShMinQualifiedCardinalityShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_QUALIFIED_CARDINALITY, "TURTLE");
-        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
         condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_VALUE), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#serviceOwner"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MIN_COUNT), ResourceFactory.createPlainLiteral("1"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MIN_COUNT),  (RDFNode) null);
         Assert.assertTrue(condition);
     }
 
     @Test
     public void compliantWithShQualifiedCardinalityShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_QUALIFIED_CARDINALITY, "TURTLE");
-        shapes.write(System.out, "TURTLE");
         Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
         condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_VALUE), (RDFNode) null);
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#servicePetitioner"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_COUNT), ResourceFactory.createPlainLiteral("1"));
         Assert.assertTrue(condition);
     }
 

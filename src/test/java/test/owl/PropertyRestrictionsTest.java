@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class PropertyRestrictionsTest {
 
@@ -51,7 +51,7 @@ public class PropertyRestrictionsTest {
 	
 	@Test
 	public void createEmbeddedPorpertyShapeFromOnProperty() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_OWL_CLASS, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
 		condition &= shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
@@ -62,7 +62,7 @@ public class PropertyRestrictionsTest {
 	
 	@Test
 	public void createEmbeddedPorpertyShapeFromAllValuesFrom() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_OWL_CLASS, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
 		condition &= shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));

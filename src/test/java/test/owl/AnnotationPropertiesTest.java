@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class AnnotationPropertiesTest {
 
@@ -77,7 +77,7 @@ public class AnnotationPropertiesTest {
 	// -- Tests for NodeShapes
 	@Test
 	public void compliantWithShNameNodeShape() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_NODESHAPES, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NAME), ResourceFactory.createTypedLiteral("Virtual End Node (VEN)"));
 		Assert.assertTrue(condition);
@@ -85,7 +85,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsLabelAndRdfsCommentNodeShape() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_NODESHAPES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("Virtual End Node (VEN)"));
 		condition &= shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("This is the OpenADR Virtual End Node that is used to interact with the VTN"));
@@ -94,7 +94,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsIsDefinedByNodeShape() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_NODESHAPES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_DEFINED_BY, ResourceFactory.createTypedLiteral("OpenADR 2.0 Demand Response Program Implementation Guide"));
 		Assert.assertTrue(condition);
@@ -102,7 +102,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsSeeAlsoNodeShape() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_NODESHAPES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_SEE_ALSO, ResourceFactory.createTypedLiteral("See also the online Demand Response Program Implementation Guide (OpenADR 2.0)"));
 		Assert.assertTrue(condition);
@@ -111,7 +111,7 @@ public class AnnotationPropertiesTest {
 	// -- Tests for property shapes from object properties
 	@Test
 	public void compliantWithShNamePropertyShapesFromObjectProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_OBJECT_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NAME), ResourceFactory.createTypedLiteral("has temporal duration"));
 		Assert.assertTrue(condition);
@@ -119,7 +119,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsLabelAndRdfsCommentPropertyShapeFromObjectProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_OBJECT_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("has temporal duration"));
 		condition &= shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("Duration of a temporal entity."));
@@ -128,7 +128,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsIsDefinedByPropertyShapeFromObjectProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_OBJECT_PROPERTIES, "TURTLE");
 		
 		Boolean condition = shapes.contains(null, RDFS_DEFINED_BY, ResourceFactory.createTypedLiteral("Duration of a temporal entity."));
@@ -137,7 +137,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsSeeAlsoPropertyShapeFromObjectProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_OBJECT_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_SEE_ALSO, ResourceFactory.createTypedLiteral("See also the online documentation"));
 		Assert.assertTrue(condition);
@@ -146,7 +146,7 @@ public class AnnotationPropertiesTest {
 	// -- Tests for property shapes from data properties
 	@Test
 	public void compliantWithShNamePropertyShapesFromDataProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_DATA_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NAME), ResourceFactory.createTypedLiteral("has XSD duration"));
 		Assert.assertTrue(condition);
@@ -154,7 +154,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsLabelAndRdfsCommentPropertyShapeFromDataProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_DATA_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("has XSD duration"));
 		condition &= shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("Extent of a temporal entity, expressed using xsd:duration"));
@@ -163,7 +163,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsIsDefinedByPropertyShapeFromDataProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_DATA_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_DEFINED_BY, ResourceFactory.createTypedLiteral("Extent of a temporal entity, expressed using xsd:duration"));
 		Assert.assertTrue(condition);
@@ -171,7 +171,7 @@ public class AnnotationPropertiesTest {
 	
 	@Test
 	public void compliantWithRfsSeeAlsoPropertyShapeFromDataProperties() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_PROPERTYSHAPES_DATA_PROPERTIES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_SEE_ALSO, ResourceFactory.createTypedLiteral("Feature at risk - added in 2017 revision, and not yet widely used."));
 		Assert.assertTrue(condition);

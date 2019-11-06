@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class PropertyCharacteristicsTest {
 	
@@ -97,7 +97,7 @@ public class PropertyCharacteristicsTest {
 	
 	@Test
 	public void hasShMaxCount() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITH_FUNCTIONAL_PROPERTY, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		Assert.assertTrue(condition);
@@ -105,7 +105,7 @@ public class PropertyCharacteristicsTest {
 	
 	@Test
 	public void hasNotShMaxCount() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITHOUT_FUNCTIONAL_PROPERTY, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		Assert.assertFalse(condition);
@@ -114,7 +114,7 @@ public class PropertyCharacteristicsTest {
 	
 	@Test
 	public void hasInverseFunctionalWithOP() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITH_INVERSE_FUNCTIONAL_PROPERTY_OP, "TURTLE");		
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		condition &= shapes.contains(null, ResourceFactory.createProperty(SH_INVERSE_PATH), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/mbox"));
@@ -124,7 +124,7 @@ public class PropertyCharacteristicsTest {
 	
 	@Test
 	public void hasInverseFunctionalWithDP() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITH_INVERSE_FUNCTIONAL_PROPERTY_DP, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		condition &= shapes.contains(null, ResourceFactory.createProperty(SH_INVERSE_PATH), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/mbox_sha1sum"));

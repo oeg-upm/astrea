@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 
 /**
@@ -55,7 +55,7 @@ public class CardinalityTest {
 	
 	@Test
 	public void compliantWithOwlCardinality() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_WITH_OWL_CARDINALITY, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		condition &= shapes.contains(null, ResourceFactory.createProperty(SH_MIN_COUNT), ResourceFactory.createTypedLiteral(1));
@@ -64,7 +64,7 @@ public class CardinalityTest {
 	
 	@Test
 	public void compliantWithOwlMinCardinality() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_WITH_OWL_CARDINALITY, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MIN_COUNT), ResourceFactory.createTypedLiteral(2));
 		Assert.assertTrue(condition);
@@ -73,7 +73,7 @@ public class CardinalityTest {
 	
 	@Test
 	public void compliantWithOwlMaxCardinality() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_WITH_OWL_CARDINALITY, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(3));
 		Assert.assertTrue(condition);

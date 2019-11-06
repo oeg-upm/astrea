@@ -1,14 +1,12 @@
 package test.owl;
 
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.vocabulary.RDFS;
 import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class EquialityTest {
 
@@ -42,9 +40,8 @@ public class EquialityTest {
 	// -- Tests for NodeShapes
 	@Test
 	public void compliantWithShNameNodeShape() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT, "TURTLE");
-		shapes.write(System.out,"TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_EQUIVALENT), ResourceFactory.createResource("http://purl.org/dc/terms/creator"));
 		Assert.assertTrue(condition);
 	}

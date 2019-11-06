@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class ValueTypeConstraintTest {
 
@@ -50,7 +50,7 @@ public class ValueTypeConstraintTest {
 
     @Test
     public void compliantWithShClassShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_SHCLASS, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://www.opengis.net/ont/geosparql#Geometry"));
         condition &= !shapes.containsResource(ResourceFactory.createProperty(SH_DATATYPE));
@@ -59,7 +59,7 @@ public class ValueTypeConstraintTest {
 
     @Test
     public void compliantWithShDatatypeShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_SHDATATYPE, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DATATYPE), ResourceFactory.createResource("http://www.w3.org/2001/XMLSchema#string"));
         condition &= !shapes.containsResource(ResourceFactory.createProperty(SH_CLASS));
@@ -68,7 +68,7 @@ public class ValueTypeConstraintTest {
 
     @Test
     public void compliantWithShNodeKindShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_SHCLASS, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NODEKIND), ResourceFactory.createResource(SH_IRI));
         Assert.assertTrue(condition);

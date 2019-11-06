@@ -1,27 +1,17 @@
 package sharper.generators;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.jena.rdf.model.Model;
-
-import com.github.jsonldjava.core.DocumentLoader;
-import com.github.jsonldjava.core.JsonLdOptions;
-import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.utils.JsonUtils;
 
 import astrea.model.ShaclFromOwl;
 
 public class AstreaMain {
 
 	public static void main(String[] args) throws IOException {
-		ShaclFromOwl sharper = new OwlShaper();
-		Model shapes =  sharper.fromURL("http://schema.org/version/latest/schema.nt");
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
+		Model shapes =  sharper.fromURL("http://iot.linkeddata.es/def/core/ontology.ttl");
 		shapes.write(System.out, "TURTLE");
 	}
 

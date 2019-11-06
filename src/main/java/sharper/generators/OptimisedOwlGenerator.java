@@ -4,12 +4,15 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -21,7 +24,7 @@ import org.apache.jena.update.UpdateRequest;
 
 import astrea.model.ShaclFromOwl;
 
-public class OwlShaper implements ShaclFromOwl{
+public class OptimisedOwlGenerator implements ShaclFromOwl{
 	private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
 	private static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
 	private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
@@ -30,8 +33,8 @@ public class OwlShaper implements ShaclFromOwl{
 									  		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 											"PREFIX sh: <http://www.w3.org/ns/shacl#>\n" + 
 											"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
-											"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"+
-											"PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>\n";
+											"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n";
+											//"PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>\n";
 	
 	// 0. Query to create initial NodeShapes
 	private static final String QUERY_CREATE_NODESHAPE = PREFIXES +
@@ -42,7 +45,7 @@ public class OwlShaper implements ShaclFromOwl{
 													 // 1. Including target owl:Class
  													 + "			   		sh:targetClass ?type ;\n"
 													 // 2. Including meta-data
-													 + "			   		sh:name  ?shapeNodeName; \n"
+													 + "			   		sh:name ?shapeNodeName; \n"
 													 + "			   		rdfs:label  ?shapeNodeName; \n"
 													 + "			   		sh:description ?shapeNodeComment; \n"
 													 + "			   		rdfs:label  ?shapeNodeComment; \n"
@@ -64,9 +67,11 @@ public class OwlShaper implements ShaclFromOwl{
 													 // 7. Including disjoint classes
 													 + "				?shapeUrl sh:disjoint ?disjointType . \n"
 													 // 8. Including complemented types
-													 + "				?shapeUrl sh:not ?complementTypesList . \n"
-													 + "				?complementTypesListRest rdf:first ?complementTypesListHeadShape ; \n"
-													 + "					rdf:rest ?complementTypesListTailShape . \n"
+													 + "				?shapeUrl sh:not ?complementTypeShape . \n"
+													 // 9. Including unionOf types
+													 + "				?shapeUrl sh:or ?unionTypesList . \n"
+													 + "				?unionTypesListRest rdf:first ?unionTypesListHeadShape ; \n"
+													 + "					rdf:rest ?unionTypesListTailShape . \n"
 													 + " } WHERE { "
 													 // 1. Extracting the name of the owl:Class
 													 + "?type a  ?typeClassUrl . \n"
@@ -104,12 +109,17 @@ public class OwlShaper implements ShaclFromOwl{
 													 // 7. Extracting disjoint classes
 													 + "OPTIONAL { ?type owl:disjointWith ?disjointType . } \n"
 													 // 8. Extracting complemented types
-													 + "OPTIONAL { ?type owl:complementOf ?complementTypesList .\n"
-													 + "		 		?complementTypesList rdf:rest* ?complementTypesListRest .\n" 
-													 + "      		?complementTypesListRest rdf:first ?complementTypesListHead .\n" 
-													 + "       		?complementTypesListRest  rdf:rest ?complementTypesListTail .\n"
-													 + "  			BIND ( IF ( ?complementTypesListHead != rdf:nil && !isBlank(?complementTypesListHead), URI(CONCAT(STR(?complementTypesListHead),\"Shape\")), ?complementTypesListHead ) AS ?complementTypesListHeadShape ) \n"
-													 + "  			BIND ( IF ( ?complementTypesListTail != rdf:nil && !isBlank(?complementTypesListTail), URI(CONCAT(STR(?complementTypesListTail),\"Shape\")), ?complementTypesListTail ) AS ?complementTypesListTailShape )"
+													 + "OPTIONAL { ?type owl:complementOf ?complementType . \n"
+													 + "				BIND ( URI(CONCAT(STR(?complementType),\"Shape\")) AS ?complementTypeShape) .\n"
+													 + "				FILTER (!isBlank(?complementType))      \n"
+													 + "}\n"
+													 // 9. Extracting unionOf types
+													 + "OPTIONAL {  ?type owl:unionOf ?unionTypesList .\n"
+													 + "		 		?unionTypesList rdf:rest* ?unionTypesListRest .\n" 
+													 + "      		?vTypesListRest rdf:first ?unionTypesListHead .\n" 
+													 + "       		?unionTypesListRest  rdf:rest ?unionTypesListTail .\n"
+													 + "  			BIND ( IF ( ?unionTypesListHead != rdf:nil && !isBlank(?unionTypesListHead), URI(CONCAT(STR(?unionTypesListHead),\"Shape\")), ?unionTypesListHead ) AS ?unionTypesListHeadShape ) \n"
+													 + "  			BIND ( IF ( ?unionTypesListTail != rdf:nil && !isBlank(?unionTypesListTail), URI(CONCAT(STR(?unionTypesListTail),\"Shape\")), ?unionTypesListTail ) AS ?unionTypesListTailShape )"
 													 + "}"
 													 + "FILTER (!isBlank(?type)) .\n"
 													 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeUrl) .\n"
@@ -119,32 +129,63 @@ public class OwlShaper implements ShaclFromOwl{
 	private final String QUERY_INJECT_EMBEDDED_PROPERTIES_IN_NODESHAPES = PREFIXES +
 															 "CONSTRUCT {  ?shapeUrl a sh:NodeShape ;  \n"
 															 + "					sh:property [ \n"
-															 + "					 	a sh:PropertyShape;\n"
+															// + "					 	a sh:PropertyShape;\n"
 															 + "					 	sh:path ?property;\n"
 															 + "					 	sh:path ?propertyChain;\n"
-															 + "					 	sh:class ?valuesInRange;\n"
-															 + "					 	sh:datatype ?valuesInRange;\n"
-															// -- Cardinality injector
+															 + "					 	?variableRange ?valuesInRange;\n" //TODO:  instancias el sh:class como variable que se inyecta con el bind conditional
+														// TO REMOVE?	 + "					 	sh:datatype ?valuesInRange;\n"
+															// -- 1. Cardinality injector
 															 + "			    			sh:maxCount ?maxCardinality ;\n" // maxCardinality
 															 + "			   			sh:minCount ?minCardinality ;\n" // minCardinality
 															 + "			   			sh:maxCount ?cardinality ;\n" // cardinality
 															 + "			   			sh:minCount ?cardinality ;\n" // cardinality
 															 + "			   			sh:hasValue ?hasValue ;\n" // cardinality
-															 + "				]\n"
+															 + "				];\n"
+															 // -- 2. Inserting  complementary properties
+															  + "				sh:not [ \n"
+														//	 + "					 	a sh:PropertyShape;\n"
+															 + "					 	sh:path ?complementaryProperty;\n"
+															 + "					 	sh:hasValue ?complementaryPropertyRangeShape;\n"
+															 + "				];\n"
+															// -- 3. Cardinality injector
+															 + "					sh:property [ \n"
+														//	 + "					 	a sh:PropertyShape;\n"
+															 + "			    			sh:qualifiedMaxCount ?maxQualifiedCardinality ;\n" 
+															 + "			   			sh:qualifiedMinCount ?minQualifiedCardinality ;\n"
+															 + "			   			sh:qualifiedValueShape ?qualifiedCardinality ;\n" // cardinality
+															 + "			   			sh:path ?hasTypeOfCardinality ;\n" // cardinality
+															 + "]"
+															//
 															 + " } WHERE { "
 															 + "			?type a  ?typeClassUrl . \n"
 															 + "			VALUES ?typeClassUrl {owl:Class rdfs:Class}\n"
-															 + " 		?type rdfs:subClassOf ?owlPropertyRestriction .\n"
-															 +" 			?owlPropertyRestriction a owl:Restriction"	
-															 + " 		OPTIONAL{ ?owlPropertyRestriction owl:onProperty ?property .}\n"
-															 + "			OPTIONAL{ ?owlPropertyRestriction owl:allValuesFrom ?valuesInRange}\n."
+															 + " 		OPTIONAL {?type rdfs:subClassOf ?owlPropertyRestriction .\n"
+															 + " 			 ?owlPropertyRestriction a owl:Restriction ."	
+															 + " 			 ?owlPropertyRestriction owl:onProperty ?property . \n"
+															 + "				OPTIONAL{ ?owlPropertyRestriction owl:allValuesFrom ?valuesInRange ."
+															 + "  			BIND ( IF ( STRSTARTS(str(?valuesInRange),\"http://www.w3.org/2001/XMLSchema#\")"/* || ... */+ ", sh:datatype, sh:class ) AS ?variableRange ) \n"
+															 + "}\n."
+															 //TODO:  BIND CONDITIONAL DE SI ES XSD O UNA DE LAS OPCIONES -> X CON SH:DATATYPE, SINO X CON SH:CLASS (LEGO LO ELIMINAMOS)
 															
-															// -- Cardinality extractor
+															 +" 			}\n"		
+															// -- 1. Cardinality extractor
 															+ " 	OPTIONAL { ?owlPropertyRestriction owl:maxCardinality ?maxCardinality . }\n" 	// owl:maxCardinality
 															+ " OPTIONAL { ?owlPropertyRestriction owl:minCardinality ?minCardinality .}\n"  	// owl:minCardinality
 															+ " 	OPTIONAL	 {  ?owlPropertyRestriction owl:cardinality ?cardinality .}\n"		// owl:cardinality
 															+ " 	OPTIONAL	 {  ?owlPropertyRestriction owl:hasValue ?hasValue .}\n"				// owl:hasValue
-															// -- [Cardinality extractor]
+															 // 2. Extracting complementary properties
+															 + "OPTIONAL { ?type owl:complementOf ?owlPropertyRestriction . \n"
+															 + "			   ?owlPropertyRestriction owl:onProperty ?complementaryProperty ."
+															 + "			   ?owlPropertyRestriction owl:hasValue ?complementaryPropertyRange"
+															 + "				BIND ( URI(CONCAT(STR(?complementaryPropertyRange),\"Shape\")) AS ?complementaryPropertyRangeShape) .\n"
+															 + "}\n"
+															// 3. Cualified cardinalities
+															 + " OPTIONAL { ?owlPropertyRestriction owl:maxQualifiedCardinality ?maxQualifiedCardinality . }\n" 	
+															 + " OPTIONAL { ?owlPropertyRestriction owl:minQualifiedCardinality ?minQualifiedCardinality .}\n"  
+															 + " OPTIONAL {  ?owlPropertyRestriction owl:qualifiedCardinality ?qualifiedCardinality .}\n"		
+															 + " OPTIONAL {  ?owlPropertyRestriction owl:onClass ?hasTypeOfCardinality .}\n"			
+															 //
+															 
 															 + "FILTER (!isBlank(?type)) .\n"
 															 + "BIND ( URI(CONCAT(STR(?type),\"Shape\")) AS ?shapeUrl) .\n"
 															 + "}";
@@ -304,18 +345,39 @@ public class OwlShaper implements ShaclFromOwl{
 			 + "			   ?shapeUrl sh:path ?property .\n"
 			 + "}";
 			
+	// Post processing queries
+		private static final String QUERY_REMOVE_EMPTY_NODES = PREFIXES 
+				 + "DELETE { \n"
+				 + "			   ?subject ?predicate ?blankNode .\n"
+				 + " }\n"
+				 + "WHERE { \n"
+				 + "	    ?subject ?predicate ?blankNode .\n"
+				 +" 	 	FILTER NOT EXISTS { ?blankNode ?property ?range } .\n"
+				 +"	 	FILTER (isBlank(?blankNode)) .\n"
+				 + "}";
+		// Post processing queries
+				private static final String QUERY_INSERT_EMBEDDED_PROPERTYSHAPE_TYPE = PREFIXES 
+						 + "INSERT { \n"
+						 + "			  ?blankNode a sh:PropertyShape.\n"
+						 + " }\n"
+						 + "WHERE { \n"
+						 + "	    ?subject ?predicate ?blankNode .\n"
+						 + "	    ?blankNode ?property ?range .\n"
+						 +"	 	FILTER ( STRSTARTS(str(?predicate), \"http://www.w3.org/ns/shacl#\") ) .\n"
+						 + "}";
+						
 	
 	@Override
-	public Model fromURL(List<String> owlUrls) {
+	public Model fromURL(Map<String,String> owlUrls) {
 		Model ontology = ModelFactory.createDefaultModel();
-		Model shapes = ModelFactory.createDefaultModel();
 		if(owlUrls!=null && !owlUrls.isEmpty()) {
-			for(int index=0; index < owlUrls.size(); index++) {
-				ontology.read(owlUrls.get(index));
-				shapes = createShapeFromOntology(ontology);
+			for(Entry<String,String> entry:owlUrls.entrySet()) {
+				Model ontologyTemporal = ModelFactory.createDefaultModel();
+				ontologyTemporal.read(entry.getKey(),entry.getValue());
+				ontology.add(ontologyTemporal);
 			}
 		}
-		return shapes;
+		return fromModel(ontology);
 	}
 
 			
@@ -323,7 +385,7 @@ public class OwlShaper implements ShaclFromOwl{
 	public Model fromURL(String owlUrl) {
 		Model ontology = ModelFactory.createDefaultModel();
 		ontology.read(owlUrl);
-		return createShapeFromOntology(ontology);
+		return fromModel(ontology);
 	}
 	
 	
@@ -332,17 +394,18 @@ public class OwlShaper implements ShaclFromOwl{
 		Model ontology = ModelFactory.createDefaultModel();
 		InputStream is = new ByteArrayInputStream(owlContent.getBytes() );
 		ontology.read(is, null, format); 
-		return createShapeFromOntology(ontology);
+		return fromModel(ontology);
 	}
 	
 	
-	private Model createShapeFromOntology(Model ontology) {
+	public Model fromModel(Model ontology) {
+		importOntologies(ontology);
 		Model shapes = ModelFactory.createDefaultModel();
 		// 0. Build NodeShapes
 		Query queryNodeShapes = QueryFactory.create(QUERY_CREATE_NODESHAPE);
 		Model nodeShapes = QueryExecutionFactory.create(queryNodeShapes, ontology).execConstruct();
 		shapes.add(nodeShapes);
-		
+	
 		// 1. Include property embedded restrictions into the NodeShapes
 		Query queryNodeShapesEmbeddedProperties = QueryFactory.create(QUERY_INJECT_EMBEDDED_PROPERTIES_IN_NODESHAPES);
 		Model shapesNodeShapesWithEmbeddedProperties = QueryExecutionFactory.create(queryNodeShapesEmbeddedProperties, ontology).execConstruct();
@@ -375,12 +438,14 @@ public class OwlShaper implements ShaclFromOwl{
 		
 		// Post processing:
 		// 0. Clean empty URL sh:property [] patterns
-		cleanEmptyProperties(shapes);
+		cleanEmptyGraphs(shapes);
+		
 		// 1. Add xsd:string to any property that has no data type
 		addXsdStringDatatype(shapes); // TODO
 		// 2. Remove inconsistencies, if a subject has a sh:path and sh:inversePah, remove the former
 		removePathInconsistencies(shapes);
-		
+		// 3. Embedded the sh:PropertyShape types 
+		embeddedPropertyTypes(shapes);
 		//shapes.write(System.out, "TURTLE");
 		return shapes;
 	}
@@ -388,6 +453,31 @@ public class OwlShaper implements ShaclFromOwl{
 	
 
 
+	
+
+
+
+	private void embeddedPropertyTypes(Model shapes) {
+		UpdateRequest request = UpdateFactory.create() ;
+		request.add(QUERY_INSERT_EMBEDDED_PROPERTYSHAPE_TYPE);
+		UpdateAction.execute(request, shapes) ;
+		
+	}
+
+
+	private void importOntologies(Model ontology) {
+		NodeIterator iterator = ontology.listObjectsOfProperty(ResourceFactory.createProperty("http://www.w3.org/2002/07/owl#imports"));
+		while(iterator.hasNext()) {
+			RDFNode ontologyUrl = iterator.next();
+			ontology.read(ontologyUrl.toString());
+		}
+	}
+
+	private void cleanEmptyGraphs(Model shapes) {
+		UpdateRequest request = UpdateFactory.create() ;
+		request.add(QUERY_REMOVE_EMPTY_NODES);
+		UpdateAction.execute(request, shapes) ;
+	}
 	
 	private void removePathInconsistencies(Model shapes) {
 		UpdateRequest request = UpdateFactory.create() ;
@@ -397,22 +487,7 @@ public class OwlShaper implements ShaclFromOwl{
 	}
 
 
-	/**
-	 * This method cleans from the shape the triplets encoding empty lists of properties, i.e., 'URI sh:property []'.
-	 * @param shapes a {@link Model} that contains the RDF of the shape
-	 */
-	private void cleanEmptyProperties(Model shapes) {
-		List<Statement> statementsToRemove = new ArrayList<>();
-		StmtIterator iterator = shapes.listStatements(null, ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
-		while(iterator.hasNext()) {
-			Statement rootStatement = iterator.next();
-			StmtIterator iteratorOfProperties = shapes.listStatements(rootStatement.getObject().asResource(), null, (RDFNode) null);
-			if(!iteratorOfProperties.hasNext()) {
-				statementsToRemove.add(rootStatement);
-			}
-		}
-		shapes.remove(statementsToRemove);
-	}
+	
 	
 	private void addXsdStringDatatype(Model shapes) {
 		// TODO: consider there to include this in the NodeShape and the PropertyShape as well

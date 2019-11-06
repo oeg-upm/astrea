@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class RDFSchemaFeaturesTest {
 
@@ -163,7 +163,6 @@ public class RDFSchemaFeaturesTest {
 		
 		private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
 		private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
-		private static final String SH_NODE = "http://www.w3.org/ns/shacl#node";
 		private static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
 		private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
 		
@@ -171,7 +170,7 @@ public class RDFSchemaFeaturesTest {
 	
 	@Test
 	public void createNodeShapeFromOwlClass() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_AN_OWL_CLASS, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
 		Assert.assertTrue(condition);
@@ -180,7 +179,7 @@ public class RDFSchemaFeaturesTest {
 
 	@Test
 	public void createNodeShapeFromRdfsClass() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_AN_RDFS_CLASS, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
 		Assert.assertTrue(condition);
@@ -190,7 +189,7 @@ public class RDFSchemaFeaturesTest {
 	
 	@Test
 	public void createPropertyShapeFromOwlDataProperty() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_DATA_PROPERTY, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 		Assert.assertTrue(condition);
@@ -198,7 +197,7 @@ public class RDFSchemaFeaturesTest {
 		
 		@Test
 		public void createPropertyShapeFromRDFDataProperty() {
-			ShaclFromOwl sharper = new OwlShaper();
+			ShaclFromOwl sharper = new OptimisedOwlGenerator();
 			Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_RDF_DATA_PROPERTY, "TURTLE");
 			Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 			Assert.assertTrue(condition);
@@ -206,7 +205,7 @@ public class RDFSchemaFeaturesTest {
 		
 		@Test
 		public void createPropertyShapeFromRDFDatatypeProperty() {
-			ShaclFromOwl sharper = new OwlShaper();
+			ShaclFromOwl sharper = new OptimisedOwlGenerator();
 			Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_DATATYPE_PROPERTY, "TURTLE");
 			Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 			Assert.assertTrue(condition);
@@ -218,7 +217,7 @@ public class RDFSchemaFeaturesTest {
 	
 	@Test
 	public void createPropertyShapeFromObjectProperty() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_OBJECT_PROPERTY, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 		Assert.assertTrue(condition);
@@ -226,7 +225,7 @@ public class RDFSchemaFeaturesTest {
 	
 	@Test
 	public void createPropertyShapeFromRDFObjectProperty() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_RDF_OBJECT_PROPERTY, "TURTLE");
 		Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 		Assert.assertTrue(condition);
@@ -239,7 +238,7 @@ public class RDFSchemaFeaturesTest {
 	
 	@Test
 	public void createShNodeFromObjectProperty() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_OBJECT_PROPERTY, "TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://www.w3.org/2006/time#MonthOfYear"));
 		Assert.assertTrue(condition);
@@ -249,7 +248,7 @@ public class RDFSchemaFeaturesTest {
 
 	@Test
 	public void createShDatatypeFromDataProperty() {
-		ShaclFromOwl sharper = new OwlShaper();
+		ShaclFromOwl sharper = new OptimisedOwlGenerator();
 		Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_A_DATA_PROPERTY, "TURTLE");
 		
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DATATYPE), ResourceFactory.createResource("http://www.w3.org/2001/XMLSchema#nonNegativeInteger"));

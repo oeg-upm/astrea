@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class StringBasedConstraintTest {
 
@@ -92,7 +92,7 @@ public class StringBasedConstraintTest {
 
     @Test
     public void compliantWithShPatternShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_PATTERN, "TURTLE");
         String pattern = shapes.listObjectsOfProperty(ResourceFactory.createProperty(SH_PATTERN)).toList().get(0).toString();
         Boolean condition = pattern.equals("---(0[1-9]|[1-9][0-9])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?");
@@ -101,9 +101,8 @@ public class StringBasedConstraintTest {
 
     @Test
     public void compliantWithShLangShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_LANG, "TURTLE");
-        shapes.write(System.out,"TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_LANG), ResourceFactory.createPlainLiteral("de-DE"));
         Assert.assertTrue(condition);
@@ -111,7 +110,7 @@ public class StringBasedConstraintTest {
 
     @Test
     public void compliantWithMinMaxLengthShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_MIN_LENGTH, "TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_MIN_LENGTH), ResourceFactory.createTypedLiteral(2));
@@ -122,7 +121,7 @@ public class StringBasedConstraintTest {
 
     @Test
     public void compliantWithShMaxLengthShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_MIN_LENGTH, "TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_MAX_LENGTH), ResourceFactory.createTypedLiteral(4));
@@ -131,7 +130,7 @@ public class StringBasedConstraintTest {
     
     @Test
     public void compliantWithShMinLengthShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_MIN_LENGTH, "TURTLE");
         Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_MAX_LENGTH), ResourceFactory.createTypedLiteral(4));

@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OwlShaper;
+import sharper.generators.OptimisedOwlGenerator;
 
 public class NonValidatingPropertyShapeCharacteristicsTest {
 
@@ -18,6 +18,7 @@ public class NonValidatingPropertyShapeCharacteristicsTest {
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ." +
             ":Duration\n" +
             "  rdf:type owl:Class ;\n" +
+            "  rdfs:label \"the duration label\"@en ;\n" +
             "  rdfs:comment \"Duration of a temporal extent expressed as a number scaled by a temporal unit\"@en ;\n" +
             "  rdfs:subClassOf :TemporalDuration ;\n" +
             "  rdfs:subClassOf [\n" +
@@ -34,19 +35,20 @@ public class NonValidatingPropertyShapeCharacteristicsTest {
 
     @Test
     public void compliantWithShNameShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_NAME_DESC, "TURTLE");
-        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NAME), ResourceFactory.createLangLiteral("Date-Time description", "en"));
+       
+        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_NAME), ResourceFactory.createLangLiteral("the duration label", "en"));
         Assert.assertTrue(condition);
     }
 
     @Test
     public void compliantWithShDescriptionShape() {
-        ShaclFromOwl sharper = new OwlShaper();
+        ShaclFromOwl sharper = new OptimisedOwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_NAME_DESC, "TURTLE");
-        shapes.write(System.out, "TURTLE");
+        
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DESCRIPTION),
-                ResourceFactory.createLangLiteral("Description of date and time structured with separate values for the various elements of a calendar-clock system. The temporal reference system is fixed to Gregorian Calendar, and the range of year, month, day properties restricted to corresponding XML Schema types xsd:gYear, xsd:gMonth and xsd:gDay, respectively.", "en"));
+                ResourceFactory.createLangLiteral("Duration of a temporal extent expressed as a number scaled by a temporal unit", "en"));
         Assert.assertTrue(condition);
     }
 }
