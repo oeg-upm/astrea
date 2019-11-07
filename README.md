@@ -62,4 +62,4 @@ mvn clean package -Dskiptests
 ````
 mvn install:install-file -Dfile=./target/astrea-1.0.0.jar -DgroupId=oeg.validation -DartifactId=astrea -Dversion=1.0.0 -Dpackaging=jar
 ````
- 2.  Import the dependency in your project using the pom file relying on the previous snipped
+ 3.  Import the dependency in your project using the pom file relying on the previous snipped
