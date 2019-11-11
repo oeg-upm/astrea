@@ -1,13 +1,0 @@
-
-jsquid:S1192$"NDefine a constant instead of duplicating this literal "        ) ;\n" 3 times.( ƒò€ùÿÿÿÿ
-fsquid:S1192%"JDefine a constant instead of duplicating this literal "    ] ;\n" 3 times.(‡óâÅúÿÿÿÿ
-tsquid:S1192 "]Define a constant instead of duplicating this literal "      rdf:type owl:Class ;\n" 3 times.(üŞÃù
-msquid:S1192!"VDefine a constant instead of duplicating this literal "      owl:unionOf (\n" 3 times.(ü°Èü
-osquid:CommentedOutCodeLineŠ"<This block of commented-out lines of code should be removed.(ÊüŸ÷úÿÿÿÿ8í®”ãá-
-U
-squid:S106Œ"9Replace this use of System.out or System.err by a logger.(¾ÊÙµúÿÿÿÿ
-O
-squid:S106"9Replace this use of System.out or System.err by a logger.(´ÍÇE
-_squid:S1192†"GDefine a constant instead of duplicating this literal "TURTLE" 3 times.(½Ë³ü
-¼squid:S1192l"ŸDefine a constant instead of duplicating this literal "                                                                [ rdf:type owl:Restriction ;\n" 3 times.(åÌØ°ûÿÿÿÿ
-bsquid:UselessImportCheck">Remove this unused import 'org.apache.jena.rdf.model.RDFNode'.(ËëÍˆ

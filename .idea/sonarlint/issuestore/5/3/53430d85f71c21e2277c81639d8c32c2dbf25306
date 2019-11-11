@@ -1,20 +1,0 @@
-
-™squid:S1192"Define a constant instead of duplicating this literal "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" 3 times.(¾§£Óüÿÿÿÿ
-”squid:S1192"zDefine a constant instead of duplicating this literal "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" 3 times.(Õ·úÿÿÿÿ
-usquid:S1192"`Define a constant instead of duplicating this literal "  owl:onDatatype xsd:string ;\n" 3 times.(¥¶’
-çsquid:S1192"ÑDefine a constant instead of duplicating this literal "Note that the value-space is not defined, so a generic OWL2 processor cannot compute ordering relationships of values of this type.\"\"\"@en ;\n" 6 times.(Üÿè
-‚squid:S1192"hDefine a constant instead of duplicating this literal "  rdfs:label \"Generalized day\"@en ;\n" 3 times.(Ú´ú†üÿÿÿÿ
-dsquid:S1192"JDefine a constant instead of duplicating this literal "    ) ;\n" 3 times.( ƒò€ùÿÿÿÿ
-‡squid:S1192"mDefine a constant instead of duplicating this literal "@prefix : <http://www.w3.org/2006/time#> .\n" 3 times.(ÙóÍÆûÿÿÿÿ
-psquid:S1192"[Define a constant instead of duplicating this literal "  owl:withRestrictions (\n" 3 times.(¯éûÎ
-Ósquid:S1192"¸Define a constant instead of duplicating this literal "  skos:definition \"\"\"Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. \n" 3 times.(†‚§ñøÿÿÿÿ
-Ësquid:S1192"µDefine a constant instead of duplicating this literal "  rdfs:comment \"\"\"Day of month - formulated as a text string with a pattern constraint to reproduce the same lexical form as gDay, except that values up to 99 are permitted, in order to support calendars with more than 31 days in a month. \n" 3 times.(Ø¢†ˆ
-ˆsquid:S1192"sDefine a constant instead of duplicating this literal "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ." 3 times.(Æ¿ÕÙ
-hsquid:S1192"NDefine a constant instead of duplicating this literal ":generalDay\n" 3 times.(Á–×¿ıÿÿÿÿ
-‡squid:S1192"mDefine a constant instead of duplicating this literal "@prefix dct: <http://purl.org/dc/terms/> .\n" 3 times.(´êà„ùÿÿÿÿ
-“squid:S1192"yDefine a constant instead of duplicating this literal "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" 3 times.(’Ş”Æûÿÿÿÿ
-dsquid:S1192"JDefine a constant instead of duplicating this literal "      [\n" 4 times.( ¬¬¦ıÿÿÿÿ
-wsquid:S1192"]Define a constant instead of duplicating this literal "  rdf:type rdfs:Datatype ;\n" 3 times.(ˆ·İ€üÿÿÿÿ
-dsquid:S1192"JDefine a constant instead of duplicating this literal "      ]\n" 4 times.(ü©ş˜øÿÿÿÿ
-‡squid:S1192"rDefine a constant instead of duplicating this literal "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" 3 times.(ù»•Ó
-[squid:S1192"GDefine a constant instead of duplicating this literal "TURTLE" 4 times.(Ë–‰v
