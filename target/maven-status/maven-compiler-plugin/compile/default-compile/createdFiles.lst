@@ -1,3 +1,4 @@
-sharper/generators/OwlGenerator.class
 sharper/generators/OptimisedOwlGenerator.class
+sharper/generators/TestMain.class
 astrea/model/ShaclFromOwl.class
+sharper/generators/OwlGenerator.class

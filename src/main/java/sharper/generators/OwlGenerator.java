@@ -1,59 +1,104 @@
 package sharper.generators;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-
 import astrea.model.ShaclFromOwl;
 
+/**
+ * This class implements the {@link ShaclFromOwl} interface.<p> 
+ * It retrieves the queries that allow the transformation from owl to SHACL. It can be provided with the public official Astrea <a href="https://astrea.linkeddata.es/">SPARQL</a> endpoints (by default), or any other as far as it follows the same structure. In addition, it could be provided with a local file containing the Astrea's RDF, like the published in our <a href="https://github.com/oeg-upm/Astrea">GitHub</a>.<p>
+ * This class offers the functionality of Astrea considering always the latest version of the transformation queries
+ * @author Andrea Cimmino
+ *
+ */
 public class OwlGenerator implements ShaclFromOwl{
 
-	private List<String> queries;
+	// -- Attributes
 	
+	private List<String> queries;
+	private String endpoint = "https://astrea.helio.linkeddata.es/sparql";
+	private static final String QUERY_FETCH_SPARQL = "SELECT DISTINCT ?query {\n\t ?sub <http://oeg.es/astrea/ontology#query> ?query .\n}";
+	private Logger log = Logger.getLogger(OwlGenerator.class.getName());
+
+	
+	// -- Constructors
+	
+	/**
+	 * This constructor relies on the public available <a href="https://astrea.linkeddata.es/">dataset</a> of Astrea.
+	 */
 	public OwlGenerator() {
 		queries = new ArrayList<>();
 		fetchQueries();
+		
 	}
 	
+	/**
+	 * This constructor could receive any other version of the Astrea's dataset published in a SPARQL endpoint, as far as it follows the Astrea's dataset model.
+	 */
+	public OwlGenerator(String endpoint) {
+		queries = new ArrayList<>();
+		fetchQueries();
+		this.endpoint = endpoint;
+	}
 	
+	/**
+	 * This method fetches the queries from the provided SPARQL endpoint
+	 */
 	private void fetchQueries() {
 		
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new FileReader("/Users/cimmino/Desktop/queries.csv"));
-			String line = reader.readLine();
-			Boolean open = false;
-			StringBuilder query = new StringBuilder();
-			while (line != null) {
-				if(line!="-" && line!= "QUERY") {
-					
-					if(!line.endsWith("\"")) {
-						query.append(line).append("\n");
-					}else {
-						queries.add(query.toString().replaceAll("^\\s*\"", "").replaceAll("\"\\s*$", ""));
-						System.out.println(query);
-						query = new StringBuilder();
-						break;
-					}					
-				}
-				// read next line
-				line = reader.readLine();
+		Query query = QueryFactory.create(QUERY_FETCH_SPARQL);
+		QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
+
+		ResultSet results = qexec.execSelect();
+		while(results.hasNext()) {
+			QuerySolution qSol = results.next();
+			String queryFetched  = qSol.get("?query").asLiteral().getString();
+			
+			if(queryFetched.length()>1) {
+				queries.add(queryFetched);					
 			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+	
+		qexec.close();
 	}
+	
+	/**
+	 * This method fetches the queries from the provided RDF dataset
+	 */
+	public OwlGenerator(File rdfDataset) {
+		Model model = ModelFactory.createDefaultModel() ;
+		model.read(rdfDataset.getAbsolutePath()) ;
+		
+		Query query = QueryFactory.create(QUERY_FETCH_SPARQL);
+		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+
+		ResultSet results = qexec.execSelect();
+		while(results.hasNext()) {
+			QuerySolution qSol = results.next();
+			String queryFetched  = qSol.get("?query").asLiteral().getString();
+			
+			if(queryFetched.length()>1) {
+				queries.add(queryFetched);					
+			}
+		}
+	
+		qexec.close();
+	}
+	
+	// -- Methods
 	
 	@Override
 	public Model fromURLs(List<String> owlUrls) {
@@ -89,13 +134,24 @@ public class OwlGenerator implements ShaclFromOwl{
 	@Override
 	public Model fromModel(Model ontology) {
 		Model shapes = ModelFactory.createDefaultModel();
-		for(String query:queries) {
-			Query queryNodeShapes = QueryFactory.create(query);
-			Model nodeShapes = QueryExecutionFactory.create(queryNodeShapes, ontology).execConstruct();
-			shapes.add(nodeShapes);
-		}
-		
+		queries.parallelStream().forEach(query -> parallelPopulation(query, ontology, shapes));
 		return shapes;
 	}
 
+	private void parallelPopulation(String query, Model ontology, Model shapes) {
+		QueryExecution qExec = null;
+		try {
+			Query queryNodeShapes = QueryFactory.create(query);
+			qExec = QueryExecutionFactory.create(queryNodeShapes, ontology);
+			shapes.add(qExec.execConstruct());
+			
+		} catch(Exception e) {
+			String errorMsg = (new StringBuilder()).append("The following query produced the error: ").append(e.toString()).append("\n").append(query).toString();
+			log.severe(errorMsg);
+		} finally {
+			if(qExec!=null)
+				qExec.close();
+		}
+	}
+	
 }

@@ -2,11 +2,7 @@ package sharper.generators;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
@@ -14,10 +10,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.update.UpdateAction;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateRequest;
@@ -25,16 +18,13 @@ import org.apache.jena.update.UpdateRequest;
 import astrea.model.ShaclFromOwl;
 
 public class OptimisedOwlGenerator implements ShaclFromOwl{
-	private static final String SH_PROPERTY = "http://www.w3.org/ns/shacl#property";
-	private static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
-	private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
+
 
 	private static final String PREFIXES = 	"PREFIX owl: <http://www.w3.org/2002/07/owl#> \n"+
 									  		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
 											"PREFIX sh: <http://www.w3.org/ns/shacl#>\n" + 
 											"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
 											"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n";
-											//"PREFIX apf: <http://jena.hpl.hp.com/ARQ/property#>\n";
 	
 	// 0. Query to create initial NodeShapes
 	private static final String QUERY_CREATE_NODESHAPE = PREFIXES +
@@ -82,7 +72,6 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 													 + "OPTIONAL { ?type rdfs:seeAlso ?shapeNodeSeeAlso .} \n"
 													 + "OPTIONAL { ?type rdfs:isDefinedBy ?shapeNodeDefinedBy .} \n"
 													 // 3. Data & Object properties types extractor
-														// TODO: consider that we may have owl:unionOf, or any other, as range of the rdfs:domain
 													 + "OPTIONAL { ?property a  ?propertyType;\n"
 													 + "		 			rdfs:domain ?type ; \n"
 													 + " 	 VALUES ?propertyType { owl:ObjectProperty owl:DatatypeProperty rdf:Property} .\n"
@@ -131,9 +120,8 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 															 + "					sh:property [ \n"
 															// + "					 	a sh:PropertyShape;\n"
 															 + "					 	sh:path ?property;\n"
-															 + "					 	sh:path ?propertyChain;\n"
-															 + "					 	?variableRange ?valuesInRange;\n" //TODO:  instancias el sh:class como variable que se inyecta con el bind conditional
-														// TO REMOVE?	 + "					 	sh:datatype ?valuesInRange;\n"
+														//UNCOMMENT + "					 	sh:path ?propertyChain;\n"
+															 + "					 	?variableRange ?valuesInRange;\n"
 															// -- 1. Cardinality injector
 															 + "			    			sh:maxCount ?maxCardinality ;\n" // maxCardinality
 															 + "			   			sh:minCount ?minCardinality ;\n" // minCardinality
@@ -162,12 +150,10 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 															 + " 		OPTIONAL {?type rdfs:subClassOf ?owlPropertyRestriction .\n"
 															 + " 			 ?owlPropertyRestriction a owl:Restriction ."	
 															 + " 			 ?owlPropertyRestriction owl:onProperty ?property . \n"
-															 + "				OPTIONAL{ ?owlPropertyRestriction owl:allValuesFrom ?valuesInRange ."
-															 + "  			BIND ( IF ( STRSTARTS(str(?valuesInRange),\"http://www.w3.org/2001/XMLSchema#\")"/* || ... */+ ", sh:datatype, sh:class ) AS ?variableRange ) \n"
-															 + "}\n."
-															 //TODO:  BIND CONDITIONAL DE SI ES XSD O UNA DE LAS OPCIONES -> X CON SH:DATATYPE, SINO X CON SH:CLASS (LEGO LO ELIMINAMOS)
-															
-															 +" 			}\n"		
+															 + "				 OPTIONAL{ ?owlPropertyRestriction owl:allValuesFrom ?valuesInRange ."
+															 + "  			 	BIND ( IF ( STRSTARTS(str(?valuesInRange),\"http://www.w3.org/2001/XMLSchema#\")"/* || ... */+ ", sh:datatype, sh:class ) AS ?variableRange ) \n"
+															 + "				 }\n."
+															 +" 		   }\n"		
 															// -- 1. Cardinality extractor
 															+ " 	OPTIONAL { ?owlPropertyRestriction owl:maxCardinality ?maxCardinality . }\n" 	// owl:maxCardinality
 															+ " OPTIONAL { ?owlPropertyRestriction owl:minCardinality ?minCardinality .}\n"  	// owl:minCardinality
@@ -249,7 +235,7 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 				 + "}";
 
 	private static final String QUERY_INCLUDE_UNIQUE_RESTRICTION_TO_PROPERTYSHAPE_2 = PREFIXES 
-			+ "CONSTRUCT { \n"
+			 + "CONSTRUCT { \n"
 			 + "			   ?shapeUrl sh:maxCount 1 .\n"
 			 + "			   ?shapeUrl sh:inversePath ?property .\n"
 			 + " }\n"
@@ -285,7 +271,8 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 														 + "						 sh:maxInclusive  ?restrictionMaxInclusive  ; \n" 
 														 + " } WHERE { \n"
 														 + "		?property a ?propertyType .\n"
-														 + "		VALUES ?propertyType {owl:DatatypeProperty rdf:Property rdfs:Datatype}"
+														 + "		VALUES ?propertyType {owl:DatatypeProperty rdfs:Datatype} " // TODO: BEFORE THIS TYPE WAS IN THE LIST, rdf:Property 
+														
 														 + "		OPTIONAL { ?property rdfs:range ?typeInRange. }\n"
 														 // 1. Extracting the owl:withRestrictions
 														 + "		OPTIONAL { ?property owl:withRestrictions ?restrictionsList . \n"
@@ -323,7 +310,7 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 											 + "						 sh:nodeKind sh:BlankNodeOrIRI . \n" 
 											 + " } WHERE { \n"
 											 + "		?property a ?propertyType .\n"
-											 + "		VALUES ?propertyType {owl:ObjectProperty rdf:Property}"
+											 + "		VALUES ?propertyType {owl:ObjectProperty }" // todo: before rdf:Property was in this list
 											 + "		OPTIONAL { ?property rdfs:range ?typeInRange. }\n"
 											 + "		OPTIONAL { ?property rdfs:range ?typeInRangeBlank . "
 											 + "					?typeInRangeBlank owl:unionOf ?typeInRange ."
@@ -441,8 +428,7 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 		// 0. Clean empty URL sh:property [] patterns
 		cleanEmptyGraphs(shapes);
 		
-		// 1. Add xsd:string to any property that has no data type
-		addXsdStringDatatype(shapes); // TODO
+
 		// 2. Remove inconsistencies, if a subject has a sh:path and sh:inversePah, remove the former
 		removePathInconsistencies(shapes);
 		// 3. Embedded the sh:PropertyShape types 
@@ -487,26 +473,6 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 		
 	}
 
-
-	
-	
-	private void addXsdStringDatatype(Model shapes) {
-		// TODO: consider there to include this in the NodeShape and the PropertyShape as well
-		// 0. For the NodeShape:
-		List<Statement> statementsToAdd = new ArrayList<>();
-		StmtIterator iterator = shapes.listStatements(null, ResourceFactory.createProperty(SH_PROPERTY), (RDFNode) null);
-		while(iterator.hasNext()) {
-			Statement rootStatement = iterator.next();
-			Resource propertyURI = rootStatement.getObject().asResource();
-			// If property does not have xsd datatype nor is a property for an object property
-			Boolean conditionDatatypes = shapes.contains(propertyURI, ResourceFactory.createProperty(SH_DATATYPE), (RDFNode) null);
-			Boolean conditionIsObjectProperty = shapes.contains(propertyURI, ResourceFactory.createProperty(SH_CLASS), (RDFNode) null);
-			if(!conditionDatatypes && !conditionIsObjectProperty) {
-				System.out.println();
-			}
-			
-		}
-	}
 
 
 
