@@ -1,11 +1,11 @@
 package test.optimised.shapes;
 
+import astrea.generators.OptimisedOwlGenerator;
 import astrea.model.ShaclFromOwl;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OptimisedOwlGenerator;
 
 public class PropertyPairConstraintTest {
 

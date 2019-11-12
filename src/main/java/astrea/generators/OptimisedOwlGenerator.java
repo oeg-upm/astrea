@@ -1,4 +1,4 @@
-package sharper.generators;
+package astrea.generators;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

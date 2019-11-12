@@ -1,4 +1,4 @@
-package sharper.generators;
+package astrea.generators;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -47,7 +47,9 @@ public class OwlGenerator implements ShaclFromOwl{
 	
 	/**
 	 * This constructor could receive any other version of the Astrea's dataset published in a SPARQL endpoint, as far as it follows the Astrea's dataset model.
+	 * @param endpoint a SPARQL enpoint url
 	 */
+
 	public OwlGenerator(String endpoint) {
 		queries = new ArrayList<>();
 		fetchQueries();
@@ -55,7 +57,7 @@ public class OwlGenerator implements ShaclFromOwl{
 	}
 	
 	/**
-	 * This method fetches the queries from the provided SPARQL endpoint
+	 * This constructor fetches the queries from the provided SPARQL endpoint
 	 */
 	private void fetchQueries() {
 		
@@ -76,7 +78,8 @@ public class OwlGenerator implements ShaclFromOwl{
 	}
 	
 	/**
-	 * This method fetches the queries from the provided RDF dataset
+	 * This constructor fetches the queries from the provided RDF dataset
+	 * @param rdfDataset a File containing a RDF dataset with the Astrea queriess
 	 */
 	public OwlGenerator(File rdfDataset) {
 		Model model = ModelFactory.createDefaultModel() ;
@@ -96,6 +99,22 @@ public class OwlGenerator implements ShaclFromOwl{
 		}
 	
 		qexec.close();
+	}
+	
+	/**
+	 * This method returns the list of SPARQL queries that are used to generate the SHACL shapes
+	 * @return the queries used to generate the SHACL shapes
+	 */
+	public List<String> getQueries() {
+		return queries;
+	}
+
+	/**
+	 * This method allows to set the list of SPARQL queries used to generate the SHACL shapes
+	 * @param queries used to generate the SHACL shapes
+	 */
+	public void setQueries(List<String> queries) {
+		this.queries = queries;
 	}
 	
 	// -- Methods

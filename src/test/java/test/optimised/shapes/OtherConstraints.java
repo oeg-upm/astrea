@@ -1,5 +1,7 @@
 package test.optimised.shapes;
 
+import astrea.generators.OptimisedOwlGenerator;
+import astrea.generators.OwlGenerator;
 import astrea.model.ShaclFromOwl;
 
 import org.apache.jena.rdf.model.Model;
@@ -7,8 +9,6 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import sharper.generators.OptimisedOwlGenerator;
-import sharper.generators.OwlGenerator;
 
 public class OtherConstraints {
 

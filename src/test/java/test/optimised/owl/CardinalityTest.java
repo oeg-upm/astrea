@@ -5,8 +5,8 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+import astrea.generators.OptimisedOwlGenerator;
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OptimisedOwlGenerator;
 
 
 /**

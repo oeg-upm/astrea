@@ -7,8 +7,8 @@ import org.apache.jena.vocabulary.RDFS;
 import org.junit.Assert;
 import org.junit.Test;
 
+import astrea.generators.OptimisedOwlGenerator;
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OptimisedOwlGenerator;
 
 public class AnnotationPropertiesTest {
 

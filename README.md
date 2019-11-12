@@ -1,9 +1,43 @@
 # ASTREA
 
-## 1. Quick start
-Astrea can be used as a java library for third-party java projects. First install Astrea as a dependency following the steps detailed in the section **1.1.1 Install Astrea**. Then, in you code create an instance of our Astrea object as follows:
+
+## 1 - Install Astrea
+In order to use the Astrea as java library for third-party components there are two approaches: import the library as a *jar* or install Astrea as a local maven dependency and then use your *pom.xml* to import it. Following we provide a guide for both options.
+
+#### 1.1Import Astrea as a jar
+Download the last release from our GitHub. Then, import the *jar* file in a project .
+#### 1.2 Instaling as local maven dependency
+Astrea can be installed as a local dependency. For this purpose download the code from this repository:
+`````
+git clone https://github.com/oeg-upm/Astrea.git
+`````
+Then, install the project as a local maven dependency, for which you can run the script that we provide
+`````
+bash mvn-install.sh
+`````
+Finally, import in a project the Astrea maven dependency using the following code in your *pom.xml*:
 ````
-ShaclFromOwl sharper = new OptimisedOwlGenerator();
+<dependency>
+	<groupId>oeg.validation</groupId>
+	<artifactId>astrea</artifactId>
+	<version>1.0.0</version>
+</dependency>
+````
+Alternatively, Astrea can be installed as a local dependency following these steps:
+ 1.  Compile the project:
+````
+mvn clean package -Dskiptests
+````
+ 2.  Compile the project:
+````
+mvn install:install-file -Dfile=./target/astrea-1.0.0.jar -DgroupId=oeg.validation -DartifactId=astrea -Dversion=1.0.0 -Dpackaging=jar
+````
+ 3.  Import the dependency in your project using the pom file relying on the previous snipped
+
+## 2 - Quick start
+Astrea can be used as a java library for third-party java projects, in you code create an instance of our Astrea object as follows:
+````
+ShaclFromOwl sharper = new OwlGenerator();
 ````
 Having this object the shapes, which will be provided as [jena]([https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html](https://jena.apache.org/documentation/javadoc/jena/org/apache/jena/rdf/model/Model.html)) Models, can be generated using different methods:
 
@@ -31,35 +65,4 @@ Model shapes = sharper.fromModel(ontologyModel);
 
 **Keep in mind that Astrea will automatically include all the ontologies that are specified under the owl:imports statement, and therefore, it will generate their shapes as well.**
 
-### 1.1 Install Astrea
-In order to use the Astrea as java library for third-party components there are two approaches: import the library as a *jar* or install Astrea as a local maven dependency and then use your *pom.xml* to import it. Following we provide a guide for both options.
-
-#### 1.1.1 Import Astrea as a jar
-Download the last release from our GitHub. Then, import the *jar* file in a project .
-#### 1.1.2 Instaling as local maven dependency
-Astrea can be installed as a local dependency. For this purpose download the code from this repository:
-`````
-git clone https://github.com/oeg-upm/Astrea.git
-`````
-Then, install the project as a local maven dependency, for which you can run the script that we provide
-`````
-bash mvn-install.sh
-`````
-Finally, import in a project the Astrea maven dependency using the following code in your *pom.xml*:
-````
-<dependency>
-	<groupId>oeg.validation</groupId>
-	<artifactId>astrea</artifactId>
-	<version>1.0.0</version>
-</dependency>
-````
-Alternatively, Astrea can be installed as a local dependency following these steps:
- 1.  Compile the project:
-````
-mvn clean package -Dskiptests
-````
- 2.  Compile the project:
-````
-mvn install:install-file -Dfile=./target/astrea-1.0.0.jar -DgroupId=oeg.validation -DartifactId=astrea -Dversion=1.0.0 -Dpackaging=jar
-````
- 3.  Import the dependency in your project using the pom file relying on the previous snipped
+**To check other constructors of the OwlGenerator class read our [java doc]()**

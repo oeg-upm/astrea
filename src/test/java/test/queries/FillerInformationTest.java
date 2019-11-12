@@ -6,8 +6,8 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+import astrea.generators.OwlGenerator;
 import astrea.model.ShaclFromOwl;
-import sharper.generators.OwlGenerator;
 
 public class FillerInformationTest {
 
