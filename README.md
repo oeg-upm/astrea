@@ -65,4 +65,4 @@ Model shapes = sharper.fromModel(ontologyModel);
 
 **Keep in mind that Astrea will automatically include all the ontologies that are specified under the owl:imports statement, and therefore, it will generate their shapes as well.**
 
-**To check other constructors of the OwlGenerator class read our [java doc]()**
+**To check other constructors of the OwlGenerator class read our [java doc](https://oeg-upm.github.io/Astrea/)**
