@@ -1,0 +1,301 @@
+construct,type,name,description
+http://www.w3.org/ns/shacl#Shape,http://www.w3.org/2000/01/rdf-schema#Class,Shape,A shape is a collection of constraints that may be targeted for certain nodes.
+http://www.w3.org/ns/shacl#NodeShape,http://www.w3.org/2000/01/rdf-schema#Class,Node shape,A node shape is a shape that specifies constraint that need to be met with respect to focus nodes.
+http://www.w3.org/ns/shacl#PropertyShape,http://www.w3.org/2000/01/rdf-schema#Class,Property shape,A property shape is a shape that specifies constraints on the values of a focus node for a given property or path.
+http://www.w3.org/ns/shacl#Severity,http://www.w3.org/2000/01/rdf-schema#Class,Severity,"The class of validation result severity levels, including violation and warning levels."
+http://www.w3.org/ns/shacl#NodeKind,http://www.w3.org/2000/01/rdf-schema#Class,Node kind,"The class of all node kinds, including sh:BlankNode, sh:IRI, sh:Literal or the combinations of these: sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral."
+http://www.w3.org/ns/shacl#ValidationReport,http://www.w3.org/2000/01/rdf-schema#Class,Validation report,The class of SHACL validation reports.
+http://www.w3.org/ns/shacl#ValidationResult,http://www.w3.org/2000/01/rdf-schema#Class,Validation result,The class of validation results.
+http://www.w3.org/ns/shacl#AbstractResult,http://www.w3.org/2000/01/rdf-schema#Class,Abstract result,"The base class of validation results, typically not instantiated directly."
+http://www.w3.org/ns/shacl#ConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Class,Constraint component,The class of constraint components.
+http://www.w3.org/ns/shacl#Parameterizable,http://www.w3.org/2000/01/rdf-schema#Class,Parameterizable,"Superclass of components that can take parameters, especially functions and constraint components."
+http://www.w3.org/ns/shacl#Parameter,http://www.w3.org/2000/01/rdf-schema#Class,Parameter,"The class of parameter declarations, consisting of a path predicate and (possibly) information about allowed value type, cardinality and other characteristics."
+http://www.w3.org/ns/shacl#Validator,http://www.w3.org/2000/01/rdf-schema#Class,Validator,"The class of validators, which provide instructions on how to process a constraint definition. This class serves as base class for the SPARQL-based validators and other possible implementations."
+http://www.w3.org/ns/shacl#SPARQLAskValidator,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL ASK validator,The class of validators based on SPARQL ASK queries. The queries are evaluated for each value node and are supposed to return true if the given node conforms.
+http://www.w3.org/ns/shacl#SPARQLAskExecutable,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL ASK executable,The class of SPARQL executables that are based on an ASK query.
+http://www.w3.org/ns/shacl#SPARQLSelectValidator,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL SELECT validator,The class of validators based on SPARQL SELECT queries. The queries are evaluated for each focus node and are supposed to produce bindings for all focus nodes that do not conform.
+http://www.w3.org/ns/shacl#SPARQLSelectExecutable,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL SELECT executable,The class of SPARQL executables based on a SELECT query.
+http://www.w3.org/ns/shacl#SPARQLExecutable,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL executable,The class of resources that encapsulate a SPARQL query.
+http://www.w3.org/ns/shacl#SPARQLConstructExecutable,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL CONSTRUCT executable,The class of SPARQL executables that are based on a CONSTRUCT query.
+http://www.w3.org/ns/shacl#SPARQLUpdateExecutable,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL UPDATE executable,The class of SPARQL executables based on a SPARQL UPDATE.
+http://www.w3.org/ns/shacl#PrefixDeclaration,http://www.w3.org/2000/01/rdf-schema#Class,Prefix declaration,"The class of prefix declarations, consisting of pairs of a prefix with a namespace."
+http://www.w3.org/ns/shacl#SPARQLConstraint,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL constraint,The class of constraints based on SPARQL SELECT queries.
+http://www.w3.org/ns/shacl#PropertyGroup,http://www.w3.org/2000/01/rdf-schema#Class,Property group,Instances of this class represent groups of property shapes that belong together.
+http://www.w3.org/ns/shacl#Target,http://www.w3.org/2000/01/rdf-schema#Class,Target,The base class of targets such as those based on SPARQL queries.
+http://www.w3.org/ns/shacl#TargetType,http://www.w3.org/2000/01/rdf-schema#Class,Target type,The (meta) class for parameterizable targets.	Instances of this are instantiated as values of the sh:target property.
+http://www.w3.org/ns/shacl#SPARQLTarget,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL target,The class of targets that are based on SPARQL queries.
+http://www.w3.org/ns/shacl#SPARQLTargetType,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL target type,The (meta) class for parameterizable targets that are based on SPARQL queries.
+http://www.w3.org/ns/shacl#Function,http://www.w3.org/2000/01/rdf-schema#Class,Function,The class of SHACL functions.
+http://www.w3.org/ns/shacl#SPARQLFunction,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL function,A function backed by a SPARQL query - either ASK or SELECT.
+http://www.w3.org/ns/shacl#ResultAnnotation,http://www.w3.org/2000/01/rdf-schema#Class,Result annotation,"A class of result annotations, which define the rules to derive the values of a given annotation property as extra values for a validation result."
+http://www.w3.org/ns/shacl#Rule,http://www.w3.org/2000/01/rdf-schema#Class,Rule,The class of SHACL rules. Never instantiated directly.
+http://www.w3.org/ns/shacl#TripleRule,http://www.w3.org/2000/01/rdf-schema#Class,"A rule based on triple (subject, predicate, object) pattern.",
+http://www.w3.org/ns/shacl#SPARQLRule,http://www.w3.org/2000/01/rdf-schema#Class,SPARQL CONSTRUCT rule,The class of SHACL rules based on SPARQL CONSTRUCT queries.
+http://www.w3.org/ns/shacl#JSExecutable,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript executable,Abstract base class of resources that declare an executable JavaScript.
+http://www.w3.org/ns/shacl#JSTarget,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript target,The class of targets that are based on JavaScript functions.
+http://www.w3.org/ns/shacl#JSTargetType,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript target type,The (meta) class for parameterizable targets that are based on JavaScript functions.
+http://www.w3.org/ns/shacl#JSConstraint,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript-based constraint,The class of constraints backed by a JavaScript function.
+http://www.w3.org/ns/shacl#JSLibrary,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript library,"Represents a JavaScript library, typically identified by one or more URLs of files to include."
+http://www.w3.org/ns/shacl#JSFunction,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript function,The class of SHACL functions that execute a JavaScript function when called.
+http://www.w3.org/ns/shacl#JSRule,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript rule,The class of SHACL rules expressed using JavaScript.
+http://www.w3.org/ns/shacl#JSValidator,http://www.w3.org/2000/01/rdf-schema#Class,JavaScript validator,A SHACL validator based on JavaScript. This can be used to declare SHACL constraint components that perform JavaScript-based validation when used.
+http://www.w3.org/ns/shacl#prefix,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,prefix,The prefix of a prefix declaration.
+http://www.w3.org/ns/shacl#namespace,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,namespace,The namespace associated with a prefix in a prefix declaration.
+http://www.w3.org/ns/shacl#declare,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,declare,Links a resource with its namespace prefix declarations.
+http://www.w3.org/ns/shacl#suggestedShapesGraph,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,suggested shapes graph,Suggested shapes graphs for this ontology. The values of this property may be used in the absence of specific sh:shapesGraph statements.
+http://www.w3.org/ns/shacl#deactivated,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,deactivated,If set to true then all nodes conform to this.
+http://www.w3.org/ns/shacl#targetClass,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,target class,"Links a shape to a class, indicating that all instances of the class must conform to the shape."
+http://www.w3.org/ns/shacl#targetNode,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,target node,"Links a shape to individual nodes, indicating that these nodes must conform to the shape."
+http://www.w3.org/ns/shacl#targetObjectsOf,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,target objects of,"Links a shape to a property, indicating that all all objects of triples that have the given property as their predicate must conform to the shape."
+http://www.w3.org/ns/shacl#targetSubjectsOf,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,target subjects of,"Links a shape to a property, indicating that all subjects of triples that have the given property as their predicate must conform to the shape."
+http://www.w3.org/ns/shacl#message,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,message,A human-readable message (possibly with placeholders for variables) explaining the cause of the result.
+http://www.w3.org/ns/shacl#severity,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,severity,Defines the severity that validation results produced by a shape must have. Defaults to sh:Violation.
+http://www.w3.org/ns/shacl#conforms,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,conforms,"True if the validation did not produce any validation results, and false otherwise."
+http://www.w3.org/ns/shacl#result,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,result,The validation results contained in a validation report.
+http://www.w3.org/ns/shacl#shapesGraphWellFormed,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,shapes graph well-formed,If true then the validation engine was certain that the shapes graph has passed all SHACL syntax requirements during the validation process.
+http://www.w3.org/ns/shacl#detail,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,detail,"Links a result with other results that provide more details, for example to describe violations against nested shapes."
+http://www.w3.org/ns/shacl#focusNode,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,focus node,The focus node that was validated when the result was produced.
+http://www.w3.org/ns/shacl#resultMessage,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,result message,Human-readable messages explaining the cause of the result.
+http://www.w3.org/ns/shacl#resultPath,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,result path,"The path of a validation result, based on the path of the validated property shape."
+http://www.w3.org/ns/shacl#resultSeverity,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,result severity,"The severity of the result, e.g. warning."
+http://www.w3.org/ns/shacl#sourceConstraint,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,source constraint,The constraint that was validated when the result was produced.
+http://www.w3.org/ns/shacl#sourceShape,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,source shape,The shape that is was validated when the result was produced.
+http://www.w3.org/ns/shacl#sourceConstraintComponent,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,source constraint component,The constraint component that is the source of the result.
+http://www.w3.org/ns/shacl#value,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,value,An RDF node that has caused the result.
+http://www.w3.org/ns/shacl#shapesGraph,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,shapes graph,Shapes graphs that should be used when validating this data graph.
+http://www.w3.org/ns/shacl#entailment,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,entailment,An entailment regime that indicates what kind of inferencing is required by a shapes graph.
+http://www.w3.org/ns/shacl#path,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,path,Specifies the property path of a property shape.
+http://www.w3.org/ns/shacl#inversePath,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,inverse path,The (single) value of this property represents an inverse path (object to subject).
+http://www.w3.org/ns/shacl#alternativePath,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,alternative path,"The (single) value of this property must be a list of path elements, representing the elements of alternative paths."
+http://www.w3.org/ns/shacl#zeroOrMorePath,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,zero or more path,The (single) value of this property represents a path that is matched zero or more times.
+http://www.w3.org/ns/shacl#oneOrMorePath,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,one or more path,The (single) value of this property represents a path that is matched one or more times.
+http://www.w3.org/ns/shacl#zeroOrOnePath,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,zero or one path,The (single) value of this property represents a path that is matched zero or one times.
+http://www.w3.org/ns/shacl#parameter,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,parameter,The parameters of a function or constraint component.
+http://www.w3.org/ns/shacl#labelTemplate,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,label template,Outlines how human-readable labels of instances of the associated Parameterizable shall be produced. The values can contain {?paramName} as placeholders for the actual values of the given parameter.
+http://www.w3.org/ns/shacl#optional,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,optional,Indicates whether a parameter is optional.
+http://www.w3.org/ns/shacl#validator,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,validator,The validator(s) used to evaluate constraints of either node or property shapes.
+http://www.w3.org/ns/shacl#nodeValidator,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,shape validator,The validator(s) used to evaluate a constraint in the context of a node shape.
+http://www.w3.org/ns/shacl#propertyValidator,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,property validator,The validator(s) used to evaluate a constraint in the context of a property shape.
+http://www.w3.org/ns/shacl#and,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,and,RDF list of shapes to validate the value nodes against.
+http://www.w3.org/ns/shacl#class,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,class,The type that all value nodes must have.
+http://www.w3.org/ns/shacl#nodeKind,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,node kind,Specifies the node kind (e.g. IRI or literal) each value node.
+http://www.w3.org/ns/shacl#closed,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,closed,If set to true then the shape is closed.
+http://www.w3.org/ns/shacl#datatype,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,datatype,Specifies an RDF datatype that all value nodes must have.
+http://www.w3.org/ns/shacl#ignoredProperties,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,ignored properties,An optional RDF list of properties that are also permitted in addition to those explicitly enumerated via sh:property/sh:path.
+http://www.w3.org/ns/shacl#maxCount,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,max count,Specifies the maximum number of values in the set of value nodes.
+http://www.w3.org/ns/shacl#disjoint,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,disjoint,Specifies a property where the set of values must be disjoint with the value nodes.
+http://www.w3.org/ns/shacl#equals,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,equals,Specifies a property that must have the same values as the value nodes.
+http://www.w3.org/ns/shacl#hasValue,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,has value,Specifies a value that must be among the value nodes.
+http://www.w3.org/ns/shacl#in,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,in,Specifies a list of allowed values so that each value node must be among the members of the given list.
+http://www.w3.org/ns/shacl#languageIn,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,language in,Specifies a list of language tags that all value nodes must have.
+http://www.w3.org/ns/shacl#lessThan,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,less than,Specifies a property that must have smaller values than the value nodes.
+http://www.w3.org/ns/shacl#lessThanOrEquals,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,less than or equals,Specifies a property that must have smaller or equal values than the value nodes.
+http://www.w3.org/ns/shacl#maxExclusive,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,max exclusive,Specifies the maximum exclusive value of each value node.
+http://www.w3.org/ns/shacl#maxInclusive,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,max inclusive,Specifies the maximum inclusive value of each value node.
+http://www.w3.org/ns/shacl#maxLength,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,max length,Specifies the maximum string length of each value node.
+http://www.w3.org/ns/shacl#minCount,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,min count,Specifies the minimum number of values in the set of value nodes.
+http://www.w3.org/ns/shacl#minExclusive,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,min exclusive,Specifies the minimum exclusive value of each value node.
+http://www.w3.org/ns/shacl#minInclusive,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,min inclusive,Specifies the minimum inclusive value of each value node.
+http://www.w3.org/ns/shacl#minLength,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,min length,Specifies the minimum string length of each value node.
+http://www.w3.org/ns/shacl#node,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,node,Specifies the node shape that all value nodes must conform to.
+http://www.w3.org/ns/shacl#not,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,not,Specifies a shape that the value nodes must not conform to.
+http://www.w3.org/ns/shacl#or,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,or,Specifies a list of shapes so that the value nodes must conform to at least one of the shapes.
+http://www.w3.org/ns/shacl#pattern,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,pattern,Specifies a regular expression pattern that the string representations of the value nodes must match.
+http://www.w3.org/ns/shacl#flags,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,flags,An optional flag to be used with regular expression pattern matching.
+http://www.w3.org/ns/shacl#property,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,property,Links a shape to its property shapes.
+http://www.w3.org/ns/shacl#qualifiedMaxCount,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,qualified max count,The maximum number of value nodes that can conform to the shape.
+http://www.w3.org/ns/shacl#qualifiedValueShape,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,qualified value shape,The shape that a specified number of values must conform to.
+http://www.w3.org/ns/shacl#qualifiedValueShapesDisjoint,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,qualified value shapes disjoint,Can be used to mark the qualified value shape to be disjoint with its sibling shapes.
+http://www.w3.org/ns/shacl#qualifiedMinCount,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,qualified min count,The minimum number of value nodes that must conform to the shape.
+http://www.w3.org/ns/shacl#uniqueLang,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,unique languages,Specifies whether all node values must have a unique (or no) language tag.
+http://www.w3.org/ns/shacl#xone,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,exactly one,Specifies a list of shapes so that the value nodes must conform to exactly one of the shapes.
+http://www.w3.org/ns/shacl#ask,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,ask,The SPARQL ASK query to execute.
+http://www.w3.org/ns/shacl#construct,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,construct,The SPARQL CONSTRUCT query to execute.
+http://www.w3.org/ns/shacl#select,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,select,The SPARQL SELECT query to execute.
+http://www.w3.org/ns/shacl#update,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,update,The SPARQL UPDATE to execute.
+http://www.w3.org/ns/shacl#prefixes,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,prefixes,The prefixes that shall be applied before parsing the associated SPARQL query.
+http://www.w3.org/ns/shacl#sparql,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,constraint (in SPARQL),Links a shape with SPARQL constraints.
+http://www.w3.org/ns/shacl#defaultValue,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,default value,"A default value for a property, for example for user interface tools to pre-populate input fields."
+http://www.w3.org/ns/shacl#description,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,description,Human-readable descriptions for the property in the context of the surrounding shape.
+http://www.w3.org/ns/shacl#group,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,group,Can be used to link to a property group to indicate that a property shape belongs to a group of related property shapes.
+http://www.w3.org/ns/shacl#name,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,name,Human-readable labels for the property in the context of the surrounding shape.
+http://www.w3.org/ns/shacl#order,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,order,"Specifies the relative order of this compared to its siblings. For example use 0 for the first, 1 for the second."
+http://www.w3.org/ns/shacl#target,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,target,"Links a shape to a target specified by an extension language, for example instances of sh:SPARQLTarget."
+http://www.w3.org/ns/shacl#returnType,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,return type,The expected type of values returned by the associated function.
+http://www.w3.org/ns/shacl#resultAnnotation,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,result annotation,"Links a SPARQL validator with zero or more sh:ResultAnnotation instances, defining how to derive additional result properties based on the variables of the SELECT query."
+http://www.w3.org/ns/shacl#annotationProperty,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,annotation property,The annotation property that shall be set.
+http://www.w3.org/ns/shacl#annotationValue,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,annotation value,The (default) values of the annotation property.
+http://www.w3.org/ns/shacl#annotationVarName,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,annotation variable name,The name of the SPARQL variable from the SELECT clause that shall be used for the values.
+http://www.w3.org/ns/shacl#filterShape,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,filter shape,The shape that all input nodes of the expression need to conform to.
+http://www.w3.org/ns/shacl#nodes,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,nodes,The node expression producing the input nodes of a filter shape expression.
+http://www.w3.org/ns/shacl#intersection,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,intersection,A list of node expressions that shall be intersected.
+http://www.w3.org/ns/shacl#union,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,union,A list of node expressions that shall be used together.
+http://www.w3.org/ns/shacl#expression,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,expression,The node expression that must return true for the value nodes.
+http://www.w3.org/ns/shacl#rule,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,rule,The rules linked to a shape.
+http://www.w3.org/ns/shacl#condition,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,condition,The shapes that the focus nodes need to conform to before a rule is executed on them.
+http://www.w3.org/ns/shacl#subject,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,subject,An expression producing the resources that shall be inferred as subjects.
+http://www.w3.org/ns/shacl#predicate,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,predicate,An expression producing the properties that shall be inferred as predicates.
+http://www.w3.org/ns/shacl#object,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,object,An expression producing the nodes that shall be inferred as objects.
+http://www.w3.org/ns/shacl#js,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,JavaScript constraint,Constraints expressed in JavaScript.
+http://www.w3.org/ns/shacl#jsFunctionName,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,JavaScript function name,The name of the JavaScript function to execute.
+http://www.w3.org/ns/shacl#jsLibrary,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,JavaScript library,Declares which JavaScript libraries are needed to execute this.
+http://www.w3.org/ns/shacl#jsLibraryURL,http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,JavaScript library URL,Declares the URLs of a JavaScript library. This should be the absolute URL of a JavaScript file. Implementations may redirect those to local files.
+http://www.w3.org/ns/shacl#AndConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,And constraint component,A constraint component that can be used to test whether a value node conforms to all members of a provided list of shapes.
+http://www.w3.org/ns/shacl#ClassConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Class constraint component,A constraint component that can be used to verify that each value node is an instance of a given type.
+http://www.w3.org/ns/shacl#ClosedConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Closed constraint component,A constraint component that can be used to indicate that focus nodes must only have values for those properties that have been explicitly enumerated via sh:property/sh:path.
+http://www.w3.org/ns/shacl#DatatypeConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Datatype constraint component,A constraint component that can be used to restrict the datatype of all value nodes.
+http://www.w3.org/ns/shacl#DisjointConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Disjoint constraint component,A constraint component that can be used to verify that the set of value nodes is disjoint with the the set of nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#EqualsConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Equals constraint component,A constraint component that can be used to verify that the set of value nodes is equal to the set of nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#HasValueConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Has-value constraint component,A constraint component that can be used to verify that one of the value nodes is a given RDF node.
+http://www.w3.org/ns/shacl#InConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,In constraint component,A constraint component that can be used to exclusively enumerate the permitted value nodes.
+http://www.w3.org/ns/shacl#LanguageInConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Language-in constraint component,A constraint component that can be used to enumerate language tags that all value nodes must have.
+http://www.w3.org/ns/shacl#LessThanConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Less-than constraint component,A constraint component that can be used to verify that each value node is smaller than all the nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#LessThanOrEqualsConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,less-than-or-equals constraint component,A constraint component that can be used to verify that every value node is smaller than all the nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#MaxCountConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Max-count constraint component,A constraint component that can be used to restrict the maximum number of value nodes.
+http://www.w3.org/ns/shacl#MaxExclusiveConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Max-exclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a maximum exclusive value.
+http://www.w3.org/ns/shacl#MaxInclusiveConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Max-inclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a maximum inclusive value.
+http://www.w3.org/ns/shacl#MaxLengthConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Max-length constraint component,A constraint component that can be used to restrict the maximum string length of value nodes.
+http://www.w3.org/ns/shacl#MinCountConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Min-count constraint component,A constraint component that can be used to restrict the minimum number of value nodes.
+http://www.w3.org/ns/shacl#MinExclusiveConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Min-exclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a minimum exclusive value.
+http://www.w3.org/ns/shacl#MinInclusiveConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Min-inclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a minimum inclusive value.
+http://www.w3.org/ns/shacl#MinLengthConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Min-length constraint component,A constraint component that can be used to restrict the minimum string length of value nodes.
+http://www.w3.org/ns/shacl#NodeConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Node constraint component,A constraint component that can be used to verify that all value nodes conform to the given node shape.
+http://www.w3.org/ns/shacl#NodeKindConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Node-kind constraint component,A constraint component that can be used to restrict the RDF node kind of each value node.
+http://www.w3.org/ns/shacl#NotConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Not constraint component,A constraint component that can be used to verify that value nodes do not conform to a given shape.
+http://www.w3.org/ns/shacl#OrConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Or constraint component,A constraint component that can be used to restrict the value nodes so that they conform to at least one out of several provided shapes.
+http://www.w3.org/ns/shacl#PatternConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Pattern constraint component,A constraint component that can be used to verify that every value node matches a given regular expression.
+http://www.w3.org/ns/shacl#PropertyConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Property constraint component,A constraint component that can be used to verify that all value nodes conform to the given property shape.
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Qualified-max-count constraint component,A constraint component that can be used to verify that a specified maximum number of value nodes conforms to a given shape.
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Qualified-min-count constraint component,A constraint component that can be used to verify that a specified minimum number of value nodes conforms to a given shape.
+http://www.w3.org/ns/shacl#UniqueLangConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Unique-languages constraint component,A constraint component that can be used to specify that no pair of value nodes may use the same language tag.
+http://www.w3.org/ns/shacl#XoneConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Exactly one constraint component,A constraint component that can be used to restrict the value nodes so that they conform to exactly one out of several provided shapes.
+http://www.w3.org/ns/shacl#SPARQLConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,SPARQL constraint component,A constraint component that can be used to define constraints based on SPARQL queries.
+http://www.w3.org/ns/shacl#ExpressionConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,Expression constraint component,A constraint component that can be used to verify that a given node expression produces true for all value nodes.
+http://www.w3.org/ns/shacl#JSConstraintComponent,http://www.w3.org/ns/shacl#ConstraintComponent,JavaScript constraint component,A constraint component with the parameter sh:js linking to a sh:JSConstraint containing a sh:script.
+http://www.w3.org/ns/shacl#BlankNode,http://www.w3.org/ns/shacl#NodeKind,Blank node,The node kind of all blank nodes.
+http://www.w3.org/ns/shacl#BlankNodeOrIRI,http://www.w3.org/ns/shacl#NodeKind,Blank node or IRI,The node kind of all blank nodes or IRIs.
+http://www.w3.org/ns/shacl#BlankNodeOrLiteral,http://www.w3.org/ns/shacl#NodeKind,Blank node or literal,The node kind of all blank nodes or literals.
+http://www.w3.org/ns/shacl#IRI,http://www.w3.org/ns/shacl#NodeKind,IRI,The node kind of all IRIs.
+http://www.w3.org/ns/shacl#IRIOrLiteral,http://www.w3.org/ns/shacl#NodeKind,IRI or literal,The node kind of all IRIs or literals.
+http://www.w3.org/ns/shacl#Literal,http://www.w3.org/ns/shacl#NodeKind,Literal,The node kind of all literals.
+http://www.w3.org/ns/shacl#AndConstraintComponent-and,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#ClassConstraintComponent-class,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#ClosedConstraintComponent-closed,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#ClosedConstraintComponent-ignoredProperties,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#DatatypeConstraintComponent-datatype,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#DisjointConstraintComponent-disjoint,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#EqualsConstraintComponent-equals,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#HasValueConstraintComponent-hasValue,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#InConstraintComponent-in,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#LanguageInConstraintComponent-languageIn,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#LessThanConstraintComponent-lessThan,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#LessThanOrEqualsConstraintComponent-lessThanOrEquals,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MaxCountConstraintComponent-maxCount,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MaxExclusiveConstraintComponent-maxExclusive,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MaxInclusiveConstraintComponent-maxInclusive,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MaxLengthConstraintComponent-maxLength,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MinCountConstraintComponent-minCount,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MinExclusiveConstraintComponent-minExclusive,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MinInclusiveConstraintComponent-minInclusive,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#MinLengthConstraintComponent-minLength,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#NodeConstraintComponent-node,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#NodeKindConstraintComponent-nodeKind,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#NotConstraintComponent-not,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#OrConstraintComponent-or,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#PatternConstraintComponent-pattern,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#PatternConstraintComponent-flags,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#PropertyConstraintComponent-property,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent-qualifiedMaxCount,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent-qualifiedValueShape,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent-qualifiedValueShapesDisjoint,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent-qualifiedMinCount,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent-qualifiedValueShape,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent-qualifiedValueShapesDisjoint,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#UniqueLangConstraintComponent-uniqueLang,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#XoneConstraintComponent-xone,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#SPARQLConstraintComponent-sparql,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#ExpressionConstraintComponent-expression,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#JSConstraint-js,http://www.w3.org/ns/shacl#Parameter,,
+http://www.w3.org/ns/shacl#BlankNode,http://www.w3.org/2000/01/rdf-schema#Resource,Blank node,The node kind of all blank nodes.
+http://www.w3.org/ns/shacl#BlankNodeOrIRI,http://www.w3.org/2000/01/rdf-schema#Resource,Blank node or IRI,The node kind of all blank nodes or IRIs.
+http://www.w3.org/ns/shacl#BlankNodeOrLiteral,http://www.w3.org/2000/01/rdf-schema#Resource,Blank node or literal,The node kind of all blank nodes or literals.
+http://www.w3.org/ns/shacl#IRI,http://www.w3.org/2000/01/rdf-schema#Resource,IRI,The node kind of all IRIs.
+http://www.w3.org/ns/shacl#IRIOrLiteral,http://www.w3.org/2000/01/rdf-schema#Resource,IRI or literal,The node kind of all IRIs or literals.
+http://www.w3.org/ns/shacl#Literal,http://www.w3.org/2000/01/rdf-schema#Resource,Literal,The node kind of all literals.
+http://www.w3.org/ns/shacl#Info,http://www.w3.org/2000/01/rdf-schema#Resource,Info,The severity for an informational validation result.
+http://www.w3.org/ns/shacl#Violation,http://www.w3.org/2000/01/rdf-schema#Resource,Violation,The severity for a violation validation result.
+http://www.w3.org/ns/shacl#Warning,http://www.w3.org/2000/01/rdf-schema#Resource,Warning,The severity for a warning validation result.
+http://www.w3.org/ns/shacl#AndConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,And constraint component,A constraint component that can be used to test whether a value node conforms to all members of a provided list of shapes.
+http://www.w3.org/ns/shacl#AndConstraintComponent-and,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#ClassConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Class constraint component,A constraint component that can be used to verify that each value node is an instance of a given type.
+http://www.w3.org/ns/shacl#ClassConstraintComponent-class,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#ClosedConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Closed constraint component,A constraint component that can be used to indicate that focus nodes must only have values for those properties that have been explicitly enumerated via sh:property/sh:path.
+http://www.w3.org/ns/shacl#ClosedConstraintComponent-closed,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#ClosedConstraintComponent-ignoredProperties,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#DatatypeConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Datatype constraint component,A constraint component that can be used to restrict the datatype of all value nodes.
+http://www.w3.org/ns/shacl#DatatypeConstraintComponent-datatype,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#DisjointConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Disjoint constraint component,A constraint component that can be used to verify that the set of value nodes is disjoint with the the set of nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#DisjointConstraintComponent-disjoint,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#EqualsConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Equals constraint component,A constraint component that can be used to verify that the set of value nodes is equal to the set of nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#EqualsConstraintComponent-equals,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#HasValueConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Has-value constraint component,A constraint component that can be used to verify that one of the value nodes is a given RDF node.
+http://www.w3.org/ns/shacl#HasValueConstraintComponent-hasValue,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#InConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,In constraint component,A constraint component that can be used to exclusively enumerate the permitted value nodes.
+http://www.w3.org/ns/shacl#InConstraintComponent-in,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#LanguageInConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Language-in constraint component,A constraint component that can be used to enumerate language tags that all value nodes must have.
+http://www.w3.org/ns/shacl#LanguageInConstraintComponent-languageIn,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#LessThanConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Less-than constraint component,A constraint component that can be used to verify that each value node is smaller than all the nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#LessThanConstraintComponent-lessThan,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#LessThanOrEqualsConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,less-than-or-equals constraint component,A constraint component that can be used to verify that every value node is smaller than all the nodes that have the focus node as subject and the value of a given property as predicate.
+http://www.w3.org/ns/shacl#LessThanOrEqualsConstraintComponent-lessThanOrEquals,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MaxCountConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Max-count constraint component,A constraint component that can be used to restrict the maximum number of value nodes.
+http://www.w3.org/ns/shacl#MaxCountConstraintComponent-maxCount,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MaxExclusiveConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Max-exclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a maximum exclusive value.
+http://www.w3.org/ns/shacl#MaxExclusiveConstraintComponent-maxExclusive,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MaxInclusiveConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Max-inclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a maximum inclusive value.
+http://www.w3.org/ns/shacl#MaxInclusiveConstraintComponent-maxInclusive,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MaxLengthConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Max-length constraint component,A constraint component that can be used to restrict the maximum string length of value nodes.
+http://www.w3.org/ns/shacl#MaxLengthConstraintComponent-maxLength,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MinCountConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Min-count constraint component,A constraint component that can be used to restrict the minimum number of value nodes.
+http://www.w3.org/ns/shacl#MinCountConstraintComponent-minCount,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MinExclusiveConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Min-exclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a minimum exclusive value.
+http://www.w3.org/ns/shacl#MinExclusiveConstraintComponent-minExclusive,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MinInclusiveConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Min-inclusive constraint component,A constraint component that can be used to restrict the range of value nodes with a minimum inclusive value.
+http://www.w3.org/ns/shacl#MinInclusiveConstraintComponent-minInclusive,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#MinLengthConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Min-length constraint component,A constraint component that can be used to restrict the minimum string length of value nodes.
+http://www.w3.org/ns/shacl#MinLengthConstraintComponent-minLength,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#NodeConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Node constraint component,A constraint component that can be used to verify that all value nodes conform to the given node shape.
+http://www.w3.org/ns/shacl#NodeConstraintComponent-node,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#NodeKindConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Node-kind constraint component,A constraint component that can be used to restrict the RDF node kind of each value node.
+http://www.w3.org/ns/shacl#NodeKindConstraintComponent-nodeKind,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#NotConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Not constraint component,A constraint component that can be used to verify that value nodes do not conform to a given shape.
+http://www.w3.org/ns/shacl#NotConstraintComponent-not,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#OrConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Or constraint component,A constraint component that can be used to restrict the value nodes so that they conform to at least one out of several provided shapes.
+http://www.w3.org/ns/shacl#OrConstraintComponent-or,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#PatternConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Pattern constraint component,A constraint component that can be used to verify that every value node matches a given regular expression.
+http://www.w3.org/ns/shacl#PatternConstraintComponent-pattern,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#PatternConstraintComponent-flags,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#PropertyConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Property constraint component,A constraint component that can be used to verify that all value nodes conform to the given property shape.
+http://www.w3.org/ns/shacl#PropertyConstraintComponent-property,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Qualified-max-count constraint component,A constraint component that can be used to verify that a specified maximum number of value nodes conforms to a given shape.
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent-qualifiedMaxCount,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent-qualifiedValueShape,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#QualifiedMaxCountConstraintComponent-qualifiedValueShapesDisjoint,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Qualified-min-count constraint component,A constraint component that can be used to verify that a specified minimum number of value nodes conforms to a given shape.
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent-qualifiedMinCount,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent-qualifiedValueShape,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#QualifiedMinCountConstraintComponent-qualifiedValueShapesDisjoint,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#UniqueLangConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Unique-languages constraint component,A constraint component that can be used to specify that no pair of value nodes may use the same language tag.
+http://www.w3.org/ns/shacl#UniqueLangConstraintComponent-uniqueLang,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#XoneConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Exactly one constraint component,A constraint component that can be used to restrict the value nodes so that they conform to exactly one out of several provided shapes.
+http://www.w3.org/ns/shacl#XoneConstraintComponent-xone,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#SPARQLConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,SPARQL constraint component,A constraint component that can be used to define constraints based on SPARQL queries.
+http://www.w3.org/ns/shacl#SPARQLConstraintComponent-sparql,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#this,http://www.w3.org/2000/01/rdf-schema#Resource,this,A node expression that represents the current focus node.
+http://www.w3.org/ns/shacl#ExpressionConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,Expression constraint component,A constraint component that can be used to verify that a given node expression produces true for all value nodes.
+http://www.w3.org/ns/shacl#ExpressionConstraintComponent-expression,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#JSConstraintComponent,http://www.w3.org/2000/01/rdf-schema#Resource,JavaScript constraint component,A constraint component with the parameter sh:js linking to a sh:JSConstraint containing a sh:script.
+http://www.w3.org/ns/shacl#JSConstraint-js,http://www.w3.org/2000/01/rdf-schema#Resource,,
+http://www.w3.org/ns/shacl#Info,http://www.w3.org/ns/shacl#Severity,Info,The severity for an informational validation result.
+http://www.w3.org/ns/shacl#Violation,http://www.w3.org/ns/shacl#Severity,Violation,The severity for a violation validation result.
+http://www.w3.org/ns/shacl#Warning,http://www.w3.org/ns/shacl#Severity,Warning,The severity for a warning validation result.
