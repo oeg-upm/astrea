@@ -1,10 +1,9 @@
-# ASTREA
-
+# ASTREA 
 
 ## 1 - Install Astrea
 In order to use the Astrea as java library for third-party components there are two approaches: import the library as a *jar* or install Astrea as a local maven dependency and then use your *pom.xml* to import it. Following we provide a guide for both options.
 
-#### 1.1Import Astrea as a jar
+#### 1.1 Import Astrea as a jar
 Download the last release from our GitHub. Then, import the *jar* file in a project .
 #### 1.2 Instaling as local maven dependency
 Astrea can be installed as a local dependency. For this purpose download the code from this repository:
