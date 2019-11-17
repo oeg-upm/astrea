@@ -5,6 +5,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import org.apache.jena.query.Query;
@@ -30,7 +35,7 @@ public class OwlGenerator implements ShaclFromOwl{
 	
 	private List<String> queries;
 	private String endpoint = "https://astrea.helio.linkeddata.es/sparql";
-	private static final String QUERY_FETCH_SPARQL = "SELECT DISTINCT ?query {\n\t ?sub <http://oeg.es/astrea/ontology#query> ?query .\n}";
+	private static final String QUERY_FETCH_SPARQL = "PREFIX ast: <https://w3id.org/def/astrea#>\nSELECT distinct ?query WHERE {\n  ?sub a ast:SPARQLQuery .\n  ?sub ast:body ?query .\n}";
 	private Logger log = Logger.getLogger(OwlGenerator.class.getName());
 
 	
@@ -73,7 +78,7 @@ public class OwlGenerator implements ShaclFromOwl{
 				queries.add(queryFetched);					
 			}
 		}
-	
+
 		qexec.close();
 	}
 	
@@ -150,10 +155,64 @@ public class OwlGenerator implements ShaclFromOwl{
 		return fromModel(ontology);
 	}
 
+
+
+	@Override
+	public Model fromModel(Model ontology) {
+		ExecutorService executorService = Executors.newFixedThreadPool(this.queries.size());
+		List<Callable<Model>> taskList = new ArrayList<>();
+		Model shapes = ModelFactory.createDefaultModel();
+		
+		for(String query:queries) {
+			Callable<Model> task = () -> {
+	            return retrievePartialShapes(query, ontology);
+	        };
+			taskList.add(task);
+		}
+		try {
+			List<Future<Model>> futures = executorService.invokeAll(taskList);
+	        for(int index=0; index < futures.size(); index++){
+	        		Future<Model> future = futures.get(index);
+	            try {
+					shapes.add(future.get());
+				} catch (InterruptedException | ExecutionException e) {
+					log.severe(e.toString());
+				}
+	        }
+		}catch(Exception e) {
+			log.severe(e.toString());
+	    }
+	    executorService.shutdown();
+		
+		return shapes;
+	}
+
+	private Model retrievePartialShapes(String query, Model ontology) {
+		Model partialShape = ModelFactory.createDefaultModel();
+		QueryExecution qExec = null;
+		try {
+			Query queryNodeShapes = QueryFactory.create(query);
+			qExec = QueryExecutionFactory.create(queryNodeShapes, ontology);
+			partialShape.add(qExec.execConstruct());
+			
+		} catch(Exception e) {
+			String errorMsg = (new StringBuilder()).append("The following query produced the error: ").append(e.toString()).append("\n").append(query).toString();
+			log.severe(errorMsg);
+			
+		} finally {
+			if(qExec!=null)
+				qExec.close();
+		}
+		return partialShape;
+	}
+	
+	/*
+	 * Deprecated block of code 
+	
 	@Override
 	public Model fromModel(Model ontology) {
 		Model shapes = ModelFactory.createDefaultModel();
-		queries.parallelStream().forEach(query -> parallelPopulation(query, ontology, shapes));
+		queries.stream().forEach(query -> parallelPopulation(query, ontology, shapes));
 		return shapes;
 	}
 
@@ -167,10 +226,11 @@ public class OwlGenerator implements ShaclFromOwl{
 		} catch(Exception e) {
 			String errorMsg = (new StringBuilder()).append("The following query produced the error: ").append(e.toString()).append("\n").append(query).toString();
 			log.severe(errorMsg);
+			
 		} finally {
 			if(qExec!=null)
 				qExec.close();
 		}
-	}
+	}*/
 	
 }

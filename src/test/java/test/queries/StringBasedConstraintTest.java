@@ -186,7 +186,7 @@ public class StringBasedConstraintTest {
     private static final String SH_PATTERN = "http://www.w3.org/ns/shacl#pattern";
     private static final String SH_MIN_LENGTH = "http://www.w3.org/ns/shacl#minLength";
     private static final String SH_MAX_LENGTH = "http://www.w3.org/ns/shacl#maxLength";
-    private static final String SH_LENGTH = "http://www.w3.org/ns/shacl#length";
+ 
     private static final String SH_MAX_EXCLUSIVE = "http://www.w3.org/ns/shacl#maxExclusive";
     private static final String SH_MIN_EXCLUSIVE = "http://www.w3.org/ns/shacl#minExclusive";
     
@@ -240,7 +240,10 @@ public class StringBasedConstraintTest {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_LENGTH, "TURTLE");
         Boolean condition = shapes.contains(null,
-                ResourceFactory.createProperty(SH_LENGTH), ResourceFactory.createTypedLiteral(2));
+                ResourceFactory.createProperty(SH_MIN_LENGTH), ResourceFactory.createTypedLiteral(2));
+        condition = shapes.contains(null,
+                ResourceFactory.createProperty(SH_MAX_LENGTH), ResourceFactory.createTypedLiteral(2));
+        Assert.assertTrue(condition);
         
         Assert.assertTrue(condition);
     }

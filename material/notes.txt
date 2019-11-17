@@ -1,0 +1,13 @@
+NO;0;;-;sh:order;Non-Validating Property Shape Characteristics;-
+NO;0;;-;sh:group;Non-Validating Property Shape Characteristics;-
+NO;0;;-;sh:defaultValue;Non-Validating Property Shape Characteristics;-
+NO;0;;-;sh:deactivated ;Other Characteristics;-
+NO;0;;-;sh:message ;Other Characteristics;-
+NO;0;;-;sh:severity;Other Characteristics;-
+NO;0;;-;sh:closed ;Other Characteristics;-
+NO;0;;-;sh:closed, sh:ignoredProperties;Other Constraint;-
+NO;0;;-;sh:lessThan : any IRI;Property Pair  Constraints;-
+NO;0;;-;sh:lessThanOrEquals :  any IRI;Property Pair  Constraints;-
+NO;0;;-;sh:uniqueLang,languageIn  ;String-based Constraints;-
+NO;0;;-;sh:node;WARNING - no se genera sh:node porque se genera sh:class porque si se apunta a una clase fuera de la ono el sh:node apuntaria a un shape inexistente, y si usamos sh:class por lo menos apuntamos a una clase que existe;-
+NO;0;-;-;sh:xone rdf:List;Logical Constraint  Constraints;-
