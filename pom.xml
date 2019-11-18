@@ -14,13 +14,6 @@
    		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>   
   </properties>
   
-  	<distributionManagement>
-	   <repository>
-	     <id>github</id>
-	     <name>GitHub Astrea Apache Maven Packages</name>
-	     <url>https://maven.pkg.github.com/oeg-upm/Astrea</url>
-	   </repository>
-	</distributionManagement>
   
   <dependencies>
   	<!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
