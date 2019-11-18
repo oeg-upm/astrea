@@ -239,8 +239,11 @@ public class StringBasedConstraintTest {
     public void compliantWithLengthShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_LENGTH, "TURTLE");
+
         Boolean condition = shapes.contains(null,
-                ResourceFactory.createProperty(SH_LENGTH), ResourceFactory.createTypedLiteral(2));
+                ResourceFactory.createProperty(SH_MIN_LENGTH), ResourceFactory.createTypedLiteral(2));
+        condition = shapes.contains(null,
+                ResourceFactory.createProperty(SH_MAX_LENGTH), ResourceFactory.createTypedLiteral(2));
         
         Assert.assertTrue(condition);
     }

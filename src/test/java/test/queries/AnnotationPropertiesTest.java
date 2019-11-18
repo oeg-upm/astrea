@@ -88,7 +88,6 @@ public class AnnotationPropertiesTest {
 		ShaclFromOwl sharper = new OwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT_FOR_NODESHAPES, "TURTLE");
 		Boolean condition = shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("Virtual End Node (VEN)"));
-		condition &= shapes.contains(null, RDFS_LABEL, ResourceFactory.createTypedLiteral("This is the OpenADR Virtual End Node that is used to interact with the VTN"));
 		Assert.assertTrue(condition);
 	}
 	

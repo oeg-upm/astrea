@@ -56,9 +56,8 @@ public class CardinalityConstraintTest {
 
     @Test
     public void compliantWithShMinCountShape() {
-        ShaclFromOwl sharper = new OwlGenerator();
-        Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_MIN_COUNT, "TURTLE");
-
+    		OwlGenerator sharper = new OwlGenerator();    
+    		Model shapes =  sharper.fromOwl(CARDINALITY_OWL_FRAGMENT_MIN_COUNT, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MIN_COUNT),ResourceFactory.createTypedLiteral(1));
         Assert.assertTrue(condition);
     }

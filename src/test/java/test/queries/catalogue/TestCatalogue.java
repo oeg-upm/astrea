@@ -22,8 +22,6 @@ public class TestCatalogue {
 	public void testSAREF() {
 		ShaclFromOwl sharper = new OwlGenerator();
 		Model shapes =  sharper.fromURL("https://w3id.org/saref");
-		shapes.write(System.out,"TURTLE");
-
 		Assert.assertFalse(shapes.isEmpty());
 	}
 	

@@ -5,6 +5,7 @@ import astrea.model.ShaclFromOwl;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.junit.Assert;
@@ -90,20 +91,19 @@ public class ShapeBasedConstraintsTest {
     public void compliantWithShNodeShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_NODE, "TURTLE");
-
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ActuatorShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ActuatorShape"),  ResourceFactory.createProperty(SH_NODE), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#FeaturePropertyShape"));
+        Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        condition &= shapes.contains(null,  ResourceFactory.createProperty(SH_NODE), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#FeaturePropertyShape"));
         Assert.assertTrue(!condition);
     }
 
     @Test
     public void compliantWithShPropertyShape() {
-        ShaclFromOwl sharper = new OwlGenerator();
+    		OwlGenerator sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_PROPERTY, "TURTLE");
-        
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.w3.org/2006/time#DateTimeDescriptionShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("http://www.w3.org/2006/time#DateTimeDescriptionShape"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("http://www.w3.org/2006/time#day-EmbeddedRestriction"));
-        condition &= shapes.contains(ResourceFactory.createResource("http://www.w3.org/2006/time#day-EmbeddedRestriction"), ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://www.w3.org/2006/time#day"));
+ 
+        Boolean condition = shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#d408c32ed233896657a98694f4d247c2"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#d408c32ed233896657a98694f4d247c2"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#e00887eb7b2f63ee7d5071cdd765ba12"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#e00887eb7b2f63ee7d5071cdd765ba12"), ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://www.w3.org/2006/time#day"));
 
         Assert.assertTrue(condition);
     }
@@ -112,12 +112,13 @@ public class ShapeBasedConstraintsTest {
     public void compliantWithShMaxQualifiedCardinalityShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_QUALIFIED_CARDINALITY, "TURTLE");
-        
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#requestedService-EmbeddedRestriction"));        
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#requestedService"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MAX_COUNT), ResourceFactory.createStringLiteral("1"));
-        RDFNode blankNode = shapes.listObjectsOfProperty(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#requestedService-EmbeddedRestriction"), ResourceFactory.createProperty(SH_QUALIFIED_VALUE)).toList().get(0);
+
+        Resource subject = ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#4810a91c83ff7dea984126ff1c0b506e");
+        Boolean condition = shapes.contains(subject, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        condition &= shapes.contains(subject, ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#1fe104196d554727617b03d79d728d7f"));        
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#1fe104196d554727617b03d79d728d7f"), ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#requestedService"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#1fe104196d554727617b03d79d728d7f"), ResourceFactory.createProperty(SH_QUALIFIED_MAX_COUNT), ResourceFactory.createStringLiteral("1"));
+        RDFNode blankNode = shapes.listObjectsOfProperty(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#1fe104196d554727617b03d79d728d7f"), ResourceFactory.createProperty(SH_QUALIFIED_VALUE)).toList().get(0);
         condition &= shapes.contains(blankNode.asResource(),  ResourceFactory.createProperty(SH_CLASS),ResourceFactory.createResource("http://iot.linkeddata.es/def/core#Service"));
       
         
@@ -128,11 +129,12 @@ public class ShapeBasedConstraintsTest {
     public void compliantWithShMinQualifiedCardinalityShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_QUALIFIED_CARDINALITY, "TURTLE");
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#serviceOwner-EmbeddedRestriction"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MIN_COUNT), ResourceFactory.createStringLiteral("1"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#serviceOwner"));
-        RDFNode blankNode = shapes.listObjectsOfProperty(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#serviceOwner-EmbeddedRestriction"), ResourceFactory.createProperty(SH_QUALIFIED_VALUE)).toList().get(0);
+
+        Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#6b5b5846f1b1eedf6e723871e5f7bba1"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#6b5b5846f1b1eedf6e723871e5f7bba1"), ResourceFactory.createProperty(SH_QUALIFIED_MIN_COUNT), ResourceFactory.createStringLiteral("1"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#6b5b5846f1b1eedf6e723871e5f7bba1"), ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#serviceOwner"));
+        RDFNode blankNode = shapes.listObjectsOfProperty(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#6b5b5846f1b1eedf6e723871e5f7bba1"), ResourceFactory.createProperty(SH_QUALIFIED_VALUE)).toList().get(0);
         condition &= shapes.contains(blankNode.asResource(),  ResourceFactory.createProperty(SH_CLASS),ResourceFactory.createResource("http://iot.linkeddata.es/def/core#Agent"));
       
         
@@ -143,13 +145,12 @@ public class ShapeBasedConstraintsTest {
     public void compliantWithShQualifiedCardinalityShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_FOR_QUALIFIED_CARDINALITY, "TURTLE");
-
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#ContractShape"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#servicePetitioner-EmbeddedRestriction"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MAX_COUNT), ResourceFactory.createStringLiteral("1"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_QUALIFIED_MIN_COUNT), ResourceFactory.createStringLiteral("1"));
-        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#servicePetitioner"));
-        RDFNode blankNode = shapes.listObjectsOfProperty(ResourceFactory.createResource("http://iot.linkeddata.es/def/core#servicePetitioner-EmbeddedRestriction"), ResourceFactory.createProperty(SH_QUALIFIED_VALUE)).toList().get(0);
+        Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_NODE_SHAPE));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#3db9f16ff18f922fa4e89e575d5e3462"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#3db9f16ff18f922fa4e89e575d5e3462"), ResourceFactory.createProperty(SH_QUALIFIED_MAX_COUNT), ResourceFactory.createStringLiteral("1"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#3db9f16ff18f922fa4e89e575d5e3462"), ResourceFactory.createProperty(SH_QUALIFIED_MIN_COUNT), ResourceFactory.createStringLiteral("1"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#3db9f16ff18f922fa4e89e575d5e3462"), ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://iot.linkeddata.es/def/core#servicePetitioner"));
+        RDFNode blankNode = shapes.listObjectsOfProperty(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#3db9f16ff18f922fa4e89e575d5e3462"), ResourceFactory.createProperty(SH_QUALIFIED_VALUE)).toList().get(0);
         condition &= shapes.contains(blankNode.asResource(),  ResourceFactory.createProperty(SH_CLASS),ResourceFactory.createResource("http://iot.linkeddata.es/def/core#Agent"));
         Assert.assertTrue(condition);
     }

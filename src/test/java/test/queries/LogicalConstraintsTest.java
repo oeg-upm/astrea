@@ -86,7 +86,7 @@ public class LogicalConstraintsTest {
     public void compliantWithShNotShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT, "TURTLE");
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#NonConsumableThingShape"),
+        Boolean condition = shapes.contains(null,
                 ResourceFactory.createProperty(SH_NOT), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#ConsumableThingShape"));
         
         Assert.assertTrue(condition);
@@ -97,8 +97,7 @@ public class LogicalConstraintsTest {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT_PROP, "TURTLE");
         
-        Boolean condition = shapes.contains(ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#WineShape"),
-                ResourceFactory.createProperty(SH_NOT), (RDFNode) null);
+        Boolean condition = shapes.contains(null,ResourceFactory.createProperty(SH_NOT), (RDFNode) null);
         condition &= shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#locatedIn"));
         Assert.assertTrue(condition);
