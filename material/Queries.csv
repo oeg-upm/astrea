@@ -10,7 +10,6 @@ CONSTRUCT {
 } WHERE {
  	?type a  ?typeClassUrl . 
 	VALUES ?typeClassUrl {owl:Class rdfs:Class} .
-	
 	FILTER (!isBlank(?type)) .
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
 }"
@@ -33,7 +32,6 @@ CONSTRUCT {
 	?owlPropertyRestriction owl:onProperty ?rangedProperty .
 	?owlPropertyRestriction owl:minQualifiedCardinality ?minQualifiedCardinality . 
  	?owlPropertyRestriction owl:onClass ?onClassRestriction . 
-	
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(CONCAT(STR(?type),STR(?rangedProperty))))) AS ?embeddedNode) .
  	FILTER (!isBlank(?type)) .
  	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
@@ -89,86 +87,6 @@ CONSTRUCT {  ?shapeUrl a sh:NodeShape;
  	FILTER (!isBlank(?type)) .
  	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
 }"
-Y;0;Functional Property definition; owl:FunctionalProperty;sh:PropertyShape, sh:maxCount;Cardinality Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
-PREFIX sh: <http://www.w3.org/ns/shacl#>
-
-CONSTRUCT { ?shapeUrl a sh:PropertyShape;
-				sh:maxCount 1 .
-} WHERE { 
-	?property a owl:FunctionalProperty .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
-}"
-Y;0;Intersection of classes; owl:intersectionOf, owl:Class, rdfs:Class;sh:NodeShape, sh:and ;Logical Constraint  Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-PREFIX sh: <http://www.w3.org/ns/shacl#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
-CONSTRUCT {  
- 	?shapeUrl a sh:NodeShape ;
-		sh:and ?intersectedTypesList . 
-	?intersectedTypesListRest rdf:first ?intersectedTypesListHeadShape ;
-		rdf:rest ?intersectedTypesListTailShape .
-} WHERE {
- 	?type a  ?typeClassUrl . 
-	VALUES ?typeClassUrl {owl:Class rdfs:Class} 
-	OPTIONAL { ?type owl:intersectionOf ?intersectedTypesList .
-		?intersectedTypesList rdf:rest* ?intersectedTypesListRest .
-		?intersectedTypesListRest rdf:first ?intersectedTypesListHead .
-		?intersectedTypesListRest  rdf:rest ?intersectedTypesListTail .
-		BIND ( IF ( ?intersectedTypesListHead != rdf:nil && !isBlank(?intersectedTypesListHead), URI(CONCAT(STR(?intersectedTypesListHead),'Shape')), ?intersectedTypesListHead ) AS ?intersectedTypesListHeadShape )
-		BIND ( IF ( ?intersectedTypesListTail != rdf:nil && !isBlank(?intersectedTypesListTail), URI(CONCAT(STR(?intersectedTypesListTail),'Shape')), ?intersectedTypesListTail ) AS ?intersectedTypesListTailShape )
-	}
-	FILTER (!isBlank(?type)) .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
-}"
-Y;0;Object Property definition; owl:ObjectProperty;sh:PropertyShape, sh:nodeKind, sh:BlankNodeOrIRI;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-PREFIX sh: <http://www.w3.org/ns/shacl#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
-CONSTRUCT {
-	?shapeUrl a sh:PropertyShape;
-		sh:nodeKind sh:BlankNodeOrIRI .
-} WHERE { 
-	?property a ?propertyType .
-	VALUES ?propertyType { owl:ObjectProperty }
-	FILTER (!isBlank(?property)) .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
-}"
-Y;0;Comment annotation; owl:ObjectProperty, owl:DatatypeProperty, rdfs:Datatype, rdfs:comment;sh:PropertyShape, sh:description, rdfs:label;Non-Validating Property Shape Characteristics;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-PREFIX sh: <http://www.w3.org/ns/shacl#>
-
-CONSTRUCT {  ?shapeUrl a sh:PropertyShape;
-			 	sh:description  ?propertyComment;
-			 	rdfs:label ?propertyComment .
-} WHERE { 
-	?property a ?propertyType .
-	VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdfs:Datatype } .
-	?property rdfs:comment ?propertyComment .
-	FILTER (!isBlank(?property)) .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
-}"
-Y;0;Union of classes; owl:ObjectProperty, rdfs:range, owl:unionOf;sh:PropertyShape, sh:class;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-PREFIX sh: <http://www.w3.org/ns/shacl#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
-CONSTRUCT {
-	?shapeUrl a sh:PropertyShape;
-		sh:class ?typeInRange, ?typeInRangeUnited .
-} WHERE { 
-		?property a ?propertyType .
-		VALUES ?propertyType { owl:ObjectProperty }
-		OPTIONAL { ?property rdfs:range ?typeInRange . 
-					FILTER (!isBlank(?typeInRange)) .}
-		OPTIONAL { ?property rdfs:range ?typeInRangeBlank .
-				?typeInRangeBlank owl:unionOf ?typeInRangeUnited .
-				FILTER (!isBlank(?typeInRangeUnited)) .
-		}
-		FILTER (!isBlank(?property)) .
-		BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
-}"
 Y;0;Class definition;owl:Class, rdfs:Class;sh:nodeKind, sh:NodeShape, sh:IRI;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 PREFIX sh: <http://www.w3.org/ns/shacl#>
@@ -197,10 +115,9 @@ CONSTRUCT {
     VALUES ?typeClassUrl {owl:Class rdfs:Class}
     ?type rdfs:subClassOf ?owlPropertyRestriction .
     ?owlPropertyRestriction a owl:Restriction .
-	OPTIONAL { ?owlPropertyRestriction owl:onProperty ?rangedProperty .
-		?owlPropertyRestriction owl:cardinality ?cardinality . 
-		BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(CONCAT(STR(?type),STR(?rangedProperty))))) AS ?embeddedNode) .
-	}
+	?owlPropertyRestriction owl:onProperty ?rangedProperty .
+	?owlPropertyRestriction owl:cardinality ?cardinality . 
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(CONCAT(STR(?type),STR(?rangedProperty))))) AS ?embeddedNode) .
 	FILTER (!isBlank(?type)) .
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
 }"
@@ -218,10 +135,9 @@ CONSTRUCT {
     VALUES ?typeClassUrl {owl:Class rdfs:Class}
     ?type rdfs:subClassOf ?owlPropertyRestriction .
     ?owlPropertyRestriction a owl:Restriction .
-	OPTIONAL { ?owlPropertyRestriction owl:onProperty ?rangedProperty .
-		?owlPropertyRestriction owl:maxCardinality ?maxCardinality . 
+	?owlPropertyRestriction owl:onProperty ?rangedProperty .
+	?owlPropertyRestriction owl:maxCardinality ?maxCardinality . 
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(CONCAT(STR(?type),STR(?rangedProperty))))) AS ?embeddedNode) .
-	}
 	FILTER (!isBlank(?type)) .
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
 }"
@@ -239,10 +155,9 @@ CONSTRUCT {
     VALUES ?typeClassUrl {owl:Class rdfs:Class}
     ?type rdfs:subClassOf ?owlPropertyRestriction .
     ?owlPropertyRestriction a owl:Restriction .
-	OPTIONAL { ?owlPropertyRestriction owl:onProperty ?rangedProperty .
-		?owlPropertyRestriction owl:minCardinality ?minCardinality . 
+	?owlPropertyRestriction owl:onProperty ?rangedProperty .
+	?owlPropertyRestriction owl:minCardinality ?minCardinality . 
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(CONCAT(STR(?type),STR(?rangedProperty))))) AS ?embeddedNode) .
-	}
 	FILTER (!isBlank(?type)) .
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
 }"
@@ -474,6 +389,86 @@ CONSTRUCT {
 	FILTER (!isBlank(?type)) .
 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
 }"
+Y;0;Functional Property definition; owl:FunctionalProperty;sh:PropertyShape, sh:maxCount;Cardinality Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+
+CONSTRUCT { ?shapeUrl a sh:PropertyShape;
+				sh:maxCount 1 .
+} WHERE { 
+	?property a owl:FunctionalProperty .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
+}"
+Y;0;Intersection of classes; owl:intersectionOf, owl:Class, rdfs:Class;sh:NodeShape, sh:and ;Logical Constraint  Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {  
+ 	?shapeUrl a sh:NodeShape ;
+		sh:and ?intersectedTypesList . 
+	?intersectedTypesListRest rdf:first ?intersectedTypesListHeadShape ;
+		rdf:rest ?intersectedTypesListTailShape .
+} WHERE {
+ 	?type a  ?typeClassUrl . 
+	VALUES ?typeClassUrl {owl:Class rdfs:Class} 
+	OPTIONAL { ?type owl:intersectionOf ?intersectedTypesList .
+		?intersectedTypesList rdf:rest* ?intersectedTypesListRest .
+		?intersectedTypesListRest rdf:first ?intersectedTypesListHead .
+		?intersectedTypesListRest  rdf:rest ?intersectedTypesListTail .
+		BIND ( IF ( ?intersectedTypesListHead != rdf:nil && !isBlank(?intersectedTypesListHead), URI(CONCAT(STR(?intersectedTypesListHead),'Shape')), ?intersectedTypesListHead ) AS ?intersectedTypesListHeadShape )
+		BIND ( IF ( ?intersectedTypesListTail != rdf:nil && !isBlank(?intersectedTypesListTail), URI(CONCAT(STR(?intersectedTypesListTail),'Shape')), ?intersectedTypesListTail ) AS ?intersectedTypesListTailShape )
+	}
+	FILTER (!isBlank(?type)) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+}"
+Y;0;Object Property definition; owl:ObjectProperty;sh:PropertyShape, sh:nodeKind, sh:BlankNodeOrIRI;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+	?shapeUrl a sh:PropertyShape;
+		sh:nodeKind sh:BlankNodeOrIRI .
+} WHERE { 
+	?property a ?propertyType .
+	VALUES ?propertyType { owl:ObjectProperty }
+	FILTER (!isBlank(?property)) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
+}"
+Y;0;Comment annotation; owl:ObjectProperty, owl:DatatypeProperty, rdfs:Datatype, rdfs:comment;sh:PropertyShape, sh:description, rdfs:label;Non-Validating Property Shape Characteristics;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+
+CONSTRUCT {  ?shapeUrl a sh:PropertyShape;
+			 	sh:description  ?propertyComment;
+			 	rdfs:label ?propertyComment .
+} WHERE { 
+	?property a ?propertyType .
+	VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdfs:Datatype } .
+	?property rdfs:comment ?propertyComment .
+	FILTER (!isBlank(?property)) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
+}"
+Y;0;Union of classes; owl:ObjectProperty, rdfs:range, owl:unionOf;sh:PropertyShape, sh:class;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+CONSTRUCT {
+	?shapeUrl a sh:PropertyShape;
+		sh:class ?typeInRange, ?typeInRangeUnited .
+} WHERE { 
+		?property a ?propertyType .
+		VALUES ?propertyType { owl:ObjectProperty }
+		OPTIONAL { ?property rdfs:range ?typeInRange . 
+					FILTER (!isBlank(?typeInRange)) .}
+		OPTIONAL { ?property rdfs:range ?typeInRangeBlank .
+				?typeInRangeBlank owl:unionOf ?typeInRangeUnited .
+				FILTER (!isBlank(?typeInRangeUnited)) .
+		}
+		FILTER (!isBlank(?property)) .
+		BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
+}"
 Y;0;Datatype definition;owl:DatatypeProperty, rdfs:Datatype;sh:PropertyShape, sh:nodeKind, sh:Literal;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 PREFIX sh: <http://www.w3.org/ns/shacl#>
@@ -487,7 +482,7 @@ CONSTRUCT {
 	?property a ?propertyType .
 	VALUES ?propertyType {owl:DatatypeProperty rdfs:Datatype}
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Maximum Exclusive restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:maxExclusive;sh:PropertyShape, sh:maxExclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -506,7 +501,7 @@ CONSTRUCT {
  		OPTIONAL { ?restrictionElement xsd:maxExclusive ?restrictionMax . }
  	}
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Maximum Inclusive restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:maxInclusive;sh:PropertyShape, sh:maxInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -526,7 +521,7 @@ CONSTRUCT {
  		OPTIONAL { ?restrictionElement xsd:maxInclusive ?restrictionMax . }
  	}
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Maximum length restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:maxLength;sh:PropertyShape, sh:maxLength;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -546,7 +541,7 @@ CONSTRUCT {
  		OPTIONAL { ?restrictionElement xsd:maxLength ?restrictionMax . }
  	}
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Minimum length restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:minExclusive;sh:PropertyShape, sh:minExclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -565,7 +560,7 @@ CONSTRUCT {
  	?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
  		OPTIONAL { ?restrictionElement xsd:minExclusive ?restrictionMin . }
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Minimum inclusive restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:minInclusive;sh:PropertyShape, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -584,7 +579,7 @@ CONSTRUCT {
  	?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
  		OPTIONAL { ?restrictionElement xsd:minInclusive ?restrictionMin . }
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Minumum length restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:minLength;sh:PropertyShape, sh:minLength;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -603,7 +598,7 @@ CONSTRUCT {
  	?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
  		OPTIONAL { ?restrictionElement xsd:minLength ?restrictionMin . }
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Minimum length restriction;owl:DatatypeProperty, owl:onDatatype, owl:withRestrictions, xsd:minLength;sh:PropertyShape, sh:maxLength, sh:minLength;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -623,7 +618,7 @@ CONSTRUCT {
  	?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
  		OPTIONAL { ?restrictionElement xsd:length ?restrictionLength . }
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
  }
 "
 Y;0;Range of a datatype;owl:DatatypeProperty, rdfs:Datatype, rdfs:range;sh:PropertyShape, sh:datatype;Value Type Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
@@ -638,7 +633,7 @@ CONSTRUCT { ?shapeUrl a sh:PropertyShape ;
 	VALUES ?propertyType {owl:DatatypeProperty rdfs:Datatype}
 	?property rdfs:range ?typeInRange.
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Equivalent classes;owl:equivalentProperty, owl:ObjectProperty, owl:DatatypeProperty, rdf:Property, rdfs:Datatype;sh:PropertyShape, sh:equals;Property Pair  Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -653,7 +648,7 @@ CONSTRUCT {  ?shapeUrl a sh:PropertyShape .
 	MINUS { ?propertyType a owl:InverseFunctionalProperty } .
 	MINUS { ?propertyType a owl:FunctionalProperty } .						 
 	OPTIONAL { ?property owl:equivalentProperty ?equivalentProperty . }
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }
 "
 Y;0;Inverse Functional Property;owl:InverseFunctionalProperty;sh:PropertyShape, sh:inversePath, sh:maxCount;Property Paths and Cardinality Constraint Components;"PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -665,7 +660,7 @@ CONSTRUCT {
 		sh:inversePath ?property .
 } WHERE { 
 	?property a owl:InverseFunctionalProperty .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;isDefinedBy annotation;owl:ObjectProperty, owl:DatatypeProperty, rdfs:Datatype, rdfs:isDefinedBy;sh:PropertyShape, rdfs:isDefinedBy;Non-Validating Property Shape Characteristics;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -678,7 +673,7 @@ CONSTRUCT {  ?shapeUrl a sh:PropertyShape;
 		VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdfs:Datatype } .
 		?property rdfs:isDefinedBy ?shapePropertyDefinedBy .
 		FILTER (!isBlank(?property)) .
-		BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+		BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Label annotation;owl:ObjectProperty, owl:DatatypeProperty, rdfs:Datatype, rdfs:label;sh:PropertyShape, sh:name, rdfs:label;Non-Validating Property Shape Characteristics;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -690,9 +685,9 @@ CONSTRUCT {  ?shapeUrl a sh:PropertyShape;
 } WHERE { 
 	?property a ?propertyType .
 	VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdfs:Datatype } .
-	OPTIONAL { ?property rdfs:label ?propertyName . }
+	?property rdfs:label ?propertyName .
 	FILTER (!isBlank(?property)) .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;seeAlso annotation;owl:ObjectProperty, owl:DatatypeProperty, rdfs:Datatype, rdfs:seeAlso ;sh:PropertyShape, rdfs:seeAlso;Non-Validating Property Shape Characteristics;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -706,7 +701,7 @@ CONSTRUCT {  ?shapeUrl a sh:PropertyShape;
 	VALUES ?propertyType {owl:ObjectProperty owl:DatatypeProperty rdfs:Datatype } .
 	?property rdfs:seeAlso ?shapePropertySeeAlso .
 	FILTER (!isBlank(?property)) .
-	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, owl:withRestrictions, xsd:pattern;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -724,7 +719,7 @@ CONSTRUCT {
  	?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
  	OPTIONAL { ?restrictionElement xsd:pattern ?restrictionPattern . }
  	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:decimal;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -745,7 +740,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:decimal .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:float;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -766,7 +761,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:float .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:double;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -787,7 +782,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:double .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:duration;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -808,7 +803,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:duration .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:time;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -829,7 +824,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:time .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:boolean;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -850,7 +845,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:boolean .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:gMonthDay;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -871,7 +866,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:gMonthDay .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:gDay;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -892,7 +887,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:gDay .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:gMonth;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -913,7 +908,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:gMonth .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:hexBinary;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -934,7 +929,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:hexBinary .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:base64Binary;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -955,7 +950,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:base64Binary .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:language;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -976,7 +971,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:language .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:NMTOKEN;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -997,7 +992,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:NMTOKEN .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:Name;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1018,7 +1013,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:Name .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:integer;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1039,7 +1034,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:integer .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:long, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1062,7 +1057,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:long .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:nonNegativeInteger, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1084,7 +1079,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:nonNegativeInteger .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:string;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1105,7 +1100,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:string .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:dateTime;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1126,7 +1121,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:dateTime .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:date;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1147,7 +1142,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:date .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:gYearMonth;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1168,7 +1163,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:gYearMonth .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:gYear;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1189,7 +1184,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:gYear .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:anyURI;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1210,7 +1205,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:anyURI .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:NMTOKENS,xsd:minLength;sh:PropertyShape, sh:pattern,sh:minLength;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1232,7 +1227,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:NMTOKENS .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:nonPositiveInteger,xsd:maxInclusive;sh:PropertyShape, sh:pattern,sh:maxInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1254,7 +1249,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:nonPositiveInteger .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:negativeInteger,xsd:maxInclusive;sh:PropertyShape, sh:pattern,sh:maxInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1276,7 +1271,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:negativeInteger .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:positiveInteger,xsd:minInclusive;sh:PropertyShape, sh:pattern,sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1298,7 +1293,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:positiveInteger .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:int, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1321,7 +1316,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:int .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:short, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1344,7 +1339,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:short .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:byte, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1367,7 +1362,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:byte .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:unsignedLong, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1390,7 +1385,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:unsignedLong .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:unsignedInt, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1413,7 +1408,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:unsignedInt .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:unsignedShort, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1436,7 +1431,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:unsignedShort .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:unsignedByte, xsd:maxInclusive, xsd:minInclusive;sh:PropertyShape, sh:pattern, sh:maxInclusive, sh:minInclusive;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1459,7 +1454,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:unsignedByte .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:yearMonthDuration;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1480,7 +1475,7 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:yearMonthDuration .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
 Y;0;Pattern restriction;owl:DatatypeProperty, rdfs:Datatype, rdfs:range, xsd:dayTimeDuration;sh:PropertyShape, sh:pattern;String-based Constraints;"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1501,5 +1496,5 @@ CONSTRUCT {
  	}
 	?property rdfs:range xsd:dayTimeDuration .  
 	FILTER (!isBlank(?property)) .
- 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?type)))) AS ?shapeUrl) .
+ 	BIND(URI(CONCAT('https://astrea.linkeddata.es/shapes#',MD5(STR(?property)))) AS ?shapeUrl) .
 }"
