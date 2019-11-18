@@ -3,8 +3,8 @@
   <groupId>oeg.validation</groupId>
   <artifactId>astrea</artifactId>
   <version>1.1.0</version>
-    <name>Shaper</name>
-  <description>Shaper assists in the generation of data Shapes</description>
+    <name>Astrea</name>
+  <description>Astrea: SHACL shapes generation from ontologies</description>
   
     
    <properties>
