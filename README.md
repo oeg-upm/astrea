@@ -33,7 +33,7 @@ Finally, import in a project the Astrea maven dependency using the following cod
 <dependency>
 	<groupId>oeg.validation</groupId>
 	<artifactId>astrea</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 </dependency>
 ````
 Alternatively, Astrea can be installed as a local dependency following these steps:
@@ -43,7 +43,7 @@ mvn clean package -Dskiptests
 ````
  2.  Compile the project:
 ````
-mvn install:install-file -Dfile=./target/astrea-1.1.1.jar -DgroupId=oeg.validation -DartifactId=astrea -Dversion=1.1.1 -Dpackaging=jar
+mvn install:install-file -Dfile=./target/astrea-1.1.2.jar -DgroupId=oeg.validation -DartifactId=astrea -Dversion=1.1.2 -Dpackaging=jar
 ````
  3.  Import the dependency in your project using the pom file relying on the previous snipped
 
