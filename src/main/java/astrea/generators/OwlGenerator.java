@@ -61,6 +61,22 @@ public class OwlGenerator implements ShaclFromOwl{
 		this.endpoint = endpoint;
 	}
 	
+	
+	
+	/**
+	 * @return the endpoint of the Knowledge Graph contaning the queries to translate from OWL to SHACL
+	 */
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	/**
+	 * @param endpoint the endpoint to set the Knowledge Graph contaning the queries to translate from OWL to SHACL
+	 */
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
 	/**
 	 * This constructor fetches the queries from the provided SPARQL endpoint
 	 */

@@ -81,12 +81,13 @@ public class DatatypeTest {
 	
 // Testing creation of sh:NodeShape from owl:Class
 
-@Test
+/*@Test --> Not supporting rdf:Property since we cannot know if it is a data property or object property
 public void createNodeShapeFromOwlClass() {
 	ShaclFromOwl sharper = new OwlGenerator();
 	Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OF_RDF_OBJECT_PROPERTY, "TURTLE");
+	shapes.write(System.out,"TURTLE");
 	Boolean condition = shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
 	Assert.assertTrue(condition);
-}
+}*/
 
 }
