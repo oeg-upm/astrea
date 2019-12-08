@@ -80,8 +80,8 @@ public class OwlGenerator implements ShaclFromOwl{
 	/**
 	 * This constructor fetches the queries from the provided SPARQL endpoint
 	 */
-	private void fetchQueries() {
-		
+	public void fetchQueries() {
+		queries.clear();
 		Query query = QueryFactory.create(QUERY_FETCH_SPARQL);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(endpoint, query);
 
@@ -172,7 +172,7 @@ public class OwlGenerator implements ShaclFromOwl{
 	}
 
 
-
+/*
 	@Override
 	public Model fromModel(Model ontology) {
 		ExecutorService executorService = Executors.newFixedThreadPool(this.queries.size());
@@ -220,11 +220,11 @@ public class OwlGenerator implements ShaclFromOwl{
 				qExec.close();
 		}
 		return partialShape;
-	}
+	}*/
 	
 	/*
 	 * Deprecated block of code 
-	
+	*/
 	@Override
 	public Model fromModel(Model ontology) {
 		Model shapes = ModelFactory.createDefaultModel();
@@ -247,6 +247,6 @@ public class OwlGenerator implements ShaclFromOwl{
 			if(qExec!=null)
 				qExec.close();
 		}
-	}*/
+	}
 	
 }

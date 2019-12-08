@@ -94,9 +94,8 @@ public class LogicalConstraintsTest {
 
     @Test
     public void compliantWithShNotPropertyShape() {
-        ShaclFromOwl sharper = new OwlGenerator();
+    		OwlGenerator sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT_PROP, "TURTLE");
-        
         Boolean condition = shapes.contains(null,ResourceFactory.createProperty(SH_NOT), (RDFNode) null);
         condition &= shapes.contains(null, RDF.type, ResourceFactory.createResource(SH_PROPERTY_SHAPE));
         condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#locatedIn"));
