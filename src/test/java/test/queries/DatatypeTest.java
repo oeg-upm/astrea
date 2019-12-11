@@ -1,14 +1,5 @@
 package test.queries;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.vocabulary.RDF;
-import org.junit.Assert;
-import org.junit.Test;
-
-import astrea.generators.OwlGenerator;
-import astrea.model.ShaclFromOwl;
-
 public class DatatypeTest {
 
 	public static final String OWL_FRAGMENT_OF_A_DATA_PROPERTY = "@prefix : <http://www.w3.org/2006/time#> .\n" + 
@@ -77,7 +68,7 @@ public class DatatypeTest {
 			".";
 	
 	
-	private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
+	//private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
 	
 // Testing creation of sh:NodeShape from owl:Class
 

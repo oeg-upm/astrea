@@ -34,7 +34,7 @@ public class EquialityTest {
 			"  owl:inverseOf foaf:made .";
 	
 	
-	public static final String SH_EQUIVALENT = "http://www.w3.org/ns/shacl#equivalent";
+	public static final String SH_EQUIVALENT = "http://www.w3.org/ns/shacl#equals";
 	public static final String SH_DATATYPE = "http://www.w3.org/ns/shacl#datatype";
 	public static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
 
@@ -43,7 +43,6 @@ public class EquialityTest {
 	public void compliantWithShNameNodeShape() {
 		ShaclFromOwl sharper = new OwlGenerator();
 		Model shapes =  sharper.fromOwl(ANNOTATION_PROPERTIES_OWL_FRAGMENT, "TURTLE");
-		
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_EQUIVALENT), ResourceFactory.createResource("http://purl.org/dc/terms/creator"));
 		condition &= !shapes.contains(null, ResourceFactory.createProperty(SH_DATATYPE), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Agent"));
 		condition &= shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Agent"));

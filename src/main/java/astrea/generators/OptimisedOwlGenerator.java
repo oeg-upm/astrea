@@ -428,7 +428,6 @@ public class OptimisedOwlGenerator implements ShaclFromOwl{
 		// 0. Clean empty URL sh:property [] patterns
 		cleanEmptyGraphs(shapes);
 		
-
 		// 2. Remove inconsistencies, if a subject has a sh:path and sh:inversePah, remove the former
 		removePathInconsistencies(shapes);
 		// 3. Embedded the sh:PropertyShape types 

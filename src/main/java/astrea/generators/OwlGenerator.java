@@ -5,11 +5,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import org.apache.jena.query.Query;
@@ -35,7 +30,7 @@ public class OwlGenerator implements ShaclFromOwl{
 	
 	private List<String> queries;
 	private String endpoint = "https://astrea.helio.linkeddata.es/sparql";
-	private static final String QUERY_FETCH_SPARQL = "PREFIX ast: <https://w3id.org/def/astrea#>\nSELECT distinct ?query WHERE {\n  ?sub a ast:SPARQLQuery .\n  ?sub ast:body ?query .\n}";
+	private static final String QUERY_FETCH_SPARQL = "PREFIX ast: <https://w3id.org/def/astrea#>\nSELECT distinct ?query WHERE {\n  ?sub a ast:MappingImplementation .\n  ?sub ast:query ?query .\n}";
 	private Logger log = Logger.getLogger(OwlGenerator.class.getName());
 
 	
