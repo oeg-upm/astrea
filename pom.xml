@@ -23,11 +23,6 @@
 	    <version>3.13.0</version>
 	    <type>pom</type>
 	</dependency>
-	<dependency>
-	    <groupId>com.github.jsonld-java</groupId>
-	    <artifactId>jsonld-java</artifactId>
-	    <version>0.12.5</version>
-	</dependency>
 	<!-- https://mvnrepository.com/artifact/junit/junit -->
 	<dependency>
 		<groupId>junit</groupId>
