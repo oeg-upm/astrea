@@ -8,7 +8,7 @@ import org.junit.Test;
 import astrea.generators.OwlGenerator;
 import astrea.model.ShaclFromOwl;
 
-public class EquialityTest {
+public class EqualityTest {
 
 	public static final String ANNOTATION_PROPERTIES_OWL_FRAGMENT ="@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n" + 
 			"@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" + 

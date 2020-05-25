@@ -29,7 +29,7 @@ public class OwlGenerator implements ShaclFromOwl{
 	// -- Attributes
 	
 	private List<String> queries;
-	private String endpoint = "https://astrea.helio.linkeddata.es/sparql";
+	private String endpoint = "http://localhost:8080/sparql";//"https://astrea.helio.linkeddata.es/sparql";
 	private static final String QUERY_FETCH_SPARQL = "PREFIX ast: <https://w3id.org/def/astrea#>\nSELECT distinct ?query WHERE {\n  ?sub a ast:MappingImplementation .\n  ?sub ast:query ?query .\n}";
 	private Logger log = Logger.getLogger(OwlGenerator.class.getName());
 

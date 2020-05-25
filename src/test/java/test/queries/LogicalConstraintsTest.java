@@ -61,22 +61,74 @@ public class LogicalConstraintsTest {
             "    ) ;\n" +
             "  skos:definition \"A temporal interval or instant.\"@en ;\n" +
             ".";
+    
+    public static final String OWL_FRAGMENT_OR_2 = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+            "<https://w3id.org/def/saref4bldg#BuildingSpace> rdf:type owl:Class ;\n" + 
+            "  rdfs:subClassOf [ rdf:type owl:Restriction ;\n" + 
+            "    owl:onProperty <https://w3id.org/def/saref4bldg#isSpaceOf> ;\n" + 
+            "    owl:allValuesFrom [ rdf:type owl:Class ;\n" + 
+            "      owl:unionOf ( <https://w3id.org/def/saref4bldg#Building> <https://w3id.org/def/saref4bldg#BuildingSpace> )\n" + 
+            "  ]\n" + 
+            "] ;";
 
-
+    public static final String OWL_FRAGMENT_OR_3 = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+		    ":hasValue rdf:type owl:ObjectProperty ;\n" + 
+		    "          rdfs:domain [ rdf:type owl:Class ;\n" + 
+		    "                        owl:unionOf ( <http://iot.linkeddata.es/def/wot#InteractionPattern>\n" + 
+		    "                                      <http://iot.linkeddata.es/def/wot#Thing>\n" + 
+		    "                                    )\n" + 
+		    "                      ] ;"+
+		    "          rdfs:range :Value ;\n" + 
+		    "          rdfs:comment \"Indicates a value provided by an interaction pattern or a Thing. In case one ore more values are indicated the order will be defined by the time stamp attributes.\"@en ;\n" + 
+		    "          rdfs:label \"has value\"@en .";
+    
+    public static final String OWL_FRAGMENT_OR_4 = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+		    ":hasValue rdf:type owl:ObjectProperty ;\n" + 
+		    "          rdfs:domain :Value; \n"+
+		    "          rdfs:range [ rdf:type owl:Class ;\n" + 
+		    "                        owl:unionOf ( <http://iot.linkeddata.es/def/wot#InteractionPattern>\n" + 
+		    "                                      <http://iot.linkeddata.es/def/wot#Thing>\n" + 
+		    "                                    )\n" + 
+		    "                      ] ;"+
+		    "          rdfs:comment \"Indicates a value provided by an interaction pattern or a Thing. In case one ore more values are indicated the order will be defined by the time stamp attributes.\"@en ;\n" + 
+		    "          rdfs:label \"has value\"@en .";
+    
+    
     private static final String SH_AND = "http://www.w3.org/ns/shacl#and";
     private static final String SH_NOT = "http://www.w3.org/ns/shacl#not";
     private static final String SH_PROPERTY_SHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
+    private static final String SH_NODE_SHAPE = "http://www.w3.org/ns/shacl#NodeShape";
     private static final String SH_PATH= "http://www.w3.org/ns/shacl#path";
     private static final String SH_OR= "http://www.w3.org/ns/shacl#or";
-
+    private static final String SH_PROPERTY= "http://www.w3.org/ns/shacl#property";
+    private static final String SH_TARGET_CLASS= "http://www.w3.org/ns/shacl#targetClass";
+    private static final String SH_CLASS= "http://www.w3.org/ns/shacl#class";
 
     @Test
     public void compliantWithShAndShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_AND, "TURTLE");
- 
-        Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://njh.me/#BurgundyShape"));
-        condition &= shapes.containsResource(ResourceFactory.createResource("http://njh.me/#WhiteWineShape"));
+       
+        Boolean condition = shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#7f5634e9110aafe50c4d98fb2ed51c4b"));
+        condition &= shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#bc2308dbde3337abf001d6b7d45e689f"));
         condition &= shapes.containsResource(ResourceFactory.createResource(SH_AND));
 
         Assert.assertTrue(condition);
@@ -87,7 +139,7 @@ public class LogicalConstraintsTest {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_NOT, "TURTLE");
         Boolean condition = shapes.contains(null,
-                ResourceFactory.createProperty(SH_NOT), ResourceFactory.createResource("http://www.co-ode.org/ontologies/pizza/pizza.owl#ConsumableThingShape"));
+                ResourceFactory.createProperty(SH_NOT), ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#70549ffd180bcd03793a6da9016ffd42"));
         
         Assert.assertTrue(condition);
     }
@@ -107,11 +159,60 @@ public class LogicalConstraintsTest {
     public void compliantWithShOrShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR, "TURTLE");
-
-        Boolean condition = shapes.containsResource(ResourceFactory.createResource("http://www.w3.org/2006/time#InstantShape"));
-        condition &= shapes.containsResource(ResourceFactory.createResource("http://www.w3.org/2006/time#IntervalShape"));
+        Boolean condition = shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#f1ed01ff4ad7e0110c28d4231cd9616c"));
+        condition &= shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#1277b387effe1ea8b7cf6171d6155a1b"));
         condition &= shapes.containsResource(ResourceFactory.createResource(SH_OR));
         Assert.assertTrue(condition);
     }
+    
+    
+    @Test
+    public void compliantWithShOrShapeTwo() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR_2, "TURTLE");
+        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("https://w3id.org/def/saref4bldg#Building"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("https://w3id.org/def/saref4bldg#BuildingSpace"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createProperty("https://w3id.org/def/saref4bldg#isSpaceOf"));
+        condition &= shapes.containsResource(ResourceFactory.createResource(SH_OR));
+        Assert.assertTrue(condition);
+    }
+    
+    @Test
+    public void compliantWithShOrShapeThree() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR_3, "TURTLE");
+        
+        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("http://www.w3.org/2006/time#Value"));
+        
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), RDF.type, ResourceFactory.createProperty(SH_NODE_SHAPE));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createProperty("https://astrea.linkeddata.es/shapes#3a924da1a58e2af120f486a6606eb9ad"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#Thing"));
+        
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), RDF.type, ResourceFactory.createProperty(SH_NODE_SHAPE));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createProperty("https://astrea.linkeddata.es/shapes#3a924da1a58e2af120f486a6606eb9ad"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#InteractionPattern"));
+        
+        Assert.assertTrue(condition);
+    }
 
+
+    @Test
+    public void compliantWithShOrShapeFour() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR_4, "TURTLE");
+       // shapes.write(System.out,"TURTLE"); // here we fail because we still inject the sh:path
+        
+        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("http://www.w3.org/2006/time#Value"));
+        
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), RDF.type, ResourceFactory.createProperty(SH_NODE_SHAPE));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createProperty("https://astrea.linkeddata.es/shapes#3a924da1a58e2af120f486a6606eb9ad"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#Thing"));
+        
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), RDF.type, ResourceFactory.createProperty(SH_NODE_SHAPE));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createProperty("https://astrea.linkeddata.es/shapes#3a924da1a58e2af120f486a6606eb9ad"));
+        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#InteractionPattern"));
+        
+        Assert.assertTrue(condition);
+    }
+    
 }

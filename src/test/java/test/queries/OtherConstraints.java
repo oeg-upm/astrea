@@ -57,9 +57,9 @@ public class OtherConstraints {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_IN, "TURTLE");
         Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_IN), (RDFNode) null)
-        						& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#DryShape"))
-				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#OffDryShape"))
-				        		& shapes.containsResource(ResourceFactory.createResource("http://njh.me/#SweetShape"));
+        						& shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#6e6ce7f54207f8740e927008c6de69b3"))
+				        		& shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#1114148e7eeeaccf8b51c06e0ce981b7"))
+				        		& shapes.containsResource(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#e250b67865c6fabd97b6d97e06639a95"));
         Assert.assertTrue(condition);
     }
     

@@ -3,7 +3,10 @@ package test.queries;
 import astrea.generators.OwlGenerator;
 import astrea.model.ShaclFromOwl;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.vocabulary.RDF;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,19 +53,21 @@ public class PropertyPairConstraintTest {
             "  rdfs:isDefinedBy foaf: ;\n" +
             "  owl:disjointWith foaf:Organization, foaf:Project ";
 
-    private static final String SH_EQUALS = "http://www.w3.org/ns/shacl#equals";
-    private static final String SH_DISJOINT = "http://www.w3.org/ns/shacl#disjoint";
-
+    private static final String SH_TARGET_CLASS= "http://www.w3.org/ns/shacl#targetClass";
+    private static final String SH_NOT = "http://www.w3.org/ns/shacl#not";
+    private static final String SH_CLASS = "http://www.w3.org/ns/shacl#class";
+    private static final String SH_PROPERTYSHAPE = "http://www.w3.org/ns/shacl#PropertyShape";
 
     @Test
     public void compliantWithShEqualsShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_EQUIVANCE, "TURTLE");
         Boolean condition = shapes.contains(null,
-                ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://www.w3.org/2000/10/swap/pim/contact#Person"));
+                ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createResource("http://www.w3.org/2000/10/swap/pim/contact#Person"));
         condition &= shapes.contains(null,
-                ResourceFactory.createProperty(SH_EQUALS), ResourceFactory.createResource("http://schema.org/Person"));
-        
+                ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createResource("http://schema.org/Person"));
+        condition &= shapes.contains(null,
+                ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Person"));
         Assert.assertTrue(condition);
     }
 
@@ -70,10 +75,16 @@ public class PropertyPairConstraintTest {
     public void compliantWithShDisjointShape() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DISJOINT, "TURTLE");
-        Boolean condition = shapes.contains(null,
-                ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Organization"));
-        condition &= shapes.contains(null,
-                ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Project"));
+        NodeIterator iterator =  shapes.listObjectsOfProperty(ResourceFactory.createProperty(SH_NOT));
+        Boolean condition = iterator.hasNext();
+        while(iterator.hasNext()) {
+        		Resource rangeURI = iterator.next().asResource();
+        		Boolean subCondition1= shapes.contains(rangeURI, RDF.type, ResourceFactory.createProperty(SH_PROPERTYSHAPE));
+        		Boolean subCondition21= shapes.contains(rangeURI, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Organization"));
+        		Boolean subCondition22 = shapes.contains(rangeURI, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/Project"));
+        		condition &= subCondition1 & (subCondition21||subCondition22);
+        }
+       
         Assert.assertTrue(condition);
     }
 }
