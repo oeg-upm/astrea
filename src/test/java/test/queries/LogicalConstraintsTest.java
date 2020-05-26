@@ -111,6 +111,103 @@ public class LogicalConstraintsTest {
 		    "          rdfs:comment \"Indicates a value provided by an interaction pattern or a Thing. In case one ore more values are indicated the order will be defined by the time stamp attributes.\"@en ;\n" + 
 		    "          rdfs:label \"has value\"@en .";
     
+    public static final String OWL_FRAGMENT_DIJOIN = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+            ""+
+		    ":intervalEquals\n" + 
+		    "  rdf:type owl:ObjectProperty ;\n" + 
+		    "  rdfs:comment \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;\n" + 
+		    "  rdfs:domain :ProperInterval ;\n" + 
+		    "  rdfs:label \"interval equals\"@en ;\n" + 
+		    "  rdfs:range :ProperInterval ;\n" + 
+		    "  owl:propertyDisjointWith :intervalIn ;\n" + 
+		    "  skos:definition \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;";
+  
+    public static final String OWL_FRAGMENT_DIJOIN_NO_DOMAIN = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+			""+
+			":intervalEquals\n" + 
+			"  rdf:type owl:ObjectProperty ;\n" + 
+			"  rdfs:comment \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;\n" + 
+			"  rdfs:label \"interval equals\"@en ;\n" + 
+			"  rdfs:range :ProperInterval ;\n" + 
+			"  owl:propertyDisjointWith :intervalIn ;\n" + 
+			"  skos:definition \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;";
+	
+    public static final String OWL_FRAGMENT_DIJOIN_NO_RANGE = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+			""+
+			":intervalEquals\n" + 
+			"  rdf:type owl:ObjectProperty ;\n" + 
+			"  rdfs:comment \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;\n" + 
+			"  rdfs:label \"interval equals\"@en ;\n" + 
+			"  rdfs:domain :ProperInterval ;\n" + 
+			"  owl:propertyDisjointWith :intervalIn ;\n" + 
+			"  skos:definition \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;";
+	
+    
+    public static final String OWL_FRAGMENT_DIJOIN_NO_DOMAIN_RANGE = "@prefix : <http://www.w3.org/2006/time#> .\n" +
+            "@prefix dct: <http://purl.org/dc/terms/> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ."+
+			""+
+			":intervalEquals\n" + 
+			"  rdf:type owl:ObjectProperty ;\n" + 
+			"  rdfs:comment \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;\n" + 
+			"  rdfs:label \"interval equals\"@en ;\n" + 
+			"  owl:propertyDisjointWith :intervalIn ;\n" + 
+			"  skos:definition \"If a proper interval T1 is intervalEquals another proper interval T2, then the beginning of T1 is coincident with the beginning of T2, and the end of T1 is coincident with the end of T2.\"@en ;";
+			    
+    public static final String OWL_FRAGMENT_DISJOINT_UNION = "@prefix : <http://www.w3.org/2006/time#> .\n" + 
+			"@prefix dct: <http://purl.org/dc/terms/> .\n" + 
+			"@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" + 
+			"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" + 
+			"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" + 
+			"@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" + 
+			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ." +
+			"@prefix : <http://iot.linkeddata.es/def/core#> ." +
+			"" +
+			"[ rdf:type owl:AllDisjointProperties ;\n" + 
+			"  owl:members ( :P\n" + 
+			"                :P1\n" + 
+			"                :P2\n" + 
+			"              )\n" + 
+			"] .";
+    
+    
+    public static final String OWL_FRAGMENT_EQUIVALENT = "@prefix : <http://www.w3.org/2006/time#> .\n" + 
+			"@prefix dct: <http://purl.org/dc/terms/> .\n" + 
+			"@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" + 
+			"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" + 
+			"@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" + 
+			"@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n" + 
+			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ." +
+			"@prefix : <http://iot.linkeddata.es/def/core#> ." +
+			"" +
+			"[ rdf:type owl:AllDisjointProperties ;\n" + 
+			"  owl:members ( :P\n" + 
+			"                :P1\n" + 
+			"                :P2\n" + 
+			"              )\n" + 
+			"] .";
     
     private static final String SH_AND = "http://www.w3.org/ns/shacl#and";
     private static final String SH_NOT = "http://www.w3.org/ns/shacl#not";
@@ -121,6 +218,7 @@ public class LogicalConstraintsTest {
     private static final String SH_PROPERTY= "http://www.w3.org/ns/shacl#property";
     private static final String SH_TARGET_CLASS= "http://www.w3.org/ns/shacl#targetClass";
     private static final String SH_CLASS= "http://www.w3.org/ns/shacl#class";
+    private static final String SH_DISJOINT= "http://www.w3.org/ns/shacl#disjoint";
 
     @Test
     public void compliantWithShAndShape() {
@@ -200,19 +298,62 @@ public class LogicalConstraintsTest {
     public void compliantWithShOrShapeFour() {
         ShaclFromOwl sharper = new OwlGenerator();
         Model shapes =  sharper.fromOwl(OWL_FRAGMENT_OR_4, "TURTLE");
-       // shapes.write(System.out,"TURTLE"); // here we fail because we still inject the sh:path
         
-        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("http://www.w3.org/2006/time#Value"));
-        
-        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), RDF.type, ResourceFactory.createProperty(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createProperty("https://astrea.linkeddata.es/shapes#3a924da1a58e2af120f486a6606eb9ad"));
-        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#74b49bc808dec30741e3e1eb1ed53d1a"), ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#Thing"));
-        
-        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), RDF.type, ResourceFactory.createProperty(SH_NODE_SHAPE));
-        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), ResourceFactory.createProperty(SH_PROPERTY), ResourceFactory.createProperty("https://astrea.linkeddata.es/shapes#3a924da1a58e2af120f486a6606eb9ad"));
-        condition &= shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#9729101e06843ef8782157f878647544"), ResourceFactory.createProperty(SH_TARGET_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#InteractionPattern"));
-        
+        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#InteractionPattern"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_CLASS), ResourceFactory.createProperty("http://iot.linkeddata.es/def/wot#Thing"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_PATH), ResourceFactory.createProperty("http://www.w3.org/2006/time#hasValue"));
+
+         
         Assert.assertTrue(condition);
     }
+    
+    
+    @Test
+    public void compliantWithShDISJOINT() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DIJOIN, "TURTLE");
+        Boolean condition = shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#a1ecba995aef4ada322156e17bc0998c"), ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://www.w3.org/2006/time#intervalIn"));
+        Assert.assertTrue(condition);
+    }
+    
+    
+    @Test
+    public void compliantWithShDISJOINTNoDomain() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DIJOIN_NO_DOMAIN, "TURTLE");
+  
+        Boolean condition = shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#a1ecba995aef4ada322156e17bc0998c"), ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://www.w3.org/2006/time#intervalIn"));
+        Assert.assertTrue(condition);
+    }
+    
+    @Test
+    public void compliantWithShDISJOINTNoRange() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DIJOIN_NO_RANGE, "TURTLE");
+
+        Boolean condition = shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#a1ecba995aef4ada322156e17bc0998c"), ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://www.w3.org/2006/time#intervalIn"));
+        Assert.assertTrue(condition);
+    }
+    
+    @Test
+    public void compliantWithShDISJOINTNoDomainNoRange() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DIJOIN_NO_DOMAIN_RANGE, "TURTLE");
+
+        Boolean condition = shapes.contains(ResourceFactory.createResource("https://astrea.linkeddata.es/shapes#a1ecba995aef4ada322156e17bc0998c"), ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://www.w3.org/2006/time#intervalIn"));
+        Assert.assertTrue(condition);
+    }
+    
+    @Test
+    public void compliantWithShDISJOINTUnion() {
+        ShaclFromOwl sharper = new OwlGenerator();
+        Model shapes =  sharper.fromOwl(OWL_FRAGMENT_DISJOINT_UNION, "TURTLE");
+        Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://iot.linkeddata.es/def/core#P"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://iot.linkeddata.es/def/core#P1"));
+        condition &= shapes.contains(null, ResourceFactory.createProperty(SH_DISJOINT), ResourceFactory.createProperty("http://iot.linkeddata.es/def/core#P2"));
+        Assert.assertTrue(condition);
+    }
+    
+    
     
 }

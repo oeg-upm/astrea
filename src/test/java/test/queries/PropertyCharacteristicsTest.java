@@ -73,6 +73,10 @@ public class PropertyCharacteristicsTest {
 			"  rdfs:range owl:Thing ;\n" + 
 			"  rdfs:isDefinedBy foaf: .\n";
 	
+	
+	
+	
+	
 	private static final String HAS_VALUE_OWL_FRAGMENT_WITH_INVERSE_FUNCTIONAL_PROPERTY_DP = "@prefix : <http://www.w3.org/2006/time#> .\n" + 
 			"@prefix dct: <http://purl.org/dc/terms/> .\n" + 
 			"@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" + 
@@ -117,7 +121,6 @@ public class PropertyCharacteristicsTest {
 	public void hasInverseFunctionalWithOP() {
 		ShaclFromOwl sharper = new OwlGenerator();
 		Model shapes =  sharper.fromOwl(HAS_VALUE_OWL_FRAGMENT_WITH_INVERSE_FUNCTIONAL_PROPERTY_OP, "TURTLE");		
-		shapes.write(System.out,"TURTLE");
 		Boolean condition = shapes.contains(null, ResourceFactory.createProperty(SH_MAX_COUNT), ResourceFactory.createTypedLiteral(1));
 		condition &= shapes.contains(null, ResourceFactory.createProperty(SH_INVERSE_PATH), ResourceFactory.createResource("http://xmlns.com/foaf/0.1/mbox"));
 		condition &= !shapes.contains(null, ResourceFactory.createProperty(SH_PATH), (RDFNode) null);
