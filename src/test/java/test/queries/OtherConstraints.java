@@ -38,6 +38,8 @@ public class OtherConstraints {
             "   <http://njh.me/#OffDry>\n" +
             "   <http://njh.me/#Dry>\n" +
             " ) .";
+    
+ 
 
     private static final String SH_HAS_VALUE = "http://www.w3.org/ns/shacl#hasValue";
     private static final String SH_IN = "http://www.w3.org/ns/shacl#in";

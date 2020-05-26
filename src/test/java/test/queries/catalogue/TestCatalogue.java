@@ -60,6 +60,7 @@ public class TestCatalogue {
 	public void testSAREF4BLDG() {
 		ShaclFromOwl sharper = new OwlGenerator();
 		Model shapes =  sharper.fromURL("https://mariapoveda.github.io/saref-ext/OnToology/SAREF4BLD/ontology/saref4bldg.ttl/documentation/ontology.ttl");
+		shapes.write(System.out,"TURTLE");
 		Assert.assertFalse(shapes.isEmpty());
 	}
 
