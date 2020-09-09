@@ -1,0 +1,93 @@
+{
+  "datasources" : [
+      {
+        "id" : "Table of Astrea Queries",
+        "type" : "CsvDatasource",
+        "arguments" : [";"],
+        "connector"  : {
+         "arguments" : ["./mappings/data/Queries.csv"],
+         "type" : "LocalFileConnector",
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "Astrea SHACL pattern",
+      "datasource_ids" : ["Table of Astrea Queries"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(hashCode(TRIM({Graph Pattern Target})),'-','1')]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#Pattern",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#SHACLPattern",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#statement", 
+               "object" : "{Graph Pattern Target}",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#involves", 
+               "object" : "http://astrea.helio.linkeddata.es/[splitBy(TRIM({SHACL Construct}),'\\s*,\\s*')]",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#isMappedTo", 
+               "object" : "http://astrea.helio.linkeddata.es/[REPLACE(hashCode(TRIM({Graph Pattern Source})),'-','1')]",
+               "is_literal" : "False" 
+            }               
+      ]
+    },{ 
+      "id" : "Astrea Ontology pattern",
+      "datasource_ids" : ["Table of Astrea Queries"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(hashCode(TRIM({Graph Pattern Source})),'-','1')]",
+      "properties"  : [
+             {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#Pattern",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#OWLPattern",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#statement", 
+               "object" : "{Graph Pattern Source}",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#isTranslatedBy", 
+               "object" : "http://astrea.helio.linkeddata.es/[REPLACE(hashCode(TRIM(STRINGENCODE({QUERY}))),'-','1')]",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#involves", 
+               "object" : "http://astrea.helio.linkeddata.es/[splitBy(TRIM({OWL Construct}),'\\s*,\\s*')]",
+               "is_literal" : "False" 
+            }              
+      ]
+    },{ 
+      "id" : "Astrea Mappings",
+      "datasource_ids" : ["Table of Astrea Queries"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(hashCode(TRIM(STRINGENCODE({QUERY}))),'-','1')]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#MappingImplementation",
+               "is_literal" : "False" 
+            },
+            {
+               "predicate" : "https://w3id.org/def/astrea#query", 
+               "object" : "[TRIM({QUERY})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#hasTarget", 
+               "object" : "http://astrea.helio.linkeddata.es/[REPLACE(hashCode(TRIM({Graph Pattern Target})),'-','1')]",
+               "is_literal" : "False" 
+            }                
+      ]
+    }
+  ]
+}

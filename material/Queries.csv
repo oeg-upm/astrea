@@ -2107,7 +2107,7 @@ OPTIONAL {
     ?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
     FILTER NOT EXISTS { ?restrictionElement xsd:pattern ?restrictionPattern . }
 }";"?shapeUrl a sh:PropertyShape ;
-	sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?\s?|(\\\\+|-)?INF|NaN'^^xsd:string . ";"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+	sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?|(\\\\+|-)?INF|NaN'^^xsd:string . ";"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -2115,7 +2115,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 CONSTRUCT {
   ?shapeUrl a sh:PropertyShape .
-  ?shapeUrl sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?\s?|(\\\\+|-)?INF|NaN'^^xsd:string. 
+  ?shapeUrl sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?|(\\\\+|-)?INF|NaN'^^xsd:string. 
  } WHERE { 
          ?property a ?propertyType .
         VALUES ?propertyType {owl:DatatypeProperty rdfs:Datatype }
@@ -2135,7 +2135,7 @@ OPTIONAL {
     ?restrictionsList rdf:rest*/rdf:first ?restrictionElement .
     FILTER NOT EXISTS { ?restrictionElement xsd:pattern ?restrictionPattern . }
 }";"?shapeUrl a sh:PropertyShape ;
-	sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?\s?|(\\\\+|-)?INF|NaN'^^xsd:string . ";"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+	sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?|(\\\\+|-)?INF|NaN'^^xsd:string . ";"PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -2143,7 +2143,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 CONSTRUCT {
   ?shapeUrl a sh:PropertyShape .
-  ?shapeUrl sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?\s?|(\\\\+|-)?INF|NaN'^^xsd:string. 
+  ?shapeUrl sh:pattern '(\\\\+|-)?([0-9]+(\\\\.[0-9]*)?|\\\\.[0-9]+)([Ee](\\\\+|-)?[0-9]+)?|(\\\\+|-)?INF|NaN'^^xsd:string. 
  } WHERE { 
          ?property a ?propertyType .
         VALUES ?propertyType {owl:DatatypeProperty rdfs:Datatype }

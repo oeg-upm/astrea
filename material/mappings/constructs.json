@@ -1,0 +1,175 @@
+{
+  "datasources" : [
+      {
+        "id" : "Table of Astrea SHACL constructs",
+        "type" : "CsvDatasource",
+        "refresh" : "604800000",
+        "arguments" : [";"],
+        "connector"  : {
+         "arguments" : ["./mappings/data/SHACL.csv"],
+         "type" : "LocalFileConnector",
+        }
+      },{
+        "id" : "Table of Astrea OWL constructs",
+        "type" : "CsvDatasource",
+        "arguments" : [";"],
+        "refresh" : "604800000",
+        "connector"  : {
+         "arguments" : ["./mappings/data/OWL.csv"],
+         "type" : "LocalFileConnector",
+        }
+      },{
+        "id" : "Table of Astrea RDFs constructs",
+        "type" : "CsvDatasource",
+        "refresh" : "604800000",
+        "arguments" : [";"],
+        "connector"  : {
+         "arguments" : ["./mappings/data/RDFS.csv"],
+         "type" : "LocalFileConnector",
+        }
+      },{
+        "id" : "Table of Astrea XSD constructs",
+        "type" : "CsvDatasource",
+        "refresh" : "604800000",
+        "arguments" : [";"],
+        "connector"  : {
+         "arguments" : ["./mappings/data/XSD.csv"],
+         "type" : "LocalFileConnector",
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "Astrea SHACL constructs",
+      "datasource_ids" : ["Table of Astrea SHACL constructs"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(TRIM(STRINGENCODE({construct})),'http://www.w3.org/ns/shacl#','sh:')]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#SHACLConstruct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#Construct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#syntax", 
+               "object" : "[TRIM({construct})]",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#label", 
+               "object" : "[TRIM({name})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#comment", 
+               "object" : "[TRIM({description})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy", 
+               "object" : "https://www.w3.org/TR/shacl/",
+               "is_literal" : "False" 
+            }                        
+      ]
+    },{ 
+      "id" : "Astrea OWL constructs",
+      "datasource_ids" : ["Table of Astrea OWL constructs"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(TRIM(STRINGENCODE({construct})),'http://www.w3.org/2002/07/owl#','owl:')]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#OWLConstruct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#Construct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#syntax", 
+               "object" : "[TRIM({construct})]",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#label", 
+               "object" : "[TRIM({name})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#comment", 
+               "object" : "[TRIM({description})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy", 
+               "object" : "https://www.w3.org/2002/07/owl",
+               "is_literal" : "False" 
+            }                        
+      ]
+    },{ 
+      "id" : "Astrea RDFs constructs",
+      "datasource_ids" : ["Table of Astrea RDFs constructs"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(TRIM(STRINGENCODE({construct})),'http://www.w3.org/2000/01/rdf-schema#','rdfs:')]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#RDFSConstruct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#Construct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#syntax", 
+               "object" : "[TRIM({construct})]",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#label", 
+               "object" : "[TRIM({name})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#comment", 
+               "object" : "[TRIM({description})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy", 
+               "object" : "https://www.w3.org/2000/01/rdf-schema",
+               "is_literal" : "False" 
+            }                        
+      ]
+    },{ 
+      "id" : "Astrea RDFs constructs",
+      "datasource_ids" : ["Table of Astrea XSD constructs"],
+      "subject" : "http://astrea.helio.linkeddata.es/[REPLACE(TRIM(STRINGENCODE({construct})),'http://www.w3.org/2001/XMLSchema#','xsd:')]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#XSDConstruct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "https://w3id.org/def/astrea#Construct",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "https://w3id.org/def/astrea#syntax", 
+               "object" : "[TRIM({construct})]",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/2000/01/rdf-schema#label", 
+               "object" : "[TRIM({name})]",
+               "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+               "is_literal" : "True" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy", 
+               "object" : "http://www.datypic.com/sc/xsd/ns-xsd.html",
+               "is_literal" : "False" 
+            },{
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy", 
+               "object" : "https://www.w3.org/2001/XMLSchema",
+               "is_literal" : "False" 
+            }                               
+      ]
+    }
+  ]
+}
