@@ -103,6 +103,7 @@ public class OwlGenerator implements ShaclFromOwl{
 	 * @param rdfDataset a File containing a RDF dataset with the Astrea queriess
 	 */
 	public OwlGenerator(File rdfDataset) {
+		queries = new ArrayList<>();
 		Model model = ModelFactory.createDefaultModel() ;
 		model.read(rdfDataset.getAbsolutePath()) ;
 		
