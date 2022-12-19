@@ -148,8 +148,14 @@ public class OwlGenerator implements ShaclFromOwl{
 			for(int index=0; index < owlUrls.size(); index++) {
 				String owlUrl = owlUrls.get(index);
 				Model ontologyTemporal = ModelFactory.createDefaultModel();
-				ontologyTemporal.read(owlUrl);
-				ontology.add(ontologyTemporal);
+				try {
+					ontologyTemporal.read(owlUrl);
+					ontology.add(ontologyTemporal);
+				}
+				catch(Exception e) {
+					System.out.println(String.format("%s does not contain a readable ontology.", owlUrl));
+					e.printStackTrace();
+				}
 			}
 		}
 		return fromModel(ontology);
